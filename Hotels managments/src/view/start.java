@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import model.Customer;
 import model.UsersRepo;
 
 import javax.swing.BorderFactory;
@@ -18,14 +19,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
 
-public class start {
-	
-	
-	UsersRepo customers;
-	UsersRepo HotelManagers;
-	
+public class Start {
 	private JFrame frame;
-
+	public JLabel wellcome = new JLabel("Hello guest !");
+	public Customer user;
 	/**
 	 * Launch the application.
 	 */
@@ -33,7 +30,7 @@ public class start {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					start window = new start();
+					Start window = new Start();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +42,7 @@ public class start {
 	/**
 	 * Create the application.
 	 */
-	public start() {
+	public Start() {
 		initialize();
 	}
 
@@ -61,8 +58,8 @@ public class start {
 		JButton signInBtn = new JButton("\u05D4\u05EA\u05D7\u05D1\u05E8\u05D5\u05EA");
 		signInBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				signIn t = new signIn();
-				t.signInForm();
+				SignIn t = new SignIn();
+				t.signInForm(wellcome);
 			}
 		});
 		signInBtn.setBounds(335, 11, 89, 23);
@@ -71,24 +68,15 @@ public class start {
 		JButton signUpBtn = new JButton("\u05D4\u05E8\u05E9\u05DE\u05D4");
 		signUpBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				signUp t = new signUp();
+				SignUp t = new SignUp();
 				t.signUpForm();
 			}
 		});
 		signUpBtn.setBounds(335, 45, 89, 23);
 		frame.getContentPane().add(signUpBtn);
 		
-		frame.addWindowListener(new java.awt.event.WindowAdapter() {
-		    @Override
-		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		    	customers.setData();
-		    	HotelManagers.setData();
-		    }
-		});
-		
-//READ TO FILE
-		customers = new UsersRepo("Members/Customers.txt");
-		HotelManagers = new UsersRepo("Members/Hotel manegers.txt");
+		wellcome.setBounds(345, 100, 100, 100);
+		frame.getContentPane().add(wellcome);
 //MANAGE PANELS
 		setHotelList();
 	}

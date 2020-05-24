@@ -30,7 +30,7 @@ public class Start {
 // LOGED USER
 	public Customer user = new Customer(null, null, null, null, null, false, null, 0, 0, 0);
 //PREV DATE
-	public Date prevDate = new Date(24, 5, 2020);
+	public Date prevDate = new Date(23, 5, 2020);
 //HOTELS REPO
 	public HotelRepo hotelDB = new HotelRepo("Hotels/hotels.txt");
 
@@ -50,10 +50,15 @@ public class Start {
 	public Start() {
 		setUI();
 		setHotelList();//HOTEL PANELS MANAGMENTS
+		workingOn();
 	}
-	
-	public void setUI() {
+		
+	private void workingOn() {
 		prevDate.loadPrevDate();
+		hotelDB.printrooms();
+	}
+
+	public void setUI() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -88,7 +93,8 @@ public class Start {
 		    public void actionPerformed(ActionEvent e) {
 				if (e.getSource() instanceof JButton) {
 					int index = Integer.parseInt(((JButton) e.getSource()).getName());
-		            JOptionPane.showMessageDialog(null, hotelDB.hotels.get(index));
+		            Order t = new Order(hotelDB.hotels.get(index));
+		            t.orderForm(hotelDB.hotels.get(index));
 		        }
 			}
 		};

@@ -3,19 +3,19 @@ package view;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import model.Hotel;
 
 public class Order {
 
 	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public void orderForm() {
+	private Hotel hotel;
+	public void orderForm(Hotel h) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Order window = new Order();
+					Order window = new Order(h);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -27,7 +27,9 @@ public class Order {
 	/**
 	 * Create the application.
 	 */
-	public Order() {
+	public Order(Hotel h) {
+		hotel = h;
+		System.out.println(hotel.toString());
 		initialize();
 	}
 
@@ -37,7 +39,7 @@ public class Order {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 }

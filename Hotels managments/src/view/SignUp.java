@@ -8,12 +8,10 @@ import javax.swing.JTextField;
 import model.Customer;
 import model.UsersRepo;
 import model.Validation;
-
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
-import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 
@@ -68,9 +66,10 @@ public class SignUp {
 
 	public SignUp(UsersRepo c) {
 		customers = c;
-		set();
-		tests();
+		setUI();
+		btnsEvents();
 	}
+  
     boolean isValidDate(int d, int m, int y) 
     {
         if (m == 2)  
@@ -84,7 +83,7 @@ public class SignUp {
         return true; 
     }
 
-    private void set() {
+    private void setUI() {
     	frame = new JFrame();
 		frame.setBounds(100, 100, 452, 585);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -211,9 +210,7 @@ public class SignUp {
 		frame.getContentPane().add(monthField);
     }
 	
-    private void tests() {
-		femaleRadio.setSelected(true);
-		
+    private void btnsEvents() {
 		maleRadio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(maleRadio.isSelected())

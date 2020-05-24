@@ -2,9 +2,9 @@ package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import model.Customer;
 import model.UsersRepo;
@@ -21,7 +21,9 @@ public class SignIn {
 	private JTextField mailField;
 	public UsersRepo customers;
 	private JPasswordField passwordField;
-
+	JButton signInBtn;
+	JLabel errorLabel;
+	
 	public void signInForm(UsersRepo c, JLabel j, Customer u) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -35,9 +37,7 @@ public class SignIn {
 		});
 	}
 
-	public SignIn(UsersRepo c, JLabel j, Customer user) {
-		customers = c;
-		wellcome = j;
+	public void setUI() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -56,11 +56,24 @@ public class SignIn {
 		frame.getContentPane().add(mailField);
 		mailField.setColumns(10);
 		
-		JButton signInBtn = new JButton("\u05D4\u05EA\u05D7\u05D1\u05E8 !");
-		JLabel errorLabel = new JLabel("");
+		signInBtn = new JButton("\u05D4\u05EA\u05D7\u05D1\u05E8 !");
+		errorLabel = new JLabel("");
 		errorLabel.setBounds(94, 149, 113, 14);
 		errorLabel.setForeground(Color.red);
 		frame.getContentPane().add(errorLabel);
+
+		signInBtn.setBounds(73, 174, 146, 29);
+		frame.getContentPane().add(signInBtn);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(73, 112, 146, 26);
+		frame.getContentPane().add(passwordField);	
+	}
+	
+	public SignIn(UsersRepo c, JLabel j, Customer user) {
+		customers = c;
+		wellcome = j;
+		setUI();
 //check valid user
 		signInBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -74,18 +87,11 @@ public class SignIn {
 					else {
 						user.duplicate(temp.getFirstName(), temp.getLastName(), temp.getPhone(), temp.getEmail(), temp.getID(), temp.getGender(), temp.getPass(), temp.getDay(), temp.getMonth(), temp.getYear());
 						wellcome.setText("Hello " + user.getFirstName());
-						errorLabel.setText("");
-						JOptionPane.showMessageDialog(null, user.getFirstName() + " thank you for register!"); // CREATES MASSAGE
+						wellcome.setForeground(Color.blue);
+						frame.dispose();
 					}
 				}
 			}
 		});
-		signInBtn.setBounds(73, 174, 146, 29);
-		frame.getContentPane().add(signInBtn);
-		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(73, 112, 146, 26);
-		frame.getContentPane().add(passwordField);
-		
 	}
 }

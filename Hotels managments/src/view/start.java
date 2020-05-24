@@ -3,7 +3,6 @@ package view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -11,24 +10,29 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import model.Customer;
+import model.Date;
+import model.HotelRepo;
 import model.UsersRepo;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.awt.event.ActionEvent;
 
 public class Start {
 	private JFrame frame;
 	JButton signInBtn = new JButton("\u05D4\u05EA\u05D7\u05D1\u05E8\u05D5\u05EA");		
 	JButton signUpBtn = new JButton("\u05D4\u05E8\u05E9\u05DE\u05D4");
-//customers
+//CUSTOMER DB
 	public UsersRepo customers = new UsersRepo("Members/Customers.txt");
-//userName label
+//HELLO LABEL
 	public JLabel wellcome = new JLabel("Hello guest !");
 // LOGED USER
 	public Customer user = new Customer(null, null, null, null, null, false, null, 0, 0, 0);
+//PREV DATE
+	public Date prevDate = new Date(24, 5, 2020);
+//HOTELS REPO
+	public HotelRepo hotelDB = new HotelRepo("Hotels/hotels.txt");
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -44,11 +48,12 @@ public class Start {
 	}
 	
 	public Start() {
-		setInput();
-		setHotelList();
+		setUI();
+		setHotelList();//HOTEL PANELS MANAGMENTS
 	}
 	
-	public void setInput() {
+	public void setUI() {
+		prevDate.loadPrevDate();
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,7 +77,6 @@ public class Start {
 			public void actionPerformed(ActionEvent e) {
 				SignIn t = new SignIn(customers, wellcome, user);
 				t.signInForm(customers, wellcome, user);
-				
 			}
 		});
 	}
@@ -83,34 +87,28 @@ public class Start {
 			@Override
 		    public void actionPerformed(ActionEvent e) {
 				if (e.getSource() instanceof JButton) {
-					String text = ((JButton) e.getSource()).getName();
-		            JOptionPane.showMessageDialog(null, text + user.getFirstName());
-
+					int index = Integer.parseInt(((JButton) e.getSource()).getName());
+		            JOptionPane.showMessageDialog(null, hotelDB.hotels.get(index));
 		        }
 			}
 		};
-		File directory=new File("Hotels");
-	    int counter = directory.list().length;
-	    System.out.println("File Count:"+ counter);
-	    
-	    
-		int i;
+		
+		int i, counter = hotelDB.hotels.size();
 		JPanel[] panels = new JPanel[counter];//HOTEL COUNTER
 		JLabel[] lbs = new JLabel[counter];
 		JButton[] btns = new JButton[counter];
-		for(i = 0; i < counter; i++) {
+		for(i = 0; i < counter; i++) {//change to hotelDB
 			panels[i] = new JPanel();
 			btns[i] = new JButton("Order now!");
-			lbs[i]=new JLabel("123");//hotel name
+			lbs[i]=new JLabel(hotelDB.hotels.get(i).toString());//hotel name
 			
 		    btns[i].addActionListener(listener);
 		    btns[i].setName(String.valueOf(i));
-		    btns[i].setBounds(50, 50, 100, 100);
 		    
-		    lbs[i].setPreferredSize(new Dimension(200, 40));
-		    btns[i].setPreferredSize(new Dimension(200, 40));
+		    lbs[i].setPreferredSize(new Dimension(200, 50));
+		    btns[i].setPreferredSize(new Dimension(150, 30));
 		    
-		    panels[i].setBounds(10, i*(100 + 10) + 10, 300, 100);
+		    panels[i].setBounds(10, i*(110 + 10) + 10, 250, 110);
 			panels[i].setBorder(BorderFactory.createLineBorder(Color.black));
 
 			panels[i].add(lbs[i]);

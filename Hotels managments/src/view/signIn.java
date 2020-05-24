@@ -1,37 +1,32 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
 import model.Customer;
 import model.UsersRepo;
-
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Member;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
 public class SignIn {
 
+	protected static final UsersRepo UsersRepo = null;
 	private JFrame frame;
 	private JLabel wellcome;
 	private JTextField mailField;
 	public UsersRepo customers;
 	private JPasswordField passwordField;
-	/**
-	 * Launch the application.
-	 */
-	public void signInForm(JLabel j) {
-		wellcome = j;
-		//wellcome.setText("pish-pesh");
+
+	public void signInForm(UsersRepo c, JLabel j, Customer u) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SignIn window = new SignIn();
+					SignIn window = new SignIn(c, j, u);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,19 +35,9 @@ public class SignIn {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
-	public SignIn() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-
-	private void initialize() {
-		customers = new UsersRepo("Members/Customers.txt");
+	public SignIn(UsersRepo c, JLabel j, Customer user) {
+		customers = c;
+		wellcome = j;
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -72,16 +57,26 @@ public class SignIn {
 		mailField.setColumns(10);
 		
 		JButton signInBtn = new JButton("\u05D4\u05EA\u05D7\u05D1\u05E8 !");
+		JLabel errorLabel = new JLabel("");
+		errorLabel.setBounds(94, 149, 113, 14);
+		errorLabel.setForeground(Color.red);
+		frame.getContentPane().add(errorLabel);
+//check valid user
 		signInBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Customer c = customers.validUser("Daniel@gmail.com", "pt1234");
-				if(c == null) {
-					System.out.println("somthing is incorrect!");
-				}
-				else {
-					String str = c.toString(); 
-					String[] a = str.split(" ");
-					System.out.println(a[0] + " u r loged in!");
+				if(passwordField.getPassword().length > 0 && mailField.getText().length() > 0) {
+					Customer temp = customers.find(mailField.getText());
+					if(temp == null)
+						errorLabel.setText("no such an email!");
+					else if(!temp.getPass().equals(String.valueOf(passwordField.getPassword()))) {
+						errorLabel.setText("worng password");
+					}
+					else {
+						user.duplicate(temp.getFirstName(), temp.getLastName(), temp.getPhone(), temp.getEmail(), temp.getID(), temp.getGender(), temp.getPass(), temp.getDay(), temp.getMonth(), temp.getYear());
+						wellcome.setText("Hello " + user.getFirstName());
+						errorLabel.setText("");
+						JOptionPane.showMessageDialog(null, user.getFirstName() + " thank you for register!"); // CREATES MASSAGE
+					}
 				}
 			}
 		});
@@ -91,5 +86,6 @@ public class SignIn {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(73, 112, 146, 26);
 		frame.getContentPane().add(passwordField);
+		
 	}
 }

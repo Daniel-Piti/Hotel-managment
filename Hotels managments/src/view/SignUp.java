@@ -51,13 +51,13 @@ public class SignUp {
 	private JComboBox<String> monthField = new JComboBox<>();
 	private JComboBox<String> dayField = new JComboBox<>();
 	
-	public UsersRepo customers = new UsersRepo("Members/Customers.txt");
+	public UsersRepo customers;
 	
-	public void signUpForm() {
+	public void signUpForm(UsersRepo c) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SignUp window = new SignUp();
+					SignUp window = new SignUp(c);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -66,11 +66,10 @@ public class SignUp {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
-	public SignUp() {
-		initialize();
+	public SignUp(UsersRepo c) {
+		customers = c;
+		set();
+		tests();
 	}
     boolean isValidDate(int d, int m, int y) 
     {
@@ -84,9 +83,7 @@ public class SignUp {
   
         return true; 
     }
-	/**
-	 * Initialize the contents of the frame.
-	 */
+
     private void set() {
     	frame = new JFrame();
 		frame.setBounds(100, 100, 452, 585);
@@ -213,7 +210,8 @@ public class SignUp {
 		frame.getContentPane().add(signUpBtn, 65, 20);
 		frame.getContentPane().add(monthField);
     }
-	private void tests() {
+	
+    private void tests() {
 		femaleRadio.setSelected(true);
 		
 		maleRadio.addActionListener(new ActionListener() {
@@ -278,9 +276,5 @@ public class SignUp {
 				}
 			}
 		});
-	}
-	private void initialize() {
-		set();
-		tests();
 	}
 }

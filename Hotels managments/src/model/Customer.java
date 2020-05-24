@@ -10,6 +10,12 @@ public class Customer extends Person implements Serializable {
 			super(firstName, lastName,phoneNumber,mail,ID,gender,password,d,m,y);
 	}
 	
+	
+	
+	public Customer(Customer temp) {
+		super(temp.getFirstName(), temp.getLastName(), temp.getPhone(), temp.getEmail(), temp.getID(), temp.getGender(), temp.getPass(), temp.getDay(), temp.getMonth(), temp.getYear());
+	}
+
 	@Override
 	public String toString() {
 		return firstName + ' ' + lastName + ' '+ phoneNumber + ' ' + email + ' ' +

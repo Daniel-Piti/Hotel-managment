@@ -24,18 +24,12 @@ public class Order {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public Order(Hotel h) {
 		hotel = h;
 		System.out.println(hotel.toString());
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);

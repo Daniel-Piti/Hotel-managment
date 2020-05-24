@@ -18,8 +18,8 @@ public class Customer extends Person implements Serializable {
 
 	@Override
 	public String toString() {
-		return firstName + ' ' + lastName + ' '+ phoneNumber + ' ' + email + ' ' +
+		return "customer [" + firstName + ' ' + lastName + ' '+ phoneNumber + ' ' + email + ' ' +
 				publicID + ' ' + gender + ' ' + password + ' ' + bday.day +' '+ 
-				bday.month + ' ' + bday.year;
+				bday.month + ' ' + bday.year + "]";
 	}
 }

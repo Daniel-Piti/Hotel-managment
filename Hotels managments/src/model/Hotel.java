@@ -4,26 +4,33 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.activation.MailcapCommandMap;
+
 public class Hotel implements Serializable {
-	private int managerID;
 	private String hotelName;
 	private String address;
-	private int stars;
 	private String phoneNumber;
+	private String password;
+	private String mail;
+	private int stars;
 	public List<RoomType> roomTypes;
 	
-	public Hotel(int managerID, String hotelName, String address, int stars, String phoneNumber) {
-		this.managerID = managerID;
+	public Hotel(String hotelName, String address, String phoneNumber, String password, String mail, int stars) {
 		this.hotelName = hotelName;
 		this.address = address;
-		this.stars = stars;
 		this.phoneNumber = phoneNumber;
+		this.password = password;
+		this.mail = mail;
+		this.stars = stars;
 		this.roomTypes = new ArrayList<RoomType>();
-		//minimum price?
 	}
 	
-	public void addRoomType(int capacity, double price, boolean smoking, double size, int amount) {
-		roomTypes.add(new RoomType(capacity, price, smoking, size, amount));
+	public void addRoomType(String typeName, int capacity, double price, double size, int amount) {
+		roomTypes.add(new RoomType(typeName ,capacity, price, size, amount));
+	}
+	
+	public String getMail() {
+		return this.mail;
 	}
 	
 	@Override

@@ -38,7 +38,6 @@ public class UsersRepo {
 	public void addUser(Customer u) {
 		members.put(u.getEmail(), u);
 		System.out.println("added customer");
-		setData();
 	}
 	
 	public boolean emailUsed(String email) {

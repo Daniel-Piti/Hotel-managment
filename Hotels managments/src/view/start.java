@@ -6,7 +6,6 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import model.Customer;
@@ -51,6 +50,8 @@ public class Start {
 		setUI();
 		setHotelList();//HOTEL PANELS MANAGMENTS
 		workingOn();
+		AddHotel a = new AddHotel(hotelDB, customers);
+		a.addHotelform(hotelDB, customers);
 	}
 		
 	private void workingOn() {
@@ -83,6 +84,14 @@ public class Start {
 				SignIn t = new SignIn(customers, wellcome, user);
 				t.signInForm(customers, wellcome, user);
 			}
+		});
+		
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				hotelDB.saveData();
+				customers.setData();
+		    }
 		});
 	}
 	

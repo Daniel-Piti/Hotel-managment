@@ -37,6 +37,13 @@ public class HotelRepo {
 		}
 	}
 
+	public boolean emailUsed(String email) {
+		for(int i = 0; i < hotels.size(); i++)
+			if(email.equals(hotels.get(i).getMail()))
+				return true;
+		return false;
+	}
+	
 	public void addHotel(Hotel h) {
 		hotels.add(h);
 		System.out.println("added hotel");
@@ -47,11 +54,11 @@ public class HotelRepo {
 		try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))){
 			//FOR RESETS
 //			hotels = new ArrayList<Hotel>();
-//			hotels.add(new Hotel(1, "panorama", "hahistadrut 88", 5, "0505566979"));
-//			hotels.add(new Hotel(2, "dan", "tel aviv", 5, "0503333976"));
-//			hotels.get(0).addRoomType(2, 200, true, 30, 10);
-//			hotels.get(0).addRoomType(2, 200, true, 30, 10);
-//			hotels.get(1).addRoomType(2, 200, true, 30, 10);
+//			
+//			hotels.add(new Hotel("#hotelName", "#address", "#phoneNumber", "#password", "#mail", 5));
+//			
+//			hotels.get(0).addRoomType("one", 2, 2, 2, 2);
+			
 			out.writeObject(hotels);
 			System.out.println(filename + "'s DATA SAVED!");
 		}catch(IOException e) {

@@ -1,21 +1,51 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Window;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
+import model.Hotel;
+import model.HotelRepo;
+import model.UsersRepo;
+import model.Validation;
+
+import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
 
 public class AddHotel {
 
 	private JFrame frame;
-
+	private HotelRepo hotelsDB;
+	private UsersRepo users;
+	
+	private JTextField hotelNameField;
+	private JTextField addressField;
+	private JTextField phoneField;
+	
+	private JLabel nameError;
+	private JLabel addressError;
+	private JLabel phoneError;
+	private JLabel lblNewLabel_1;
+	private JLabel lblNewLabel_2;
+	private JTextField mailField;
+	private JLabel passwordError;
+	private JLabel mailError;
+	private JPasswordField passwordField;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void addHotelform(HotelRepo h, UsersRepo c) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddHotel window = new AddHotel();
+					AddHotel window = new AddHotel(h, c);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -24,20 +54,136 @@ public class AddHotel {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
-	public AddHotel() {
+	public AddHotel(HotelRepo h, UsersRepo c) {
+		hotelsDB = h;
+		users = c;
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+		frame.setBounds(100, 100, 386, 442);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("\u05D4\u05D5\u05E1\u05E4\u05EA \u05DE\u05DC\u05D5\u05DF");
+		lblNewLabel.setBounds(143, 30, 74, 14);
+		frame.getContentPane().add(lblNewLabel);
+		
+		JLabel hotelNameTitle = new JLabel("\u05E9\u05DD \u05D4\u05DE\u05DC\u05D5\u05DF :");
+		hotelNameTitle.setBounds(257, 92, 80, 14);
+		frame.getContentPane().add(hotelNameTitle);
+		
+		JLabel addressTitle = new JLabel("\u05DB\u05EA\u05D5\u05D1\u05EA :");
+		addressTitle.setBounds(257, 140, 46, 14);
+		frame.getContentPane().add(addressTitle);
+		
+		JLabel starsTitle = new JLabel("\u05DE\u05E1\u05E4\u05E8 \u05DB\u05D5\u05DB\u05D1\u05D9\u05DD :");
+		starsTitle.setBounds(257, 326, 96, 14);
+		frame.getContentPane().add(starsTitle);
+		
+		JLabel phoneNumberTitle = new JLabel("\u05D8\u05DC\u05E4\u05D5\u05DF :");
+		phoneNumberTitle.setBounds(257, 185, 46, 14);
+		frame.getContentPane().add(phoneNumberTitle);
+		
+		JButton btnNewButton = new JButton("\u05D4\u05DE\u05E9\u05DA \u05DC\u05D4\u05D5\u05E1\u05E4\u05EA \u05E1\u05D5\u05D2\u05D9 \u05D7\u05D3\u05E8\u05D9\u05DD");
 
+		btnNewButton.setBounds(93, 369, 184, 23);
+		frame.getContentPane().add(btnNewButton);
+		
+		hotelNameField = new JTextField();
+		hotelNameField.setBounds(125, 89, 86, 20);
+		frame.getContentPane().add(hotelNameField);
+		hotelNameField.setColumns(10);
+		
+		addressField = new JTextField();
+		addressField.setBounds(125, 137, 86, 20);
+		frame.getContentPane().add(addressField);
+		addressField.setColumns(10);
+		
+		phoneField = new JTextField();
+		phoneField.setBounds(125, 182, 86, 20);
+		frame.getContentPane().add(phoneField);
+		phoneField.setColumns(10);
+		
+		nameError = new JLabel("");
+		nameError.setBounds(10, 92, 105, 14);
+		nameError.setForeground(Color.red);
+		frame.getContentPane().add(nameError);
+		
+		addressError = new JLabel("");
+		addressError.setBounds(10, 140, 105, 14);
+		addressError.setForeground(Color.red);
+		frame.getContentPane().add(addressError);
+		
+		phoneError = new JLabel("");
+		phoneError.setBounds(10, 185, 105, 14);
+		phoneError.setForeground(Color.red);
+		frame.getContentPane().add(phoneError);
+	//DISIGN ERROR
+		String s[] = new String[] {"1","2","3","4","5"};
+		JComboBox<String> comboBox = new JComboBox<String>(s);
+		comboBox.setBounds(144, 323, 50, 20);
+		frame.getContentPane().add(comboBox);
+		
+		lblNewLabel_1 = new JLabel("\u05E1\u05D9\u05E1\u05DE\u05D0 :");
+		lblNewLabel_1.setBounds(257, 229, 46, 14);
+		frame.getContentPane().add(lblNewLabel_1);
+		
+		lblNewLabel_2 = new JLabel("\u05DE\u05D9\u05D9\u05DC :");
+		lblNewLabel_2.setBounds(257, 275, 46, 14);
+		frame.getContentPane().add(lblNewLabel_2);
+		
+		mailField = new JTextField();
+		mailField.setColumns(10);
+		mailField.setBounds(125, 272, 86, 20);
+		frame.getContentPane().add(mailField);
+		
+		passwordError = new JLabel("");
+		passwordError.setForeground(Color.RED);
+		passwordError.setBounds(10, 229, 105, 14);
+		frame.getContentPane().add(passwordError);
+		
+		mailError = new JLabel("");
+		mailError.setForeground(Color.RED);
+		mailError.setBounds(10, 275, 105, 14);
+		frame.getContentPane().add(mailError);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(125, 226, 86, 20);
+		frame.getContentPane().add(passwordField);
+		
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				boolean flag = true;
+				Validation v = new Validation();
+				if(!v.validNotEmpty(hotelNameField.getText(), nameError))
+					flag = false;
+				
+				if(!v.validNotEmpty(addressField.getText(), addressError))
+					flag = false;
+				
+				if(!v.validPhone(phoneField.getText(), phoneError))
+					flag = false;
+				
+				if(!v.validPassword(passwordField.getPassword(), passwordError))
+					flag = false;
+				
+				if(!v.validEmail(mailField.getText(), mailError))
+					flag = false;
+			//users db
+				if(users.emailUsed(mailField.getText()) || hotelsDB.emailUsed(mailField.getText())) {
+					mailError.setText("Email allready used");
+					flag = false;
+				}
+				System.out.println(flag);
+				if(flag) {
+					hotelsDB.addHotel(new Hotel(hotelNameField.getText(), addressField.getText(), phoneField.getText(), String.valueOf(passwordField.getPassword()), mailField.getText(), comboBox.getSelectedIndex() + 1));
+					AddRoomType a = new AddRoomType(hotelsDB.hotels.get(hotelsDB.hotels.size() - 1));
+					a.addRoomTypeForm(hotelsDB.hotels.get(hotelsDB.hotels.size() - 1));
+					frame.dispose();
+				}
+			}
+		});
+	}
 }

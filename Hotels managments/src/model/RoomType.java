@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoomType implements Serializable {
+	public String typeName;
 	public int capacity;
 	public double price;
-	public boolean smoking;
 	public double size;
 	public int amount;
 	public List<Integer> calender;
 	
-	public RoomType(int capacity, double price, boolean smoking, double size, int amount) {
+	public RoomType(String typeName, int capacity, double price, double size, int amount) {
+		this.typeName = typeName;
 		this.capacity = capacity;
 		this.price = price;
-		this.smoking = smoking;
 		this.size = size;
 		this.amount = amount;
 		calender = new ArrayList<Integer>();

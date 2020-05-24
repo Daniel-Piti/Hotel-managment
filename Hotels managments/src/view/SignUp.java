@@ -248,16 +248,12 @@ public class SignUp {
 					mailLabel.setText("Email allready used");
 					flag = false;
 				}
-				
 	//check ID
 				if(!v.validID(idField.getText(), idLabel))
 					flag = false;
-				
 	//check Password
 				if(!v.validPassword(passwordField.getPassword(), passwordLabel))
 					flag = false;
-
-				
 	//check date
 				if(!v.validDate(dayField.getSelectedIndex(), monthField.getSelectedIndex(), yearField.getSelectedIndex(), dateLabel))
 					flag = false;

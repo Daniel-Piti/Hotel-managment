@@ -12,6 +12,15 @@ public class Validation {
 		return true;
 	}
 	
+	public boolean validNotEmpty(String s, JLabel j) {
+		if(s.equals("")) {
+			j.setText("Can not be empty");
+			return false;
+		}
+		j.setText("");
+		return true;
+	}
+	
 	public boolean validID(String s, JLabel j) {
 		if(!s.matches("[0-9]+") || s.length() != 9){
 			j.setText("Invalid input");
@@ -28,6 +37,31 @@ public class Validation {
 		}	
 		j.setText("");
 		return true;
+	}
+	
+	public boolean validNumber(String s, JLabel j) {
+		if(!s.matches("[0-9]+")) {
+			j.setText("Not a number");
+			return false;
+		}
+		j.setText("");
+		return true;
+	}
+	
+	public boolean validDouble(String s, JLabel j) {
+		boolean numeric = true;
+        try {
+            Double num = Double.parseDouble(s);
+        } catch (NumberFormatException e) {
+            numeric = false;
+        }
+
+        if(numeric){
+        	j.setText("");
+        	return true;
+        }
+        j.setText("Not a valid number");
+        return true;
 	}
 	
 	public boolean validEmail(String s, JLabel j) {

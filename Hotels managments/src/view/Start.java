@@ -9,13 +9,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Customer;
-import model.Date;
+import model.Hotel;
 import model.HotelRepo;
+import model.MyDate;
 import model.UsersRepo;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 import java.awt.event.ActionEvent;
 
 public class Start {
@@ -23,15 +25,15 @@ public class Start {
 	JButton signInBtn = new JButton("\u05D4\u05EA\u05D7\u05D1\u05E8\u05D5\u05EA");		
 	JButton signUpBtn = new JButton("\u05D4\u05E8\u05E9\u05DE\u05D4");
 //CUSTOMER DB
-	public UsersRepo customers = new UsersRepo("Members/Customers.txt");
+	public UsersRepo customers;
 //HELLO LABEL
 	public JLabel wellcome = new JLabel("Hello guest !");
 // LOGED USER
-	public Customer user = new Customer(null, null, null, null, null, false, null, 0, 0, 0);
+	public Customer user;
 //PREV DATE
-	public Date prevDate = new Date(23, 5, 2020);
+	public MyDate prevDate = new MyDate(0, 0, 0);
 //HOTELS REPO
-	public HotelRepo hotelDB = new HotelRepo("Hotels/hotels.txt");
+	public HotelRepo hotelDB;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -46,15 +48,22 @@ public class Start {
 		});
 	}
 	
+	public void loadAllData() {
+		user = new Customer(null, null, null, null, null, false, null, 0, 0, 0);
+		customers = new UsersRepo("Members/Customers.txt");
+		hotelDB = new HotelRepo("Hotels/hotels.txt");
+		LocalDateTime now = LocalDateTime.now();
+		prevDate.loadPrevDate();
+		int diff = prevDate.getDaysDiff(new MyDate(now.getDayOfMonth(), now.getMonthValue(), now.getYear()));
+		hotelDB.fixHotelsDates(diff);
+
+		System.out.println("all data is set");
+	}
+	
 	public Start() {
+		loadAllData();
 		setUI();
 		setHotelList();//HOTEL PANELS MANAGMENTS
-		workingOn();
-	}
-		
-	private void workingOn() {
-		prevDate.loadPrevDate();
-		hotelDB.printrooms();
 	}
 
 	public void setUI() {
@@ -90,6 +99,7 @@ public class Start {
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				hotelDB.saveData();
 				customers.setData();
+				prevDate.saveCurDate();
 		    }
 		});
 	}

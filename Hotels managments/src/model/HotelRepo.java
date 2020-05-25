@@ -20,9 +20,15 @@ public class HotelRepo {
 		//saveData();
 	}
 	
-	public void printrooms() {
-		for(int i = 0; i < hotels.size(); i++)
-			System.out.println(hotels.get(i).roomTypes.size());
+	public void fixHotelsDates(int diff) {
+		if(diff > 0)
+			for(int i = 0; i < hotels.size(); i++) {
+				for(int j = 0; j < hotels.get(i).roomTypes.size(); j++)
+					for(int k = 0; k < diff; k++) {
+						hotels.get(i).roomTypes.get(j).calender.remove(0);
+						hotels.get(i).roomTypes.get(j).calender.add(hotels.get(i).roomTypes.get(j).amount);
+					}
+			}
 	}
 	
 	public void loadData() {
@@ -30,8 +36,9 @@ public class HotelRepo {
 			hotels = (List<Hotel>) in.readObject();
 			for(Hotel h : hotels) {
 				System.out.println(h.toString());
+				System.out.println(h.getName() + " got " + h.roomTypes.size() + " roomtypes.");
 			}
-			System.out.println(filename + "'s Data loaded!");
+			System.out.println("HOTEL DATA LOADED");
 		}catch(IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -53,7 +60,7 @@ public class HotelRepo {
 	
 	public void addHotel(Hotel h) {
 		hotels.add(h);
-		System.out.println("added hotel");
+		System.out.println("HOTEL ADDED");
 		saveData();
 	}
 	
@@ -65,9 +72,9 @@ public class HotelRepo {
 //			hotels.add(new Hotel("#hotelName", "#address", "#phoneNumber", "#pass", "#mail", 5));
 //			
 //			hotels.get(0).addRoomType("one", 2, 2, 2, 2);
-			
+
 			out.writeObject(hotels);
-			System.out.println(filename + "'s DATA SAVED!");
+			System.out.println("HOTELS DATA SAVED!");
 		}catch(IOException e) {
 			e.printStackTrace();
 		}

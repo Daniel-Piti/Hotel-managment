@@ -10,7 +10,7 @@ public abstract class Person implements Serializable {
 	protected String email;
 	protected String publicID;
 	protected String password;
-	protected Date bday;
+	protected MyDate bday;
 	protected boolean gender;
 
 	public Person(String firstName, String lastName, String phoneNumber,
@@ -23,7 +23,7 @@ public abstract class Person implements Serializable {
 		this.publicID = ID;
 		this.gender = gender;
 		this.password = password;
-		bday = new Date(d, m, y);
+		bday = new MyDate(d, m, y);
 	}
 	public void duplicate(String firstName, String lastName, String phoneNumber,
 			  String email, String ID, boolean gender,

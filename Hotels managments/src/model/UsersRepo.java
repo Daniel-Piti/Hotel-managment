@@ -23,7 +23,7 @@ public class UsersRepo {
 			for(Customer key : members.values()) {
 				System.out.println(key.toString());
 			}
-			System.out.println(filename + "'s Data loaded!");
+			System.out.println("USER DATA LOADED");
 		}catch(IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -49,10 +49,10 @@ public class UsersRepo {
 	public void setData() {
 		try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))){
 			//FOR RESETS
-			//members = new HashMap<String, Customer>();
-			//members.put("alpha", new Customer("alpha", "alpha", "alpha", "alpha", "alpha", true, "alpha", 10, 10, 10));
+//			members = new HashMap<String, Customer>();
+//			members.put("alpha", new Customer("alpha", "alpha", "alpha", "alpha", "alpha", true, "alpha", 10, 10, 10));
 			out.writeObject(members);
-			System.out.println(filename + "'s DATA SAVED!");
+			System.out.println("USERS DATA SAVED!");
 		}catch(IOException e) {
 			e.printStackTrace();
 		}

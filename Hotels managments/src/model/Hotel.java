@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.activation.MailcapCommandMap;
-
 public class Hotel implements Serializable {
 	private String hotelName;
 	private String address;
@@ -31,6 +29,29 @@ public class Hotel implements Serializable {
 	
 	public String getMail() {
 		return this.mail;
+	}
+	
+	public String getName() {
+		return hotelName;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+	
+	public String getPhone() {
+		return phoneNumber;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void editHotel(String hotelName, String address, String phone, String pass) {
+		this.hotelName = hotelName;
+		this.address = address;
+		this.phoneNumber = phone;
+		this.password = pass;
 	}
 	
 	@Override

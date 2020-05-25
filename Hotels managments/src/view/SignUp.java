@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import model.Customer;
+import model.HotelRepo;
 import model.UsersRepo;
 import model.Validation;
 import javax.swing.JPasswordField;
@@ -23,17 +24,7 @@ public class SignUp {
 	private JTextField mailField;
 	private JTextField idField;
 	private JPasswordField passwordField;
-
-	private JLabel signUpTitle = new JLabel("\u05D4\u05E8\u05E9\u05DE\u05D4 :");
-	private JLabel firstNameTitle = new JLabel("\u05E9\u05DD \u05E4\u05E8\u05D8\u05D9 :");
-	private JLabel lastNameTitle = new JLabel("\u05E9\u05DD \u05DE\u05E9\u05E4\u05D7\u05D4 :");
-	private JLabel phoneTitle = new JLabel("\u05E4\u05DC\u05D0\u05E4\u05D5\u05DF :");
-	private JLabel mailTitle = new JLabel("\u05DE\u05D9\u05D9\u05DC :");
-	private JLabel idTitle = new JLabel("\u05EA\u05E2\u05D5\u05D3\u05EA \u05D6\u05D4\u05D5\u05EA :");
-	private JLabel genderTitle = new JLabel("\u05DE\u05D9\u05DF :");
-	private JLabel passwordTitle = new JLabel("\u05E1\u05D9\u05E1\u05DE\u05D0 :");
-	private JLabel birthDayTitle = new JLabel("\u05EA\u05D0\u05E8\u05D9\u05DA \u05DC\u05D9\u05D3\u05D4 :");
-
+	
 	private JRadioButton maleRadio = new JRadioButton("\u05D6\u05DB\u05E8");
 	private JRadioButton femaleRadio = new JRadioButton("\u05E0\u05E7\u05D1\u05D4");
 
@@ -44,18 +35,21 @@ public class SignUp {
 	private JLabel dateLabel = new JLabel("");
 	private JLabel passwordLabel = new JLabel("");
 	private JLabel idLabel = new JLabel("");
+	
 	private JButton signUpBtn = new JButton("\u05D4\u05E8\u05E9\u05DD");
+	
 	private JComboBox<String> yearField = new JComboBox<>();
 	private JComboBox<String> monthField = new JComboBox<>();
 	private JComboBox<String> dayField = new JComboBox<>();
 	
 	public UsersRepo customers;
+	public HotelRepo hotels;
 	
-	public void signUpForm(UsersRepo c) {
+	public void signUpForm(UsersRepo c, HotelRepo h) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SignUp window = new SignUp(c);
+					SignUp window = new SignUp(c, h);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -64,7 +58,8 @@ public class SignUp {
 		});
 	}
 
-	public SignUp(UsersRepo c) {
+	public SignUp(UsersRepo c, HotelRepo h) {
+		hotels = h;
 		customers = c;
 		setUI();
 		btnsEvents();
@@ -84,6 +79,16 @@ public class SignUp {
     }
 
     private void setUI() {
+    	JLabel signUpTitle = new JLabel("\u05D4\u05E8\u05E9\u05DE\u05D4 :");
+    	JLabel firstNameTitle = new JLabel("\u05E9\u05DD \u05E4\u05E8\u05D8\u05D9 :");
+    	JLabel lastNameTitle = new JLabel("\u05E9\u05DD \u05DE\u05E9\u05E4\u05D7\u05D4 :");
+    	JLabel phoneTitle = new JLabel("\u05E4\u05DC\u05D0\u05E4\u05D5\u05DF :");
+    	JLabel mailTitle = new JLabel("\u05DE\u05D9\u05D9\u05DC :");
+    	JLabel idTitle = new JLabel("\u05EA\u05E2\u05D5\u05D3\u05EA \u05D6\u05D4\u05D5\u05EA :");
+    	JLabel genderTitle = new JLabel("\u05DE\u05D9\u05DF :");
+    	JLabel passwordTitle = new JLabel("\u05E1\u05D9\u05E1\u05DE\u05D0 :");
+    	JLabel birthDayTitle = new JLabel("\u05EA\u05D0\u05E8\u05D9\u05DA \u05DC\u05D9\u05D3\u05D4 :");
+
     	frame = new JFrame();
 		frame.setBounds(100, 100, 452, 585);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -211,20 +216,21 @@ public class SignUp {
     }
 	
     private void btnsEvents() {
+    //RADIO MALE
 		maleRadio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(maleRadio.isSelected())
-					femaleRadio.setSelected(false);
+				maleRadio.setSelected(true);
+				femaleRadio.setSelected(false);
 			}
 		});
-		
+	//RADIO FEMALE
 		femaleRadio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(femaleRadio.isSelected())
-					maleRadio.setSelected(false);
+				maleRadio.setSelected(false);
+				femaleRadio.setSelected(true);
 			}
 		});
-		
+	//SAVE BUTTON
 		signUpBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean flag = true;
@@ -244,7 +250,7 @@ public class SignUp {
 				if(!v.validEmail(mailField.getText(), mailLabel))
 					flag = false;
 				
-				if(customers.emailUsed(mailField.getText())) {
+				if(customers.emailUsed(mailField.getText()) || hotels.emailUsed(mailField.getText())) {
 					mailLabel.setText("Email allready used");
 					flag = false;
 				}

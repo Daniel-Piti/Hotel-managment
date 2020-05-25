@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import model.Customer;
+import model.Hotel;
+import model.HotelRepo;
 import model.UsersRepo;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -21,14 +23,15 @@ public class SignIn {
 	private JTextField mailField;
 	public UsersRepo customers;
 	private JPasswordField passwordField;
+	private HotelRepo hotelist;
 	JButton signInBtn;
 	JLabel errorLabel;
 	
-	public void signInForm(UsersRepo c, JLabel j, Customer u) {
+	public void signInForm(UsersRepo c, JLabel j, Customer u, HotelRepo h) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SignIn window = new SignIn(c, j, u);
+					SignIn window = new SignIn(c, j, u, h);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +61,7 @@ public class SignIn {
 		
 		signInBtn = new JButton("\u05D4\u05EA\u05D7\u05D1\u05E8 !");
 		errorLabel = new JLabel("");
-		errorLabel.setBounds(94, 149, 113, 14);
+		errorLabel.setBounds(94, 149, 197, 14);
 		errorLabel.setForeground(Color.red);
 		frame.getContentPane().add(errorLabel);
 
@@ -70,7 +73,8 @@ public class SignIn {
 		frame.getContentPane().add(passwordField);	
 	}
 	
-	public SignIn(UsersRepo c, JLabel j, Customer user) {
+	public SignIn(UsersRepo c, JLabel j, Customer user, HotelRepo h) {
+		hotelist = h;
 		customers = c;
 		wellcome = j;
 		setUI();
@@ -78,17 +82,36 @@ public class SignIn {
 		signInBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(passwordField.getPassword().length > 0 && mailField.getText().length() > 0) {
-					Customer temp = customers.find(mailField.getText());
-					if(temp == null)
-						errorLabel.setText("no such an email!");
-					else if(!temp.getPass().equals(String.valueOf(passwordField.getPassword()))) {
-						errorLabel.setText("worng password");
-					}
-					else {
-						user.duplicate(temp.getFirstName(), temp.getLastName(), temp.getPhone(), temp.getEmail(), temp.getID(), temp.getGender(), temp.getPass(), temp.getDay(), temp.getMonth(), temp.getYear());
-						wellcome.setText("Hello " + user.getFirstName());
-						wellcome.setForeground(Color.blue);
+				//PROJECT MASTER
+					if(String.valueOf(passwordField.getPassword()).equals("alpha") && mailField.getText().equals("alpha")) {
+						AddHotel a = new AddHotel(hotelist, customers);
+						a.addHotelform(hotelist, customers);
 						frame.dispose();
+					}
+				//HOTEL MANAGER
+					else {
+						Hotel ho = hotelist.find(mailField.getText());
+						if(ho != null && ho.getPassword().equals(String.valueOf(passwordField.getPassword()))) {
+							EditHotel a = new EditHotel(ho);
+							a.editHotelForm(ho);
+							frame.dispose();
+						}
+						else {
+				//NORMAL USER
+							Customer temp = customers.find(mailField.getText());
+							if(temp == null) {
+								errorLabel.setText("no such an email of users!");
+							}
+							else if(!temp.getPass().equals(String.valueOf(passwordField.getPassword()))) {
+								errorLabel.setText("worng password");
+							}
+							else {
+								user.duplicate(temp.getFirstName(), temp.getLastName(), temp.getPhone(), temp.getEmail(), temp.getID(), temp.getGender(), temp.getPass(), temp.getDay(), temp.getMonth(), temp.getYear());
+								wellcome.setText("Hello " + user.getFirstName());
+								wellcome.setForeground(Color.blue);
+								frame.dispose();
+							}
+						}
 					}
 				}
 			}

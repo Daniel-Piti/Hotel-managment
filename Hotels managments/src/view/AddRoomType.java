@@ -12,6 +12,8 @@ import model.Hotel;
 import model.Validation;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -30,12 +32,14 @@ public class AddRoomType {
 	private JLabel typeNameError;
 	private Hotel hotel;
 	private JTextField typeNameField;
-
-	public static void addRoomTypeForm(Hotel h) {
+	private JLabel hotelname = new JLabel("");
+	private JComboBox<String> roomTypes;
+	
+	public static void addRoomTypeForm(Hotel h, JComboBox<String> r) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddRoomType window = new AddRoomType(h);
+					AddRoomType window = new AddRoomType(h, r);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,7 +48,9 @@ public class AddRoomType {
 		});
 	}
 
-	public AddRoomType(Hotel h) {
+	public AddRoomType(Hotel h, JComboBox<String> r) {
+		roomTypes = r;
+		hotelname.setText(h.getName());
 		hotel = h;
 		setUI();
 	}
@@ -56,7 +62,7 @@ public class AddRoomType {
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("\u05D4\u05D5\u05E1\u05E4\u05EA \u05E1\u05D5\u05D2 \u05D7\u05D3\u05E8 :");
-		lblNewLabel.setBounds(116, 11, 126, 14);
+		lblNewLabel.setBounds(108, 11, 126, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JLabel capacityTitle = new JLabel("\u05DB\u05DE\u05D5\u05EA \u05D0\u05E0\u05E9\u05D9\u05DD :");
@@ -103,19 +109,19 @@ public class AddRoomType {
 		addBtn.setBounds(92, 354, 132, 23);
 		frame.getContentPane().add(addBtn);
 
-		capacityError.setBounds(45, 147, 86, 14);
+		capacityError.setBounds(45, 147, 136, 14);
 		capacityError.setForeground(Color.red);
 		frame.getContentPane().add(capacityError);
 		
-		priceError.setBounds(45, 205, 86, 14);
+		priceError.setBounds(45, 205, 136, 14);
 		priceError.setForeground(Color.red);
 		frame.getContentPane().add(priceError);
 		
-		sizeError.setBounds(45, 261, 86, 14);
+		sizeError.setBounds(45, 261, 156, 14);
 		sizeError.setForeground(Color.red);
 		frame.getContentPane().add(sizeError);
 		
-		amountError.setBounds(45, 322, 86, 14);
+		amountError.setBounds(45, 322, 136, 14);
 		amountError.setForeground(Color.red);
 		frame.getContentPane().add(amountError);
 		
@@ -129,8 +135,11 @@ public class AddRoomType {
 		frame.getContentPane().add(typeName);
 		
 		typeNameError = new JLabel("");
-		typeNameError.setBounds(45, 92, 86, 14);
+		typeNameError.setBounds(45, 92, 156, 14);
 		frame.getContentPane().add(typeNameError);
+		
+		hotelname.setBounds(126, 36, 75, 14);
+		frame.getContentPane().add(hotelname);
 	}
 	
 	public void testFields() {
@@ -155,8 +164,9 @@ public class AddRoomType {
 		
 		if(flag) {
 			hotel.addRoomType(typeNameField.getText() ,Integer.parseInt(capacityField.getText()), Double.parseDouble(priceField.getText()), Double.parseDouble(sizeField.getText()), Integer.parseInt(amountFIeld.getText()));
-			System.out.println(typeNameField.getText() + "room type added to a hotel");
-			JOptionPane.showMessageDialog(null, typeNameField.getText() + "room type added to a hotel");
+			roomTypes.addItem(typeNameField.getText());
+			System.out.println(typeNameField.getText() + " room type added to a hotel");
+			JOptionPane.showMessageDialog(null, typeNameField.getText() + " room type added to a hotel");
 			typeNameField.setText("");
 			capacityField.setText("");
 			priceField.setText("");

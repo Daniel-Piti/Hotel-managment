@@ -44,6 +44,13 @@ public class HotelRepo {
 		return false;
 	}
 	
+	public Hotel find(String email) {
+		for(int i = 0; i < hotels.size(); i++)
+			if(email.equals(hotels.get(i).getMail()))
+				return hotels.get(i);
+		return null;
+	}
+	
 	public void addHotel(Hotel h) {
 		hotels.add(h);
 		System.out.println("added hotel");
@@ -55,7 +62,7 @@ public class HotelRepo {
 			//FOR RESETS
 //			hotels = new ArrayList<Hotel>();
 //			
-//			hotels.add(new Hotel("#hotelName", "#address", "#phoneNumber", "#password", "#mail", 5));
+//			hotels.add(new Hotel("#hotelName", "#address", "#phoneNumber", "#pass", "#mail", 5));
 //			
 //			hotels.get(0).addRoomType("one", 2, 2, 2, 2);
 			

@@ -51,7 +51,7 @@ public class Validation {
 	public boolean validDouble(String s, JLabel j) {
 		boolean numeric = true;
         try {
-            Double num = Double.parseDouble(s);
+            Double.parseDouble(s);
         } catch (NumberFormatException e) {
             numeric = false;
         }

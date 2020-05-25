@@ -50,8 +50,6 @@ public class Start {
 		setUI();
 		setHotelList();//HOTEL PANELS MANAGMENTS
 		workingOn();
-		AddHotel a = new AddHotel(hotelDB, customers);
-		a.addHotelform(hotelDB, customers);
 	}
 		
 	private void workingOn() {
@@ -67,25 +65,26 @@ public class Start {
 		signInBtn.setBounds(335, 11, 89, 23);
 		frame.getContentPane().add(signInBtn);
 		
-		
 		signUpBtn.setBounds(335, 45, 89, 23);
 		frame.getContentPane().add(signUpBtn);
 		
 		wellcome.setBounds(345, 100, 100, 100);
 		frame.getContentPane().add(wellcome);
+	//SIGN UP
 		signUpBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SignUp t = new SignUp(customers);
-				t.signUpForm(customers);
+				SignUp t = new SignUp(customers, hotelDB);
+				t.signUpForm(customers, hotelDB);
 			}
 		});
+	//SIGN IN
 		signInBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SignIn t = new SignIn(customers, wellcome, user);
-				t.signInForm(customers, wellcome, user);
+				SignIn t = new SignIn(customers, wellcome, user, hotelDB);
+				t.signInForm(customers, wellcome, user, hotelDB);
 			}
 		});
-		
+	//ON CLOSE
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {

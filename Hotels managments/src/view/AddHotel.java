@@ -2,10 +2,10 @@ package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Window;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
@@ -62,12 +62,12 @@ public class AddHotel {
 
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 386, 442);
+		frame.setBounds(100, 100, 407, 442);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("\u05D4\u05D5\u05E1\u05E4\u05EA \u05DE\u05DC\u05D5\u05DF");
-		lblNewLabel.setBounds(143, 30, 74, 14);
+		JLabel lblNewLabel = new JLabel("\u05D4\u05D5\u05E1\u05E4\u05EA \u05DE\u05DC\u05D5\u05DF :");
+		lblNewLabel.setBounds(162, 29, 74, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JLabel hotelNameTitle = new JLabel("\u05E9\u05DD \u05D4\u05DE\u05DC\u05D5\u05DF :");
@@ -86,44 +86,44 @@ public class AddHotel {
 		phoneNumberTitle.setBounds(257, 185, 46, 14);
 		frame.getContentPane().add(phoneNumberTitle);
 		
-		JButton btnNewButton = new JButton("\u05D4\u05DE\u05E9\u05DA \u05DC\u05D4\u05D5\u05E1\u05E4\u05EA \u05E1\u05D5\u05D2\u05D9 \u05D7\u05D3\u05E8\u05D9\u05DD");
+		JButton btnNewButton = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05DE\u05DC\u05D5\u05DF");
 
 		btnNewButton.setBounds(93, 369, 184, 23);
 		frame.getContentPane().add(btnNewButton);
 		
 		hotelNameField = new JTextField();
-		hotelNameField.setBounds(125, 89, 86, 20);
+		hotelNameField.setBounds(150, 89, 86, 20);
 		frame.getContentPane().add(hotelNameField);
 		hotelNameField.setColumns(10);
 		
 		addressField = new JTextField();
-		addressField.setBounds(125, 137, 86, 20);
+		addressField.setBounds(150, 137, 86, 20);
 		frame.getContentPane().add(addressField);
 		addressField.setColumns(10);
 		
 		phoneField = new JTextField();
-		phoneField.setBounds(125, 182, 86, 20);
+		phoneField.setBounds(150, 182, 86, 20);
 		frame.getContentPane().add(phoneField);
 		phoneField.setColumns(10);
 		
 		nameError = new JLabel("");
-		nameError.setBounds(10, 92, 105, 14);
+		nameError.setBounds(0, 92, 140, 14);
 		nameError.setForeground(Color.red);
 		frame.getContentPane().add(nameError);
 		
 		addressError = new JLabel("");
-		addressError.setBounds(10, 140, 105, 14);
+		addressError.setBounds(0, 140, 140, 14);
 		addressError.setForeground(Color.red);
 		frame.getContentPane().add(addressError);
 		
 		phoneError = new JLabel("");
-		phoneError.setBounds(10, 185, 105, 14);
+		phoneError.setBounds(10, 185, 130, 14);
 		phoneError.setForeground(Color.red);
 		frame.getContentPane().add(phoneError);
 	//DISIGN ERROR
 		String s[] = new String[] {"1","2","3","4","5"};
 		JComboBox<String> comboBox = new JComboBox<String>(s);
-		comboBox.setBounds(144, 323, 50, 20);
+		comboBox.setBounds(164, 323, 50, 20);
 		frame.getContentPane().add(comboBox);
 		
 		lblNewLabel_1 = new JLabel("\u05E1\u05D9\u05E1\u05DE\u05D0 :");
@@ -136,21 +136,21 @@ public class AddHotel {
 		
 		mailField = new JTextField();
 		mailField.setColumns(10);
-		mailField.setBounds(125, 272, 86, 20);
+		mailField.setBounds(150, 272, 86, 20);
 		frame.getContentPane().add(mailField);
 		
 		passwordError = new JLabel("");
 		passwordError.setForeground(Color.RED);
-		passwordError.setBounds(10, 229, 105, 14);
+		passwordError.setBounds(10, 229, 130, 14);
 		frame.getContentPane().add(passwordError);
 		
 		mailError = new JLabel("");
 		mailError.setForeground(Color.RED);
-		mailError.setBounds(10, 275, 105, 14);
+		mailError.setBounds(10, 275, 130, 14);
 		frame.getContentPane().add(mailError);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(125, 226, 86, 20);
+		passwordField.setBounds(150, 226, 86, 20);
 		frame.getContentPane().add(passwordField);
 		
 		btnNewButton.addActionListener(new ActionListener() {
@@ -176,12 +176,15 @@ public class AddHotel {
 					mailError.setText("Email allready used");
 					flag = false;
 				}
-				System.out.println(flag);
+				
 				if(flag) {
 					hotelsDB.addHotel(new Hotel(hotelNameField.getText(), addressField.getText(), phoneField.getText(), String.valueOf(passwordField.getPassword()), mailField.getText(), comboBox.getSelectedIndex() + 1));
-					AddRoomType a = new AddRoomType(hotelsDB.hotels.get(hotelsDB.hotels.size() - 1));
-					a.addRoomTypeForm(hotelsDB.hotels.get(hotelsDB.hotels.size() - 1));
-					frame.dispose();
+					JOptionPane.showMessageDialog(null, hotelNameField.getText() + " hotel added");
+					hotelNameField.setText("");
+					addressField.setText("");
+					phoneField.setText("");
+					passwordField.setText("");
+					mailField.setText("");
 				}
 			}
 		});

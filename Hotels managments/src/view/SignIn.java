@@ -25,16 +25,69 @@ public class SignIn {
 	private JPasswordField passwordField;
 	private HotelRepo hotelist;
 	JButton signInBtn;
-	JLabel errorLabel;
-	
-	public void signInForm(UsersRepo c, JLabel j, Customer u, HotelRepo h) {
+	private JLabel errorLabel;
+	private JButton startInBtn;
+	private JButton startUpBtn;
+	private JButton startDisBtn;
+
+	public void signInForm(UsersRepo c, JLabel j, Customer u, HotelRepo h, JButton in, JButton up, JButton dis) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SignIn window = new SignIn(c, j, u, h);
+					SignIn window = new SignIn(c, j, u, h, in, up, dis);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
+				}
+			}
+		});
+	}
+	public SignIn(UsersRepo c, JLabel j, Customer user, HotelRepo h, JButton in, JButton up, JButton dis) {
+		startInBtn = in;
+		startUpBtn = up;
+		startDisBtn = dis;
+		hotelist = h;
+		customers = c;
+		wellcome = j;
+		setUI();
+//check valid user
+		signInBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(passwordField.getPassword().length > 0 && mailField.getText().length() > 0) {
+				//PROJECT MASTER
+					if(String.valueOf(passwordField.getPassword()).equals("alpha") && mailField.getText().equals("alpha")) {
+						AddHotel a = new AddHotel(hotelist, customers);
+						a.addHotelform(hotelist, customers);
+						frame.dispose();
+					}
+				//HOTEL MANAGER
+					else {
+						Hotel ho = hotelist.find(mailField.getText());
+						if(ho != null && ho.getPassword().equals(String.valueOf(passwordField.getPassword()))) {
+							EditHotel a = new EditHotel(ho);
+							a.editHotelForm(ho);
+							frame.dispose();
+						}
+						else {
+				//NORMAL USER
+							Customer temp = customers.find(mailField.getText());
+							if(temp == null) {
+								errorLabel.setText("no such an email of users!");
+							}
+							else if(!temp.getPass().equals(String.valueOf(passwordField.getPassword()))) {
+								errorLabel.setText("worng password");
+							}
+							else {
+								user.duplicate(temp.getFirstName(), temp.getLastName(), temp.getPhone(), temp.getEmail(), temp.getID(), temp.getGender(), temp.getPass(), temp.getDay(), temp.getMonth(), temp.getYear());
+								wellcome.setText("Hello again " + user.getFirstName());
+								wellcome.setForeground(Color.blue);
+								startDisBtn.setVisible(true);
+								startInBtn.setVisible(false);
+								startUpBtn.setVisible(false);
+								frame.dispose();
+							}
+						}
+					}
 				}
 			}
 		});
@@ -72,49 +125,5 @@ public class SignIn {
 		passwordField.setBounds(73, 112, 146, 26);
 		frame.getContentPane().add(passwordField);	
 	}
-	
-	public SignIn(UsersRepo c, JLabel j, Customer user, HotelRepo h) {
-		hotelist = h;
-		customers = c;
-		wellcome = j;
-		setUI();
-//check valid user
-		signInBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(passwordField.getPassword().length > 0 && mailField.getText().length() > 0) {
-				//PROJECT MASTER
-					if(String.valueOf(passwordField.getPassword()).equals("alpha") && mailField.getText().equals("alpha")) {
-						AddHotel a = new AddHotel(hotelist, customers);
-						a.addHotelform(hotelist, customers);
-						frame.dispose();
-					}
-				//HOTEL MANAGER
-					else {
-						Hotel ho = hotelist.find(mailField.getText());
-						if(ho != null && ho.getPassword().equals(String.valueOf(passwordField.getPassword()))) {
-							EditHotel a = new EditHotel(ho);
-							a.editHotelForm(ho);
-							frame.dispose();
-						}
-						else {
-				//NORMAL USER
-							Customer temp = customers.find(mailField.getText());
-							if(temp == null) {
-								errorLabel.setText("no such an email of users!");
-							}
-							else if(!temp.getPass().equals(String.valueOf(passwordField.getPassword()))) {
-								errorLabel.setText("worng password");
-							}
-							else {
-								user.duplicate(temp.getFirstName(), temp.getLastName(), temp.getPhone(), temp.getEmail(), temp.getID(), temp.getGender(), temp.getPass(), temp.getDay(), temp.getMonth(), temp.getYear());
-								wellcome.setText("Hello " + user.getFirstName());
-								wellcome.setForeground(Color.blue);
-								frame.dispose();
-							}
-						}
-					}
-				}
-			}
-		});
-	}
+
 }

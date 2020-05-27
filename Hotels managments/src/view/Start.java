@@ -19,7 +19,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.awt.event.ActionEvent;
-
+// TODO - DIVISIBLE & ABLE SHEN SIGNIN/SIGNUP
 public class Start {
 	private JFrame frame;
 	JButton signInBtn = new JButton("\u05D4\u05EA\u05D7\u05D1\u05E8\u05D5\u05EA");		
@@ -71,26 +71,39 @@ public class Start {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		signInBtn.setBounds(335, 11, 89, 23);
+		signInBtn.setBounds(314, 10, 110, 23);
 		frame.getContentPane().add(signInBtn);
 		
-		signUpBtn.setBounds(335, 45, 89, 23);
+		signUpBtn.setBounds(314, 43, 110, 23);
 		frame.getContentPane().add(signUpBtn);
 		
-		wellcome.setBounds(345, 100, 100, 100);
+		wellcome.setBounds(335, 107, 89, 44);
 		frame.getContentPane().add(wellcome);
+		
+		JButton disconnectBtn = new JButton("\u05D4\u05EA\u05E0\u05EA\u05E7");
+		disconnectBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				user.duplicate(null, null, null, null, null, false, null, 0, 0, 0);
+				wellcome.setText("Hello guest!");
+				signInBtn.setVisible(true);
+				signUpBtn.setVisible(true);
+			}
+		});
+		disconnectBtn.setBounds(314, 82, 110, 23);
+		disconnectBtn.setVisible(false);
+		frame.getContentPane().add(disconnectBtn);
 	//SIGN UP
 		signUpBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SignUp t = new SignUp(customers, hotelDB);
-				t.signUpForm(customers, hotelDB);
+				SignUp t = new SignUp(customers, hotelDB, wellcome, user, signInBtn, signUpBtn, disconnectBtn);
+				t.signUpForm(customers, hotelDB, wellcome, user, signInBtn, signUpBtn, disconnectBtn);
 			}
 		});
 	//SIGN IN
 		signInBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SignIn t = new SignIn(customers, wellcome, user, hotelDB);
-				t.signInForm(customers, wellcome, user, hotelDB);
+				SignIn t = new SignIn(customers, wellcome, user, hotelDB, signInBtn, signUpBtn, disconnectBtn);
+				t.signInForm(customers, wellcome, user, hotelDB, signInBtn, signUpBtn, disconnectBtn);
 			}
 		});
 	//ON CLOSE

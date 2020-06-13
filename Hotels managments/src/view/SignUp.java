@@ -164,38 +164,38 @@ public class SignUp {
 		frame.getContentPane().add(birthDayTitle);
 		
 		firstNameField = new JTextField();
-		firstNameField.setBounds(219, 92, 86, 20);
+		firstNameField.setBounds(198, 92, 107, 20);
 		firstNameField.setColumns(10);
 		frame.getContentPane().add(firstNameField);
 
 		lastNameField = new JTextField();
 		lastNameField.setColumns(10);
-		lastNameField.setBounds(219, 129, 86, 20);
+		lastNameField.setBounds(198, 129, 107, 20);
 		frame.getContentPane().add(lastNameField);
 		
 		phoneField = new JTextField();
 		phoneField.setColumns(10);
-		phoneField.setBounds(219, 165, 86, 20);
+		phoneField.setBounds(198, 165, 107, 20);
 		frame.getContentPane().add(phoneField);
 		
 		mailField = new JTextField();
 		mailField.setColumns(10);
-		mailField.setBounds(219, 201, 86, 20);
+		mailField.setBounds(198, 201, 107, 20);
 		frame.getContentPane().add(mailField);
 		
 		idField = new JTextField();
 		idField.setColumns(10);
-		idField.setBounds(219, 240, 86, 20);
+		idField.setBounds(198, 240, 107, 20);
 		frame.getContentPane().add(idField);
 		
 		passwordField = new JPasswordField();
 		passwordField.setBounds(219, 326, 86, 20);
 		frame.getContentPane().add(passwordField);
 		
-		maleRadio.setBounds(263, 284, 48, 23);
+		maleRadio.setBounds(252, 281, 82, 23);
 		frame.getContentPane().add(maleRadio);
 		
-		femaleRadio.setBounds(202, 283, 57, 23);
+		femaleRadio.setBounds(179, 281, 109, 23);
 		frame.getContentPane().add(femaleRadio);
 
 		femaleRadio.setSelected(true);
@@ -235,17 +235,17 @@ public class SignUp {
 		for(i=1;i<=120;i++)
 			yearField.addItem(Integer.toString(2021-i));
 		
-		yearField.setBounds(240, 365, 65, 20);
+		yearField.setBounds(229, 365, 76, 20);
 		frame.getContentPane().add(yearField);
 		
-		monthField.setBounds(153, 365, 75, 20);
+		monthField.setBounds(143, 366, 78, 20);
 		frame.getContentPane().add(monthField);
 		monthField.addItem("Month");
 		
 		for(i=1;i<=12;i++)
 			monthField.addItem(Integer.toString(i));
 		
-		dayField.setBounds(74, 365, 57, 20);
+		dayField.setBounds(45, 365, 86, 20);
 		frame.getContentPane().add(dayField);
 		
 		dayField.addItem("Day");

@@ -8,13 +8,23 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 public class UsersRepo {
+	
+	private static UsersRepo single_instance=null;
+	
+	
 	private String filename;
 	private HashMap<String, Customer> members;
 	
-	public UsersRepo(String filename) {
+	private UsersRepo(String filename) {
 		this.filename = filename;
 		loadData();
 		//setData();
+	}
+	
+	public static UsersRepo getInstance(String filename) {
+		if(single_instance==null)
+			single_instance=new UsersRepo(filename);
+		return single_instance;
 	}
 	
 	public void loadData() {

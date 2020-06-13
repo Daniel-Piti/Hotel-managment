@@ -29,6 +29,7 @@ public class Start {
 	JButton signUpBtn = new JButton("\u05D4\u05E8\u05E9\u05DE\u05D4");
 //CUSTOMER DB
 	public UsersRepo customers;
+
 //HELLO LABEL
 	public JLabel wellcome = new JLabel("Hello guest !");
 // LOGED USER
@@ -62,8 +63,8 @@ public class Start {
 	
 	public void loadAllData() {
 		user = new Customer(null, null, null, null, null, false, null, 0, 0, 0);
-		customers = new UsersRepo("Members/Customers.txt");
-		hotelDB = new HotelRepo("Hotels/hotels.txt");
+		customers=UsersRepo.getInstance("Members/Customers.txt");
+		hotelDB =HotelRepo.getInstance("Hotels/hotels.txt");
 		fixDays();
 		System.out.println("all data is set");
 	}
@@ -102,20 +103,20 @@ public class Start {
 
 	public void setUI() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 549, 382);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		signInBtn.setBounds(314, 10, 110, 23);
+		signInBtn.setBounds(410, 19, 110, 23);
 		frame.getContentPane().add(signInBtn);
 		btns.add(signInBtn);
 		
-		signUpBtn.setBounds(314, 43, 110, 23);
+		signUpBtn.setBounds(410, 72, 110, 23);
 		frame.getContentPane().add(signUpBtn);
 		btns.add(signUpBtn);
 		
 		labels.add(wellcome);
-		wellcome.setBounds(335, 107, 89, 44);
+		wellcome.setBounds(420, 153, 89, 44);
 		frame.getContentPane().add(wellcome);
 		
 		JButton disconnectBtn = new JButton("\u05D4\u05EA\u05E0\u05EA\u05E7");
@@ -127,7 +128,7 @@ public class Start {
 				signUpBtn.setVisible(true);
 			}
 		});
-		disconnectBtn.setBounds(314, 82, 110, 23);
+		disconnectBtn.setBounds(410, 129, 110, 23);
 		disconnectBtn.setVisible(false);
 		frame.getContentPane().add(disconnectBtn);
 		btns.add(disconnectBtn);
@@ -140,10 +141,10 @@ public class Start {
 		radioBtns.add(darkModeRadio);
 
 		lightMode.setSelected(true);
-		lightMode.setBounds(315, 163, 155, 29);
+		lightMode.setBounds(388, 209, 155, 29);
 		frame.getContentPane().add(lightMode);
 		
-		darkModeRadio.setBounds(314, 203, 155, 29);
+		darkModeRadio.setBounds(388, 273, 155, 29);
 		frame.getContentPane().add(darkModeRadio);
 		
 		lightMode.addActionListener(new ActionListener() {
@@ -235,5 +236,7 @@ public class Start {
 			panels.add(p[i]);
 			frame.getContentPane().add(p[i]);
 		}
+		
+		frame.getContentPane().remove(p[0]);
 	}
 }

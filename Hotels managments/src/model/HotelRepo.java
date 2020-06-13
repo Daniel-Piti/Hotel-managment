@@ -12,14 +12,20 @@ import java.util.Map.Entry;
 
 public class HotelRepo {
 
+	private static HotelRepo single_instance=null;
 	private String filename;
 	public List<Hotel> hotels;
 	
-	public HotelRepo(String filename) {
+	private HotelRepo(String filename) {
 		this.filename = filename;
 		hotels = null;
 		loadData();
 		//saveData();
+	}
+	public static HotelRepo getInstance(String filename) {
+		if(single_instance==null)
+			single_instance=new HotelRepo(filename);
+		return single_instance;
 	}
 	
 	public void fixHotelsDates(Date prev) {
@@ -77,6 +83,11 @@ public class HotelRepo {
 	public void addHotel(Hotel h) {
 		hotels.add(h);
 		System.out.println("HOTEL ADDED");
+		saveData();
+	}
+	public void removeHotel(Hotel h) {
+		hotels.remove(h);
+		System.out.println("HOTEL REMOVED");
 		saveData();
 	}
 	

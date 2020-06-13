@@ -139,7 +139,7 @@ public class AddHotel {
 		frame.getContentPane().add(phoneError);
 	//DISIGN ERROR
 		String s[] = new String[] {"1","2","3","4","5"};
-		JComboBox<String> comboBox = new JComboBox<String>(s);
+		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setBounds(164, 323, 50, 20);
 		frame.getContentPane().add(comboBox);
 		
@@ -169,6 +169,39 @@ public class AddHotel {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(150, 226, 86, 20);
 		frame.getContentPane().add(passwordField);
+		
+		JComboBox deleteHotelCombo = new JComboBox();
+		deleteHotelCombo.setBounds(44, 321, 52, 27);
+		frame.getContentPane().add(deleteHotelCombo);
+		
+		
+		JLabel deleteHotelLabel = new JLabel("מחק מלון");
+		deleteHotelLabel.setBounds(20, 293, 96, 16);
+		frame.getContentPane().add(deleteHotelLabel);
+		labels.add(deleteHotelLabel);
+		
+		for(int i=0;i<hotelsDB.hotels.size();i++) {
+			deleteHotelCombo.addItem(hotelsDB.hotels.get(i).getName());
+		}
+		
+		JButton deleteHotelbtn = new JButton("מחק");
+		deleteHotelbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Save your Previous Note First?","Warning",JOptionPane.YES_NO_OPTION);
+				if(dialogResult == JOptionPane.YES_OPTION){
+
+					hotelsDB.hotels.remove(deleteHotelCombo.getSelectedIndex());
+					deleteHotelCombo.removeItemAt(deleteHotelCombo.getSelectedIndex());
+				}
+			
+				
+			}
+		});
+		deleteHotelbtn.setBounds(6, 343, 117, 29);
+		frame.getContentPane().add(deleteHotelbtn);
+		btns.add(deleteHotelbtn);
+		
+
 		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

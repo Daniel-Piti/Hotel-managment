@@ -7,11 +7,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import model.Customer;
+import model.DarkMode;
 import model.Hotel;
 import model.HotelRepo;
 import model.UsersRepo;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
@@ -29,12 +31,17 @@ public class SignIn {
 	private JButton startInBtn;
 	private JButton startUpBtn;
 	private JButton startDisBtn;
+//BUTTONS
+	public ArrayList<JButton> btns = new ArrayList<JButton>();
+//JLABLES
+	public ArrayList<JLabel> labels = new ArrayList<JLabel>();
 
-	public void signInForm(UsersRepo c, JLabel j, Customer u, HotelRepo h, JButton in, JButton up, JButton dis) {
+	
+	public void signInForm(UsersRepo c, JLabel j, Customer u, HotelRepo h, JButton in, JButton up, JButton dis, int darkFlag) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SignIn window = new SignIn(c, j, u, h, in, up, dis);
+					SignIn window = new SignIn(c, j, u, h, in, up, dis, darkFlag);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,7 +49,7 @@ public class SignIn {
 			}
 		});
 	}
-	public SignIn(UsersRepo c, JLabel j, Customer user, HotelRepo h, JButton in, JButton up, JButton dis) {
+	public SignIn(UsersRepo c, JLabel j, Customer user, HotelRepo h, JButton in, JButton up, JButton dis, int dark) {
 		startInBtn = in;
 		startUpBtn = up;
 		startDisBtn = dis;
@@ -50,22 +57,28 @@ public class SignIn {
 		customers = c;
 		wellcome = j;
 		setUI();
+		DarkMode d = new DarkMode();
+		if(dark == 0) {
+			d.setLightMode(frame, labels, btns, null, null);
+		}else {
+			d.setDarkMode(frame, labels, btns, null, null);
+		}
 //check valid user
 		signInBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(passwordField.getPassword().length > 0 && mailField.getText().length() > 0) {
 				//PROJECT MASTER
 					if(String.valueOf(passwordField.getPassword()).equals("alpha") && mailField.getText().equals("alpha")) {
-						AddHotel a = new AddHotel(hotelist, customers);
-						a.addHotelform(hotelist, customers);
+						AddHotel a = new AddHotel(hotelist, customers, dark);
+						a.addHotelform(hotelist, customers, dark);
 						frame.dispose();
 					}
 				//HOTEL MANAGER
 					else {
 						Hotel ho = hotelist.find(mailField.getText());
 						if(ho != null && ho.getPassword().equals(String.valueOf(passwordField.getPassword()))) {
-							EditHotel a = new EditHotel(ho);
-							a.editHotelForm(ho);
+							EditHotel a = new EditHotel(ho, dark);
+							a.editHotelForm(ho, dark);
 							frame.dispose();
 						}
 						else {
@@ -102,10 +115,12 @@ public class SignIn {
 		JLabel mailTitle = new JLabel("\u05DE\u05D9\u05D9\u05DC :");
 		mailTitle.setBounds(301, 47, 69, 20);
 		frame.getContentPane().add(mailTitle);
+		labels.add(mailTitle);
 		
 		JLabel passwordTitle = new JLabel("\u05E1\u05D9\u05E1\u05DE\u05D0 :");
 		passwordTitle.setBounds(301, 115, 69, 20);
 		frame.getContentPane().add(passwordTitle);
+		labels.add(passwordTitle);
 		
 		mailField = new JTextField();
 		mailField.setBounds(73, 44, 146, 26);
@@ -120,6 +135,7 @@ public class SignIn {
 
 		signInBtn.setBounds(73, 174, 146, 29);
 		frame.getContentPane().add(signInBtn);
+		btns.add(signInBtn);
 		
 		passwordField = new JPasswordField();
 		passwordField.setBounds(73, 112, 146, 26);

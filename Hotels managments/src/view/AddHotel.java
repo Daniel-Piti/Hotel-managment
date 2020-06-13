@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
+import model.DarkMode;
 import model.Hotel;
 import model.HotelRepo;
 import model.UsersRepo;
@@ -16,6 +17,7 @@ import model.Validation;
 
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
@@ -38,14 +40,18 @@ public class AddHotel {
 	private JLabel passwordError;
 	private JLabel mailError;
 	private JPasswordField passwordField;
+	//BUTTONS
+		public ArrayList<JButton> btns = new ArrayList<JButton>();
+	//JLABLES
+		public ArrayList<JLabel> labels = new ArrayList<JLabel>();
 	/**
 	 * Launch the application.
 	 */
-	public static void addHotelform(HotelRepo h, UsersRepo c) {
+	public void addHotelform(HotelRepo h, UsersRepo c, int dark) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddHotel window = new AddHotel(h, c);
+					AddHotel window = new AddHotel(h, c, dark);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,10 +60,15 @@ public class AddHotel {
 		});
 	}
 
-	public AddHotel(HotelRepo h, UsersRepo c) {
+	public AddHotel(HotelRepo h, UsersRepo c, int dark) {
 		hotelsDB = h;
 		users = c;
 		initialize();
+		DarkMode d = new DarkMode();
+		if(dark == 0)
+			d.setLightMode(frame, labels, btns, null, null);
+		else
+			d.setDarkMode(frame, labels, btns, null, null);
 	}
 
 	private void initialize() {
@@ -69,25 +80,31 @@ public class AddHotel {
 		JLabel lblNewLabel = new JLabel("\u05D4\u05D5\u05E1\u05E4\u05EA \u05DE\u05DC\u05D5\u05DF :");
 		lblNewLabel.setBounds(162, 29, 74, 14);
 		frame.getContentPane().add(lblNewLabel);
+		labels.add(lblNewLabel);
 		
 		JLabel hotelNameTitle = new JLabel("\u05E9\u05DD \u05D4\u05DE\u05DC\u05D5\u05DF :");
 		hotelNameTitle.setBounds(257, 92, 80, 14);
 		frame.getContentPane().add(hotelNameTitle);
+		labels.add(hotelNameTitle);
 		
 		JLabel addressTitle = new JLabel("\u05DB\u05EA\u05D5\u05D1\u05EA :");
 		addressTitle.setBounds(257, 140, 46, 14);
 		frame.getContentPane().add(addressTitle);
+		labels.add(addressTitle);
 		
 		JLabel starsTitle = new JLabel("\u05DE\u05E1\u05E4\u05E8 \u05DB\u05D5\u05DB\u05D1\u05D9\u05DD :");
 		starsTitle.setBounds(257, 326, 96, 14);
 		frame.getContentPane().add(starsTitle);
+		labels.add(starsTitle);
 		
 		JLabel phoneNumberTitle = new JLabel("\u05D8\u05DC\u05E4\u05D5\u05DF :");
 		phoneNumberTitle.setBounds(257, 185, 46, 14);
 		frame.getContentPane().add(phoneNumberTitle);
+		labels.add(phoneNumberTitle);
 		
 		JButton btnNewButton = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05DE\u05DC\u05D5\u05DF");
-
+		btns.add(btnNewButton);
+		
 		btnNewButton.setBounds(93, 369, 184, 23);
 		frame.getContentPane().add(btnNewButton);
 		

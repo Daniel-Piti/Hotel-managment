@@ -4,8 +4,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import model.Customer;
+import model.DarkMode;
 import model.HotelRepo;
 import model.UsersRepo;
 import model.Validation;
@@ -13,10 +15,18 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 
 public class SignUp {
+//BUTTONS
+	public ArrayList<JButton> btns = new ArrayList<JButton>();
+//JLABLES	
+	public ArrayList<JLabel> labels = new ArrayList<JLabel>();
+//RADIO BTNS
+	public ArrayList<JRadioButton> radioBtns = new ArrayList<JRadioButton>();
+
 	private JFrame frame;
 	private JTextField firstNameField;
 	private JTextField lastNameField;
@@ -27,7 +37,7 @@ public class SignUp {
 	
 	private JRadioButton maleRadio = new JRadioButton("\u05D6\u05DB\u05E8");
 	private JRadioButton femaleRadio = new JRadioButton("\u05E0\u05E7\u05D1\u05D4");
-
+	
 	private JLabel firstNameLabel = new JLabel("");
 	private JLabel LastNameLabel = new JLabel("");
 	private JLabel phoneNumberLabel = new JLabel("");
@@ -49,12 +59,13 @@ public class SignUp {
 	private JButton startIn;
 	private JButton startUp;
 	private JButton startDis;
-	
-	public void signUpForm(UsersRepo c, HotelRepo h, JLabel j, Customer u, JButton in, JButton up, JButton dis) {
+
+	public ArrayList<JPanel> panels = new ArrayList<JPanel>();
+	public void signUpForm(UsersRepo c, HotelRepo h, JLabel j, Customer u, JButton in, JButton up, JButton dis, int dark) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SignUp window = new SignUp(c, h, j, u, in, up, dis);
+					SignUp window = new SignUp(c, h, j, u, in, up, dis, dark);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -63,7 +74,7 @@ public class SignUp {
 		});
 	}
 
-	public SignUp(UsersRepo c, HotelRepo h, JLabel j, Customer u, JButton in, JButton up, JButton dis) {
+	public SignUp(UsersRepo c, HotelRepo h, JLabel j, Customer u, JButton in, JButton up, JButton dis, int dark) {
 		startDis = dis;
 		startIn = in;
 		startUp = up;
@@ -72,6 +83,11 @@ public class SignUp {
 		customers = c;
 		user = u;
 		setUI();
+		DarkMode d = new DarkMode();
+		if(dark == 0) 
+			d.setLightMode(frame, labels, btns, radioBtns, null);
+		else
+			d.setDarkMode(frame, labels, btns, radioBtns, null);
 		btnsEvents();
 	}
   
@@ -99,6 +115,22 @@ public class SignUp {
     	JLabel passwordTitle = new JLabel("\u05E1\u05D9\u05E1\u05DE\u05D0 :");
     	JLabel birthDayTitle = new JLabel("\u05EA\u05D0\u05E8\u05D9\u05DA \u05DC\u05D9\u05D3\u05D4 :");
 
+    	labels.add(signUpTitle);
+    	labels.add(firstNameTitle);
+    	labels.add(lastNameTitle);
+    	labels.add(phoneTitle);
+    	labels.add(idTitle);
+    	labels.add(mailTitle);
+    	labels.add(idTitle);
+    	labels.add(genderTitle);
+    	labels.add(passwordTitle);
+    	labels.add(birthDayTitle);
+    	
+    	btns.add(signUpBtn);
+    	
+    	radioBtns.add(femaleRadio);
+    	radioBtns.add(maleRadio);
+    	
     	frame = new JFrame();
 		frame.setBounds(100, 100, 452, 585);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

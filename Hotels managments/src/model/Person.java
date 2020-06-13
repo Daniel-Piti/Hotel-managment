@@ -3,7 +3,8 @@ package model;
 import java.io.Serializable;
 
 public abstract class Person implements Serializable {
-	
+	private static final long serialVersionUID = 1L;
+
 	protected  String firstName;
 	protected String lastName;
 	protected String phoneNumber;

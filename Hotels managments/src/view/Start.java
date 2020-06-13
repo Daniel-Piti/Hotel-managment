@@ -9,16 +9,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.Customer;
-import model.Hotel;
+import model.DarkMode;
 import model.HotelRepo;
-import model.MyDate;
 import model.UsersRepo;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.awt.event.ActionEvent;
+import javax.swing.JRadioButton;
 // TODO - DIVISIBLE & ABLE SHEN SIGNIN/SIGNUP
 public class Start {
 	private JFrame frame;
@@ -30,11 +33,20 @@ public class Start {
 	public JLabel wellcome = new JLabel("Hello guest !");
 // LOGED USER
 	public Customer user;
-//PREV DATE
-	public MyDate prevDate = new MyDate(0, 0, 0);
 //HOTELS REPO
 	public HotelRepo hotelDB;
-
+//DARK MODE
+	public int darkFlag = 0;
+//BUTTONS
+	public ArrayList<JButton> btns = new ArrayList<JButton>();
+//JLABLES
+	public ArrayList<JLabel> labels = new ArrayList<JLabel>();
+//RADIO BTNS
+	public ArrayList<JRadioButton> radioBtns = new ArrayList<JRadioButton>();
+//PANELS
+	public ArrayList<JPanel> panels = new ArrayList<JPanel>();
+	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -52,18 +64,40 @@ public class Start {
 		user = new Customer(null, null, null, null, null, false, null, 0, 0, 0);
 		customers = new UsersRepo("Members/Customers.txt");
 		hotelDB = new HotelRepo("Hotels/hotels.txt");
-		LocalDateTime now = LocalDateTime.now();
-		prevDate.loadPrevDate();
-		int diff = prevDate.getDaysDiff(new MyDate(now.getDayOfMonth(), now.getMonthValue(), now.getYear()));
-		hotelDB.fixHotelsDates(diff);
-
+		fixDays();
 		System.out.println("all data is set");
+	}
+	
+	public void fixDays() {
+		LocalDateTime now = LocalDateTime.now();
+		int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
+		Date d = null;
+		String dateStr = String.valueOf(now.getDayOfMonth()) +'/'+String.valueOf(now.getMonthValue())+'/'+String.valueOf(now.getYear());
+		SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yy");
+		try {
+			d= dateFormat.parse(dateStr);
+		}
+	    catch(Exception e){
+	    	e.printStackTrace();
+	    }
+		String previousDate = dateFormat.format(d.getTime() - MILLIS_IN_DAY);
+		
+		Date prev = null;
+		try{
+			prev = dateFormat.parse(previousDate);
+	    }
+	    catch(Exception e) {
+	    	e.printStackTrace();
+	    }
+		hotelDB.fixHotelsDates(prev);
 	}
 	
 	public Start() {
 		loadAllData();
 		setUI();
 		setHotelList();//HOTEL PANELS MANAGMENTS
+		DarkMode d = new DarkMode();
+		d.setLightMode(frame, labels, btns, radioBtns, panels);
 	}
 
 	public void setUI() {
@@ -71,12 +105,16 @@ public class Start {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
 		signInBtn.setBounds(314, 10, 110, 23);
 		frame.getContentPane().add(signInBtn);
+		btns.add(signInBtn);
 		
 		signUpBtn.setBounds(314, 43, 110, 23);
 		frame.getContentPane().add(signUpBtn);
+		btns.add(signUpBtn);
 		
+		labels.add(wellcome);
 		wellcome.setBounds(335, 107, 89, 44);
 		frame.getContentPane().add(wellcome);
 		
@@ -92,18 +130,59 @@ public class Start {
 		disconnectBtn.setBounds(314, 82, 110, 23);
 		disconnectBtn.setVisible(false);
 		frame.getContentPane().add(disconnectBtn);
+		btns.add(disconnectBtn);
+		
+		
+		JRadioButton darkModeRadio = new JRadioButton("Dark mode");		
+		JRadioButton lightMode = new JRadioButton("Light mode");
+		
+		radioBtns.add(lightMode);
+		radioBtns.add(darkModeRadio);
+
+		lightMode.setSelected(true);
+		lightMode.setBounds(315, 163, 155, 29);
+		frame.getContentPane().add(lightMode);
+		
+		darkModeRadio.setBounds(314, 203, 155, 29);
+		frame.getContentPane().add(darkModeRadio);
+		
+		lightMode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(darkFlag == 1) {
+					DarkMode d = new DarkMode();
+					d.setLightMode(frame, labels, btns, radioBtns, panels);
+					darkModeRadio.setSelected(false);
+					lightMode.setSelected(true);
+					darkFlag = 0;
+				}
+				lightMode.setSelected(true);
+			}
+		});
+		
+		darkModeRadio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(darkFlag == 0) {
+					DarkMode d = new DarkMode();
+					d.setDarkMode(frame, labels, btns, radioBtns, panels);
+					darkModeRadio.setSelected(true);
+					lightMode.setSelected(false);
+					darkFlag = 1;
+				}
+				darkModeRadio.setSelected(true);
+			}
+		});
 	//SIGN UP
 		signUpBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SignUp t = new SignUp(customers, hotelDB, wellcome, user, signInBtn, signUpBtn, disconnectBtn);
-				t.signUpForm(customers, hotelDB, wellcome, user, signInBtn, signUpBtn, disconnectBtn);
+				SignUp t = new SignUp(customers, hotelDB, wellcome, user, signInBtn, signUpBtn, disconnectBtn, darkFlag);
+				t.signUpForm(customers, hotelDB, wellcome, user, signInBtn, signUpBtn, disconnectBtn, darkFlag);
 			}
 		});
 	//SIGN IN
 		signInBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SignIn t = new SignIn(customers, wellcome, user, hotelDB, signInBtn, signUpBtn, disconnectBtn);
-				t.signInForm(customers, wellcome, user, hotelDB, signInBtn, signUpBtn, disconnectBtn);
+				SignIn t = new SignIn(customers, wellcome, user, hotelDB, signInBtn, signUpBtn, disconnectBtn, darkFlag);
+				t.signInForm(customers, wellcome, user, hotelDB, signInBtn, signUpBtn, disconnectBtn, darkFlag);
 			}
 		});
 	//ON CLOSE
@@ -112,7 +191,6 @@ public class Start {
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				hotelDB.saveData();
 				customers.setData();
-				prevDate.saveCurDate();
 		    }
 		});
 	}
@@ -131,26 +209,31 @@ public class Start {
 		};
 		
 		int i, counter = hotelDB.hotels.size();
-		JPanel[] panels = new JPanel[counter];//HOTEL COUNTER
+		JPanel[] p = new JPanel[counter];//HOTEL COUNTER
 		JLabel[] lbs = new JLabel[counter];
-		JButton[] btns = new JButton[counter];
+		JButton[] b = new JButton[counter];
 		for(i = 0; i < counter; i++) {//change to hotelDB
-			panels[i] = new JPanel();
-			btns[i] = new JButton("Order now!");
+			
+			p[i] = new JPanel();
+			b[i] = new JButton("Order now!");
 			lbs[i]=new JLabel(hotelDB.hotels.get(i).toString());//hotel name
 			
-		    btns[i].addActionListener(listener);
-		    btns[i].setName(String.valueOf(i));
+			
+		    b[i].addActionListener(listener);
+		    b[i].setName(String.valueOf(i));
 		    
 		    lbs[i].setPreferredSize(new Dimension(200, 50));
-		    btns[i].setPreferredSize(new Dimension(150, 30));
-		    
-		    panels[i].setBounds(10, i*(110 + 10) + 10, 250, 110);
-			panels[i].setBorder(BorderFactory.createLineBorder(Color.black));
+		    b[i].setPreferredSize(new Dimension(150, 30));
 
-			panels[i].add(lbs[i]);
-			panels[i].add(btns[i]);
-			frame.getContentPane().add(panels[i]);
+		    p[i].setBounds(10, i*(110 + 10) + 10, 250, 110);
+			p[i].setBorder(BorderFactory.createLineBorder(Color.black));
+
+			p[i].add(lbs[i]);
+			p[i].add(b[i]);
+			btns.add(b[i]);
+			labels.add(lbs[i]);
+			panels.add(p[i]);
+			frame.getContentPane().add(p[i]);
 		}
 	}
 }

@@ -1,16 +1,19 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RoomType implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	public String typeName;
 	public int capacity;
 	public double price;
 	public double size;
 	public int amount;
-	public List<Integer> calender;
+	public Map<Date, Integer> calender;
 	
 	public RoomType(String typeName, int capacity, double price, double size, int amount) {
 		this.typeName = typeName;
@@ -18,8 +21,6 @@ public class RoomType implements Serializable {
 		this.price = price;
 		this.size = size;
 		this.amount = amount;
-		calender = new ArrayList<Integer>();
-		for(int i = 0; i < 7; i++)//7 -> week
-			calender.add(amount);
+		calender = new HashMap<Date, Integer>();
 	}
 }

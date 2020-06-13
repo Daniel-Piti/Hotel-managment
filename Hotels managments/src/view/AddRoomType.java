@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import model.DarkMode;
 import model.Hotel;
 import model.Validation;
 
@@ -15,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class AddRoomType {
@@ -34,12 +36,17 @@ public class AddRoomType {
 	private JTextField typeNameField;
 	private JLabel hotelname = new JLabel("");
 	private JComboBox<String> roomTypes;
-	
-	public static void addRoomTypeForm(Hotel h, JComboBox<String> r) {
+
+//BUTTONS
+	public ArrayList<JButton> btns = new ArrayList<JButton>();
+//JLABLES
+	public ArrayList<JLabel> labels = new ArrayList<JLabel>();
+		
+	public void addRoomTypeForm(Hotel h, JComboBox<String> r, int dark) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddRoomType window = new AddRoomType(h, r);
+					AddRoomType window = new AddRoomType(h, r, dark);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,11 +55,17 @@ public class AddRoomType {
 		});
 	}
 
-	public AddRoomType(Hotel h, JComboBox<String> r) {
+	public AddRoomType(Hotel h, JComboBox<String> r, int dark) {
 		roomTypes = r;
 		hotelname.setText(h.getName());
+		labels.add(hotelname);
 		hotel = h;
 		setUI();
+		DarkMode d = new DarkMode();
+		if(dark == 0)
+			d.setLightMode(frame, labels, btns, null, null);
+		else
+			d.setDarkMode(frame, labels, btns, null, null);
 	}
 
 	public void setUI() {
@@ -64,22 +77,27 @@ public class AddRoomType {
 		JLabel lblNewLabel = new JLabel("\u05D4\u05D5\u05E1\u05E4\u05EA \u05E1\u05D5\u05D2 \u05D7\u05D3\u05E8 :");
 		lblNewLabel.setBounds(108, 11, 126, 14);
 		frame.getContentPane().add(lblNewLabel);
+		labels.add(lblNewLabel);
 		
 		JLabel capacityTitle = new JLabel("\u05DB\u05DE\u05D5\u05EA \u05D0\u05E0\u05E9\u05D9\u05DD :");
 		capacityTitle.setBounds(177, 118, 75, 14);
 		frame.getContentPane().add(capacityTitle);
+		labels.add(capacityTitle);
 		
 		JLabel priceTitle = new JLabel("\u05DE\u05D7\u05D9\u05E8 \u05DC\u05DC\u05D9\u05DC\u05D4 :");
 		priceTitle.setBounds(177, 172, 75, 14);
 		frame.getContentPane().add(priceTitle);
+		labels.add(priceTitle);
 		
 		JLabel roomSizeTitle = new JLabel("\u05D2\u05D5\u05D3\u05DC \u05D7\u05D3\u05E8 :");
 		roomSizeTitle.setBounds(176, 234, 75, 14);
 		frame.getContentPane().add(roomSizeTitle);
+		labels.add(roomSizeTitle);
 		
 		JLabel amountTitle = new JLabel("\u05DB\u05DE\u05D5\u05EA \u05D7\u05D3\u05E8\u05D9\u05DD \u05DE\u05D0\u05D5\u05EA\u05D5 \u05E1\u05D5\u05D2 :");
 		amountTitle.setBounds(173, 293, 136, 14);
 		frame.getContentPane().add(amountTitle);
+		labels.add(amountTitle);
 		
 		capacityField = new JTextField();
 		capacityField.setBounds(45, 117, 86, 20);
@@ -101,6 +119,7 @@ public class AddRoomType {
 		amountFIeld.setBounds(45, 290, 86, 20);
 		frame.getContentPane().add(amountFIeld);
 		JButton addBtn = new JButton("\u05D4\u05D5\u05E1\u05E4 \u05E1\u05D5\u05D2 \u05D7\u05D3\u05E8");
+		btns.add(addBtn);
 		addBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				testFields();
@@ -133,6 +152,7 @@ public class AddRoomType {
 		JLabel typeName = new JLabel("\u05E9\u05DD \u05D4\u05E1\u05D5\u05D2 :");
 		typeName.setBounds(177, 66, 116, 14);
 		frame.getContentPane().add(typeName);
+		labels.add(typeName);
 		
 		typeNameError = new JLabel("");
 		typeNameError.setBounds(45, 92, 156, 14);

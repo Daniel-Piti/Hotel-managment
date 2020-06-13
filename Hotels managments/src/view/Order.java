@@ -22,7 +22,7 @@ public class Order {
 			}
 		});
 	}
-
+	
 	public Order(Hotel h) {
 		hotel = h;
 		System.out.println(hotel.toString());

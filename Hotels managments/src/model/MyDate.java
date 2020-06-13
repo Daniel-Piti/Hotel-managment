@@ -9,11 +9,12 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class MyDate implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	public int day;
 	public int month;
 	public int year;

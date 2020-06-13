@@ -5,8 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry; 
 
 public class HotelRepo {
 
@@ -20,16 +22,30 @@ public class HotelRepo {
 		//saveData();
 	}
 	
-	public void fixHotelsDates(int diff) {
-		if(diff > 0)
-			for(int i = 0; i < hotels.size(); i++) {
-				for(int j = 0; j < hotels.get(i).roomTypes.size(); j++)
-					for(int k = 0; k < diff; k++) {
-						hotels.get(i).roomTypes.get(j).calender.remove(0);
-						hotels.get(i).roomTypes.get(j).calender.add(hotels.get(i).roomTypes.get(j).amount);
-					}
+	public void fixHotelsDates(Date prev) {
+		int i, j;
+//	ADD NEW DATE
+//		try{
+//			hotels.get(0).roomTypes.get(0).calender.put(new SimpleDateFormat("yyyy-MM-dd").parse("2018-09-09"), 2);
+//		}catch (Exception e) {
+//			System.out.println("shit");
+//		}
+
+
+		for(i = 0; i< hotels.size(); i++)
+			for(j = 0; j< hotels.get(i).roomTypes.size(); j++)
+			{
+				for(Iterator<Entry<Date, Integer>> it = hotels.get(i).roomTypes.get(j).calender.entrySet().iterator(); it.hasNext(); ) {
+				    Entry<Date, Integer> entry = it.next();
+				    System.out.println(entry.getKey());
+				    if(entry.getKey().before(prev)) {
+				        it.remove();
+
+				    }
 			}
-	}
+		}
+		System.out.println("unnseesery data deleted");
+}
 	
 	public void loadData() {
 		try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))){
@@ -43,7 +59,7 @@ public class HotelRepo {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public boolean emailUsed(String email) {
 		for(int i = 0; i < hotels.size(); i++)
 			if(email.equals(hotels.get(i).getMail()))
@@ -70,9 +86,9 @@ public class HotelRepo {
 //			hotels = new ArrayList<Hotel>();
 //			
 //			hotels.add(new Hotel("#hotelName", "#address", "#phoneNumber", "#pass", "#mail", 5));
-//			
-//			hotels.get(0).addRoomType("one", 2, 2, 2, 2);
-
+//
+//			hotels.get(0).addRoomType("21", 2, 32, 2, 3);
+			
 			out.writeObject(hotels);
 			System.out.println("HOTELS DATA SAVED!");
 		}catch(IOException e) {

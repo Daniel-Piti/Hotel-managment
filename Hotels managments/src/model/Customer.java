@@ -3,7 +3,8 @@ package model;
 import java.io.Serializable;
 
 public class Customer extends Person implements Serializable {
-	
+	private static final long serialVersionUID = 1L;
+
 	public Customer(String firstName, String lastName, String phoneNumber,
 			String mail, String ID, boolean gender,
 			String password, int d, int m, int y) {

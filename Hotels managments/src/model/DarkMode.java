@@ -28,8 +28,10 @@ public class DarkMode {
 				radios.get(i).setForeground(Color.white);
 			}
 		if(panels!=null)
-			for(i = 0; i < panels.size(); i++) 
+			for(i = 0; i < panels.size(); i++) {
 				panels.get(i).setBackground(Color.darkGray);
+				panels.get(i).setBorder(new LineBorder(Color.white, 1, false));
+			}
 			
 		frame.getContentPane().setBackground(Color.darkGray);
 	}
@@ -52,8 +54,10 @@ public class DarkMode {
 				radios.get(i).setForeground(Color.darkGray);
 			}
 		if(panels!=null)
-			for(i = 0; i < panels.size(); i++) 
+			for(i = 0; i < panels.size(); i++) {
 				panels.get(i).setBackground(Color.white);
+				panels.get(i).setBorder(new LineBorder(Color.darkGray, 1, false));	
+			}
 			
 		frame.getContentPane().setBackground(Color.white);
 	}

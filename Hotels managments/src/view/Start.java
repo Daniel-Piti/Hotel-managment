@@ -203,8 +203,8 @@ public class Start {
 		    public void actionPerformed(ActionEvent e) {
 				if (e.getSource() instanceof JButton) {
 					int index = Integer.parseInt(((JButton) e.getSource()).getName());
-		            Order t = new Order(hotelDB.hotels.get(index));
-		            t.orderForm(hotelDB.hotels.get(index));
+		            Order t = new Order(hotelDB.hotels.get(index), darkFlag);
+		            t.orderForm(hotelDB.hotels.get(index), darkFlag);
 		        }
 			}
 		};
@@ -223,10 +223,10 @@ public class Start {
 		    b[i].addActionListener(listener);
 		    b[i].setName(String.valueOf(i));
 		    
-		    lbs[i].setPreferredSize(new Dimension(200, 50));
+		    lbs[i].setPreferredSize(new Dimension(200, 80));
 		    b[i].setPreferredSize(new Dimension(150, 30));
 
-		    p[i].setBounds(10, i*(110 + 10) + 10, 250, 110);
+		    p[i].setBounds(10, i*(140 + 10) + 10, 280, 140);
 			p[i].setBorder(BorderFactory.createLineBorder(Color.black));
 
 			p[i].add(lbs[i]);
@@ -236,7 +236,5 @@ public class Start {
 			panels.add(p[i]);
 			frame.getContentPane().add(p[i]);
 		}
-		
-		frame.getContentPane().remove(p[0]);
 	}
 }

@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
@@ -40,13 +41,15 @@ public class AddHotel {
 	private JLabel passwordError;
 	private JLabel mailError;
 	private JPasswordField passwordField;
+	private JComboBox<String> deleteHotelCombo;
 	//BUTTONS
 		public ArrayList<JButton> btns = new ArrayList<JButton>();
+		
 	//JLABLES
 		public ArrayList<JLabel> labels = new ArrayList<JLabel>();
-	/**
-	 * Launch the application.
-	 */
+		
+	 // Launch the application.
+
 	public void addHotelform(HotelRepo h, UsersRepo c, int dark) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -73,7 +76,7 @@ public class AddHotel {
 
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 407, 442);
+		frame.setBounds(100, 100, 650, 442);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -139,7 +142,7 @@ public class AddHotel {
 		frame.getContentPane().add(phoneError);
 	//DISIGN ERROR
 		String s[] = new String[] {"1","2","3","4","5"};
-		JComboBox<String> comboBox = new JComboBox<String>();
+		JComboBox<String> comboBox = new JComboBox<String>(s);
 		comboBox.setBounds(164, 323, 50, 20);
 		frame.getContentPane().add(comboBox);
 		
@@ -170,38 +173,34 @@ public class AddHotel {
 		passwordField.setBounds(150, 226, 86, 20);
 		frame.getContentPane().add(passwordField);
 		
-		JComboBox deleteHotelCombo = new JComboBox();
-		deleteHotelCombo.setBounds(44, 321, 52, 27);
+		deleteHotelCombo = new JComboBox();
+		deleteHotelCombo.setBounds(420,76,100,27);
 		frame.getContentPane().add(deleteHotelCombo);
 		
 		
-		JLabel deleteHotelLabel = new JLabel("מחק מלון");
-		deleteHotelLabel.setBounds(20, 293, 96, 16);
+		JLabel deleteHotelLabel = new JLabel("\u05DE\u05D7\u05E7 \u05DE\u05DC\u05D5\u05DF :");
+		deleteHotelLabel.setBounds(444,42,96,16);
 		frame.getContentPane().add(deleteHotelLabel);
 		labels.add(deleteHotelLabel);
 		
-		for(int i=0;i<hotelsDB.hotels.size();i++) {
+		for(int i=0;i<hotelsDB.hotels.size();i++)
 			deleteHotelCombo.addItem(hotelsDB.hotels.get(i).getName());
-		}
 		
-		JButton deleteHotelbtn = new JButton("מחק");
+		JButton deleteHotelbtn = new JButton("save");
 		deleteHotelbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Save your Previous Note First?","Warning",JOptionPane.YES_NO_OPTION);
-				if(dialogResult == JOptionPane.YES_OPTION){
-
-					hotelsDB.hotels.remove(deleteHotelCombo.getSelectedIndex());
-					deleteHotelCombo.removeItemAt(deleteHotelCombo.getSelectedIndex());
+				if(deleteHotelCombo.getItemCount() > 0) {
+					int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to delete the hotel ?","Warning",JOptionPane.YES_NO_OPTION);
+					if(dialogResult == JOptionPane.YES_OPTION){
+						hotelsDB.hotels.remove(deleteHotelCombo.getSelectedIndex());
+						deleteHotelCombo.removeItemAt(deleteHotelCombo.getSelectedIndex());
+					}
 				}
-			
-				
 			}
 		});
-		deleteHotelbtn.setBounds(6, 343, 117, 29);
+		deleteHotelbtn.setBounds(412,133,117,29);
 		frame.getContentPane().add(deleteHotelbtn);
 		btns.add(deleteHotelbtn);
-		
-
 		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -229,6 +228,7 @@ public class AddHotel {
 				
 				if(flag) {
 					hotelsDB.addHotel(new Hotel(hotelNameField.getText(), addressField.getText(), phoneField.getText(), String.valueOf(passwordField.getPassword()), mailField.getText(), comboBox.getSelectedIndex() + 1));
+					deleteHotelCombo.addItem(hotelNameField.getText());
 					JOptionPane.showMessageDialog(null, hotelNameField.getText() + " hotel added");
 					hotelNameField.setText("");
 					addressField.setText("");

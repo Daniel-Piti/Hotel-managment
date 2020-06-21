@@ -2,32 +2,28 @@ package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
-import javax.swing.JFrame;
-
-import model.DarkMode;
-import model.Hotel;
-import model.Validation;
-
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+import controller.OrderController;
+import model.DarkMode;
+import model.Hotel;
 
 public class Order {
-
+	private OrderController orderController;
 	private JFrame frame;
-	private Hotel hotel;
 	private JTextField cardNameField;
 	private JTextField cvcField;
-	private int darkMode;
 	private JLabel startDate;
 	private JLabel endDate;
 	private JComboBox<String> startYear;
@@ -47,36 +43,39 @@ public class Order {
 	private JComboBox<String> cardMonth;
 	private JLabel startDateError;
 	private JLabel endDateError;
-	private JButton checkBtn;
+	private JButton orderNow;
 	private JLabel roomTypeError;
+	private JLabel cardError;
 	
 	//BUTTONS
 		public ArrayList<JButton> btns = new ArrayList<JButton>();
 	//JLABLES
 		public ArrayList<JLabel> labels = new ArrayList<JLabel>();
 		private JLabel checkError;
-		
-	public void orderForm(Hotel h, int dark) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Order window = new Order(h, dark);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		private JLabel lblNewLabel;
+		private JLabel totalPrice;
+		private JButton priceBtn;
+
+//Launch the application.
+	public void runOrder(Hotel hotel, int dark) {
+		EventQueue.invokeLater(() -> {
+			try {
+				Order window = new Order(hotel, dark);
+				window.frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
-	
-	public Order(Hotel h, int dark) {
-		hotel = h;
-		darkMode = dark;
-		System.out.println(hotel.toString());
+
+//Create the application.
+	public Order(Hotel hotel, int dark) {
+		orderController = new OrderController(hotel);
 		initialize();
-		
+		new DarkMode(dark, frame, labels, btns, null, null);
 	}
-	
+
+//Initialize the contents of the frame.
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 398, 460);
@@ -118,18 +117,18 @@ public class Order {
 		frame.getContentPane().add(endDay);
 		
 		roomTypeTitle = new JLabel("\u05E1\u05D5\u05D2 \u05D7\u05D3\u05E8 :");
-		roomTypeTitle.setBounds(273, 180, 95, 14);
+		roomTypeTitle.setBounds(306, 180, 66, 14);
 		frame.getContentPane().add(roomTypeTitle);
 		labels.add(roomTypeTitle);
 		
 		roomTypeCombo = new JComboBox<String>();
-		roomTypeCombo.setBounds(160, 180, 71, 20);
+		roomTypeCombo.setBounds(225, 177, 71, 20);
 		frame.getContentPane().add(roomTypeCombo);
 		
 		hotelName = new JLabel("hotel name");
 		hotelName.setBounds(139, 11, 168, 14);
 		frame.getContentPane().add(hotelName);
-		hotelName.setText("Hotel : " + hotel.getName());
+		hotelName.setText("Hotel : " + orderController.getHotelName());
 		labels.add(hotelName);
 		
 		creditCardTitle = new JLabel("\u05DB\u05E8\u05D8\u05D9\u05E1 \u05D0\u05E9\u05E8\u05D0\u05D9");
@@ -161,7 +160,7 @@ public class Order {
 		frame.getContentPane().add(cardMonth);
 		
 		cardNameField = new JTextField();
-		cardNameField.setBounds(66, 268, 168, 20);
+		cardNameField.setBounds(77, 268, 157, 20);
 		frame.getContentPane().add(cardNameField);
 		cardNameField.setColumns(10);
 		
@@ -185,10 +184,13 @@ public class Order {
 		frame.getContentPane().add(roomTypeError);
 		roomTypeError.setForeground(Color.red);
 		
+		checkError = new JLabel("");
+		checkError.setBounds(160, 150, 146, 14);
+		frame.getContentPane().add(checkError);
+		checkError.setForeground(Color.green);
 		
 		int i;
-		for(i = 0; i < hotel.roomTypes.size(); i++)
-			roomTypeCombo.addItem(hotel.roomTypes.get(i).typeName);
+		orderController.loadRoomTypes(roomTypeCombo);
 		
 		startDay.addItem("Day");
 		endDay.addItem("Day");
@@ -217,103 +219,98 @@ public class Order {
 			cardYear.addItem(Integer.toString(2019 + i));
 		
 		
-		checkBtn = new JButton("Check dates");
-		checkBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				validDates();
-			}
+		orderNow = new JButton("Order now!");
+		orderNow.setBounds(10, 387, 362, 23);
+		frame.getContentPane().add(orderNow);
+		btns.add(orderNow);
+		
+		cardError = new JLabel("");
+		cardError.setBounds(10, 349, 95, 14);
+		frame.getContentPane().add(cardError);
+		
+		lblNewLabel = new JLabel("\u05E1\u05D4\"\u05DB :");
+		lblNewLabel.setBounds(173, 180, 46, 14);
+		frame.getContentPane().add(lblNewLabel);
+		labels.add(lblNewLabel);
+		
+		totalPrice = new JLabel("0");
+		totalPrice.setBounds(121, 180, 42, 14);
+		frame.getContentPane().add(totalPrice);
+		labels.add(totalPrice);
+		
+		priceBtn = new JButton("<html>Check<br>price<html>");
+		priceBtn.setBounds(25, 169, 80, 36);
+		frame.getContentPane().add(priceBtn);
+		btns.add(priceBtn);
+		
+		priceBtn.addActionListener((ActionEvent arg0) -> {
+			checkPrice();
 		});
-		checkBtn.setBounds(48, 179, 89, 23);
-		frame.getContentPane().add(checkBtn);
-		btns.add(checkBtn);
 		
-		checkError = new JLabel("");
-		checkError.setBounds(50, 210, 150, 14);
-		frame.getContentPane().add(checkError);
-		
-		DarkMode d = new DarkMode();
-		if(darkMode == 0)
-			d.setLightMode(frame, labels, btns, null, null);
-		else
-			d.setDarkMode(frame, labels, btns, null, null);
+		orderNow.addActionListener((ActionEvent arg0) -> {
+			placeOrder();
+		});
 	}
-
-
-	public void validDates() {
-		boolean flag = true;
-		Validation v = new Validation();
-		
-		if(hotel.roomTypes.size() == 0) {
-			roomTypeError.setText("no rooms avalivale");
-			flag = false;
-		}
-		
-		
-//VALID DATE
-		//START DATE
-		if(!v.validDate(startDay.getSelectedIndex(), startMonth.getSelectedIndex(), startYear.getSelectedIndex(), startDateError))
-			flag = false;
-		//END DATE
-		if(!v.validDate(endDay.getSelectedIndex(), endMonth.getSelectedIndex(), endYear.getSelectedIndex(), endDateError))
-			flag = false;
-		
-//START DAY < CURRENT DATE
-		//SET CURRENT DATE
-		if(flag == true) {
-			Date cur;
-			Date startDate;
-			Date endDate;
-			
-			LocalDateTime now = LocalDateTime.now();
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-
+	
+	public void checkPrice() {
+		if(startMonth.getSelectedIndex() != 0 && startDay.getSelectedIndex() != 0 && startYear.getSelectedIndex() != 0 &&
+				   endMonth.getSelectedIndex() != 0 && endMonth.getSelectedIndex() != 0 && endMonth.getSelectedIndex() != 0) {
 			try {
-				cur = sdf.parse(String.valueOf(now.getMonthValue()) +'/'+String.valueOf(now.getDayOfMonth())+'/'+String.valueOf(now.getYear()));
-			    startDate = sdf.parse(String.valueOf(startMonth.getSelectedIndex()) +"/"+ String.valueOf(startDay.getSelectedIndex()) +"/"+String.valueOf(2019 + startYear.getSelectedIndex()));
-			    endDate = sdf.parse(String.valueOf(endMonth.getSelectedIndex()) +"/"+ String.valueOf(endDay.getSelectedIndex()) +"/"+String.valueOf(2019 + endYear.getSelectedIndex()));
-//START - CUR
-			    System.out.println("cur - " + cur);
-			    System.out.println("start - " + startDate);
-			    long diffInMillies = startDate.getTime() - cur.getTime();
-			    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) + 1;
-			    System.out.println("START - CUR = " + diff);
-			    if(diff < 1) {
-			    	flag = false;
-			    	startDateError.setText("Old date!");
-			    }
-			    
-//END - START
-			    diffInMillies = endDate.getTime() - startDate.getTime();
-			    diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) + 1;
-			    System.out.println("END - START = " + diff);
-
-			    if(diff < 1) {
-			    	flag = false;
-			    	endDateError.setText("You picked 0 nights");
-			    }
-//CHECK IF AVAILABLE
-				roomTypeError.setText("");
-		    	checkError.setText("");
-			    if(flag == true)
-			    	if(hotel.roomTypes.get(roomTypeCombo.getSelectedIndex()).checkAvailable(startDate, roomTypeCombo.getSelectedIndex(), diff) == false) {
-			    		flag = false;
-				    	checkError.setText("Dates not avalivale!");
-				    	checkError.setForeground(Color.red);
-			    	}
-			    	else {
-				    	checkError.setText("Dates avalivale!");
-			    		checkError.setForeground(Color.GREEN);
-				    }
-			   
-			   //ORDER@#$%^^ 
-			   //if(flag == true)
-			    //	hotel.roomTypes.get(roomTypeCombo.getSelectedIndex()).placeOrderDates(startDate, roomTypeCombo.getSelectedIndex(), diff);
-			   
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				Date startDate = sdf.parse(String.valueOf(startMonth.getSelectedIndex()) +"/"+ String.valueOf(startDay.getSelectedIndex()) +"/"+String.valueOf(2019 + startYear.getSelectedIndex()));
+				Date endDate = sdf.parse(String.valueOf(endMonth.getSelectedIndex()) +"/"+ String.valueOf(endDay.getSelectedIndex()) +"/"+String.valueOf(2019 + endYear.getSelectedIndex()));
+				if(orderController.getDiff(startDate, endDate) > 0)
+					totalPrice.setText(String.valueOf(orderController.getPrice(startDate, endDate, roomTypeCombo.getSelectedIndex())));
+				else
+					totalPrice.setText("0");
+			}
+			catch(Exception e){
+			   	e.printStackTrace();
+			}
+		}
+	}
+	
+	public boolean placeOrder() {
+		boolean flag = true;
+		cardError.setForeground(Color.red);
+		
+		if(orderController.validCardNum(cardNameField.getText(), cvcField.getText(), cardMonth.getSelectedIndex(), 19 + cardYear.getSelectedIndex(), cardError) == false) {
+			flag = false;
+			cardError.setText("Invalid Card!");
+		}
+		else
+			cardError.setText("");
+		
+		if(startMonth.getSelectedIndex() == 0 || startDay.getSelectedIndex() == 0 || startYear.getSelectedIndex() == 0 ||
+				   endMonth.getSelectedIndex() == 0 || endMonth.getSelectedIndex() == 0 || endMonth.getSelectedIndex() == 0)
+			endDateError.setText("Enter dates");
+		else {
+			if(orderController.checkDate(startDay.getSelectedIndex(), startMonth.getSelectedIndex(), startYear.getSelectedIndex(), startDateError) == false)
+				flag = false;
+			if(orderController.checkDate(endDay.getSelectedIndex(), endMonth.getSelectedIndex(), endYear.getSelectedIndex(), endDateError) == false)
+				flag = false;
+			
+			try {
+				LocalDateTime now = LocalDateTime.now();
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+				Date cur = sdf.parse(String.valueOf(now.getMonthValue()) +'/'+String.valueOf(now.getDayOfMonth())+'/'+String.valueOf(now.getYear()));
+				Date startDate = sdf.parse(String.valueOf(startMonth.getSelectedIndex()) +"/"+ String.valueOf(startDay.getSelectedIndex()) +"/"+String.valueOf(2019 + startYear.getSelectedIndex()));
+				Date endDate = sdf.parse(String.valueOf(endMonth.getSelectedIndex()) +"/"+ String.valueOf(endDay.getSelectedIndex()) +"/"+String.valueOf(2019 + endYear.getSelectedIndex()));
+				if(orderController.getDiff(startDate, endDate) > 0)
+					totalPrice.setText(String.valueOf(orderController.getPrice(startDate, endDate, roomTypeCombo.getSelectedIndex())));
+				else
+					totalPrice.setText("0");
+				
+			    if(orderController.validDiff(roomTypeError, startDateError, endDateError, checkError, roomTypeCombo.getSelectedIndex(), cur, startDate, endDate)) {
+					JOptionPane.showMessageDialog(null, "Your order have placed!"); // CREATES MASSAGE
+					orderController.placeOrder(roomTypeCombo.getSelectedIndex(),startDate, orderController.getDiff(startDate, endDate));
+				}
+			
 			}
 		    catch(Exception e){
 		    	e.printStackTrace();
 		    }
 		}
-
+		return flag;
 	}
 }

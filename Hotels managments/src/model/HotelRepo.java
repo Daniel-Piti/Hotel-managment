@@ -32,18 +32,18 @@ public class HotelRepo {
 		int i, j;
 //	ADD NEW DATE
 //		try{
-//			hotels.get(0).roomTypes.get(0).calender.put(new SimpleDateFormat("yyyy-MM-dd").parse("2018-09-09"), 2);
+//			hotels.get(0).roomTypes.get(0).calender.put(new SimpleDateFormat("yyyy-MM-dd").parse("2020-09-08"), 1);
 //		}catch (Exception e) {
 //			System.out.println("shit");
 //		}
-
+//		System.out.println(hotels.get(0).roomTypes.get(0).calender.size());
 
 		for(i = 0; i< hotels.size(); i++)
 			for(j = 0; j< hotels.get(i).roomTypes.size(); j++)
 			{
 				for(Iterator<Entry<Date, Integer>> it = hotels.get(i).roomTypes.get(j).calender.entrySet().iterator(); it.hasNext(); ) {
 				    Entry<Date, Integer> entry = it.next();
-				    System.out.println(entry.getKey());
+				    System.out.println(entry.getKey() + " - " + entry.getValue());
 				    if(entry.getKey().before(prev)) {
 				        it.remove();
 
@@ -53,6 +53,7 @@ public class HotelRepo {
 		System.out.println("unnseesery data deleted");
 }
 	
+	@SuppressWarnings("unchecked")
 	public void loadData() {
 		try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))){
 			hotels = (List<Hotel>) in.readObject();
@@ -85,6 +86,7 @@ public class HotelRepo {
 		System.out.println("HOTEL ADDED");
 		saveData();
 	}
+	
 	public void removeHotel(Hotel h) {
 		hotels.remove(h);
 		System.out.println("HOTEL REMOVED");

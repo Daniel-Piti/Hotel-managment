@@ -1,32 +1,34 @@
 package view;
+
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import controller.SignUpController;
 import model.Customer;
 import model.DarkMode;
 import model.HotelRepo;
 import model.UsersRepo;
-import model.Validation;
-import javax.swing.JPasswordField;
-import javax.swing.JRadioButton;
-import javax.swing.JComboBox;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-import javax.swing.JButton;
 
 public class SignUp {
+	private SignUpController signUpController;
 //BUTTONS
 	public ArrayList<JButton> btns = new ArrayList<JButton>();
 //JLABLES	
-	public ArrayList<JLabel> labels = new ArrayList<JLabel>();
+	public ArrayList<JLabel> labels = new ArrayList<JLabel>();	
 //RADIO BTNS
 	public ArrayList<JRadioButton> radioBtns = new ArrayList<JRadioButton>();
-
+		
 	private JFrame frame;
 	private JTextField firstNameField;
 	private JTextField lastNameField;
@@ -53,59 +55,42 @@ public class SignUp {
 	private JComboBox<String> monthField = new JComboBox<>();
 	private JComboBox<String> dayField = new JComboBox<>();
 	
-	private UsersRepo customers;
-	private HotelRepo hotels;
-	private Customer user;
 	private JButton startIn;
 	private JButton startUp;
 	private JButton startDis;
-
-	public ArrayList<JPanel> panels = new ArrayList<JPanel>();
-	public void signUpForm(UsersRepo c, HotelRepo h, JLabel j, Customer u, JButton in, JButton up, JButton dis, int dark) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SignUp window = new SignUp(c, h, j, u, in, up, dis, dark);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+	
+//Launch the application.
+	public void runSignUp(int darkFlag, JLabel wellcome, UsersRepo customers, HotelRepo hotelDB, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user) {
+		EventQueue.invokeLater(() -> {
+			try {
+				SignUp window = new SignUp(darkFlag, wellcome, customers, hotelDB, signInBtn, signUpBtn, disconnectBtn, user);
+				window.frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
 
-	public SignUp(UsersRepo c, HotelRepo h, JLabel j, Customer u, JButton in, JButton up, JButton dis, int dark) {
-		startDis = dis;
-		startIn = in;
-		startUp = up;
-		wellcome = j;
-		hotels = h;
-		customers = c;
-		user = u;
-		setUI();
-		DarkMode d = new DarkMode();
-		if(dark == 0) 
-			d.setLightMode(frame, labels, btns, radioBtns, null);
-		else
-			d.setDarkMode(frame, labels, btns, radioBtns, null);
+//Create the application.
+	public SignUp(int darkFlag, JLabel wellcome, UsersRepo customers, HotelRepo hotelDB, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user) {
+		signUpController = new SignUpController(customers, hotelDB, user);
+		this.wellcome = wellcome;
+		this.startIn = signInBtn;
+		this.startUp= signUpBtn;
+		this.startDis = disconnectBtn;
+		initialize();
 		btnsEvents();
+		new DarkMode(darkFlag, frame, labels, btns, radioBtns, null);
 	}
-  
-    boolean isValidDate(int d, int m, int y) 
-    {
-        if (m == 2)  
-            if ((((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0))) 
-                return (d <= 29); 
-            else
-                return (d <= 28); 
-        if (m == 4 || m == 6 || m == 9 || m == 11) 
-            return (d <= 30); 
-  
-        return true; 
-    }
 
-    private void setUI() {
-    	JLabel signUpTitle = new JLabel("\u05D4\u05E8\u05E9\u05DE\u05D4 :");
+//Initialize the contents of the frame.
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 452, 585);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JLabel signUpTitle = new JLabel("\u05D4\u05E8\u05E9\u05DE\u05D4 :");
     	JLabel firstNameTitle = new JLabel("\u05E9\u05DD \u05E4\u05E8\u05D8\u05D9 :");
     	JLabel lastNameTitle = new JLabel("\u05E9\u05DD \u05DE\u05E9\u05E4\u05D7\u05D4 :");
     	JLabel phoneTitle = new JLabel("\u05E4\u05DC\u05D0\u05E4\u05D5\u05DF :");
@@ -130,11 +115,6 @@ public class SignUp {
     	
     	radioBtns.add(femaleRadio);
     	radioBtns.add(maleRadio);
-    	
-    	frame = new JFrame();
-		frame.setBounds(100, 100, 452, 585);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
 		
 		signUpTitle.setBounds(179, 39, 65, 14);
 		frame.getContentPane().add(signUpTitle);
@@ -192,14 +172,6 @@ public class SignUp {
 		passwordField.setBounds(219, 326, 86, 20);
 		frame.getContentPane().add(passwordField);
 		
-		maleRadio.setBounds(252, 281, 82, 23);
-		frame.getContentPane().add(maleRadio);
-		
-		femaleRadio.setBounds(179, 281, 109, 23);
-		frame.getContentPane().add(femaleRadio);
-
-		femaleRadio.setSelected(true);
-		
 		firstNameLabel.setBounds(74, 95, 112, 14);
 		frame.getContentPane().add(firstNameLabel);
 		firstNameLabel.setForeground(Color.red);
@@ -208,7 +180,7 @@ public class SignUp {
 		frame.getContentPane().add(LastNameLabel);
 		LastNameLabel.setForeground(Color.red);
 		
-		phoneNumberLabel.setBounds(74, 171, 140, 14);
+		phoneNumberLabel.setBounds(45, 168, 140, 14);
 		frame.getContentPane().add(phoneNumberLabel);
 		phoneNumberLabel.setForeground(Color.red);
 		
@@ -228,6 +200,15 @@ public class SignUp {
 		idLabel.setBounds(74, 243, 112, 14);
 		frame.getContentPane().add(idLabel);
 		idLabel.setForeground(Color.red);
+		
+		maleRadio.setBounds(252, 281, 52, 23);
+		frame.getContentPane().add(maleRadio);
+		
+		femaleRadio.setBounds(179, 281, 65, 23);
+		frame.getContentPane().add(femaleRadio);
+
+		femaleRadio.setSelected(true);
+		
 		int i;
 
 		yearField.addItem("Year");
@@ -255,75 +236,47 @@ public class SignUp {
 		signUpBtn.setBounds(130, 464, 150, 50);
 		frame.getContentPane().add(signUpBtn, 65, 20);
 		frame.getContentPane().add(monthField);
-    }
-	
-    private void btnsEvents() {
-    //RADIO MALE
-		maleRadio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				maleRadio.setSelected(true);
-				femaleRadio.setSelected(false);
-			}
-		});
-	//RADIO FEMALE
-		femaleRadio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				maleRadio.setSelected(false);
-				femaleRadio.setSelected(true);
-			}
-		});
-	//SAVE BUTTON
-		signUpBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				boolean flag = true;
-				Validation v = new Validation();
-				
-	//check first
-				if(!v.validName(firstNameField.getText(), firstNameLabel))
-					flag = false;
-	//check lastname
-				if(!v.validName(lastNameField.getText(), LastNameLabel))
-					flag = false;
-								
-	//check phonenumber
-				if(!v.validPhone(phoneField.getText(), phoneNumberLabel))
-					flag = false;
-	//check mail
-				if(!v.validEmail(mailField.getText(), mailLabel))
-					flag = false;
-				
-				if(customers.emailUsed(mailField.getText()) || hotels.emailUsed(mailField.getText())) {
-					mailLabel.setText("Email allready used");
-					flag = false;
-				}
-	//check ID
-				if(!v.validID(idField.getText(), idLabel))
-					flag = false;
-	//check Password
-				if(!v.validPassword(passwordField.getPassword(), passwordLabel))
-					flag = false;
-	//check date
-				if(!v.validDate(dayField.getSelectedIndex(), monthField.getSelectedIndex(), yearField.getSelectedIndex(), dateLabel))
-					flag = false;
-				
-				if(flag) {
-					boolean gen = true;
-					if(femaleRadio.isSelected())
-						gen = false;
-					customers.addUser(new Customer(firstNameField.getText(), lastNameField.getText(), phoneField.getText(), mailField.getText(),
-							 idField.getText(), gen, new String(passwordField.getPassword()), dayField.getSelectedIndex(),
-							 monthField.getSelectedIndex(), 2021 - yearField.getSelectedIndex()));
-					wellcome.setText("Wellcome" + firstNameField.getText());
-					user.duplicate(firstNameField.getText(), lastNameField.getText(), phoneField.getText(), mailField.getText(),
-							 idField.getText(), gen, new String(passwordField.getPassword()), dayField.getSelectedIndex(),
-							 monthField.getSelectedIndex(), 2021 - yearField.getSelectedIndex());
-					JOptionPane.showMessageDialog(null, firstNameField.getText() + " thank you for register!"); // CREATES MASSAGE
-					startDis.setVisible(true);
-					startUp.setVisible(false);
-					startIn.setVisible(false);
-					frame.dispose();
-				}
-			}
-		});
 	}
+
+	
+	private void btnsEvents() {
+//RADIO MALE
+		maleRadio.addActionListener((ActionEvent arg0) -> {
+			maleRadio.setSelected(true);
+			femaleRadio.setSelected(false);
+		});
+//RADIO FEMALE
+		femaleRadio.addActionListener((ActionEvent e) ->{
+			maleRadio.setSelected(false);
+			femaleRadio.setSelected(true);
+		});
+		
+//SAVE BUTTON
+		signUpBtn.addActionListener((ActionEvent e) -> {
+			if(signUpController.validUser(firstNameField.getText(), firstNameLabel, lastNameField.getText(), LastNameLabel,
+					phoneField.getText(), phoneNumberLabel, mailField.getText(), mailLabel, idField.getText(), idLabel,
+					passwordField.getPassword(), passwordLabel, dayField.getSelectedIndex(), 
+					monthField.getSelectedIndex(), yearField.getSelectedIndex(), dateLabel)) {
+				boolean gen = true;
+				if(femaleRadio.isSelected())
+					gen = false;
+				
+				signUpController.addUser(new Customer(firstNameField.getText(), lastNameField.getText(), phoneField.getText(), mailField.getText(),
+						 idField.getText(), gen, new String(passwordField.getPassword()), dayField.getSelectedIndex(),
+						 monthField.getSelectedIndex(), 2021 - yearField.getSelectedIndex()));
+				
+				wellcome.setText("Wellcome" + firstNameField.getText());
+				
+				signUpController.SetUser(firstNameField.getText(), lastNameField.getText(), phoneField.getText(), mailField.getText(),
+						 idField.getText(), gen, new String(passwordField.getPassword()), dayField.getSelectedIndex(),
+						 monthField.getSelectedIndex(), 2021 - yearField.getSelectedIndex());
+
+				JOptionPane.showMessageDialog(null, firstNameField.getText() + " thank you for register!"); // CREATES MASSAGE
+				startDis.setVisible(true);
+				startUp.setVisible(false);
+				startIn.setVisible(false);
+				frame.dispose();
+					}
+				});
+		}
 }

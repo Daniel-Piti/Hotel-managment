@@ -10,7 +10,15 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.LineBorder;
 
-public class DarkMode {	
+public class DarkMode {
+	
+	public DarkMode(int flag, JFrame frame, ArrayList<JLabel> texts, ArrayList<JButton> buttons, ArrayList<JRadioButton> radios, ArrayList<JPanel> panels) {
+		if(flag == 0)
+			setLightMode(frame, texts, buttons, radios, panels);
+		else
+			setDarkMode(frame, texts, buttons, radios, panels);
+	}
+	
 	public void setDarkMode(JFrame frame, ArrayList<JLabel> texts, ArrayList<JButton> buttons, ArrayList<JRadioButton> radios, ArrayList<JPanel> panels) {
 		int i;
 		if(texts!=null)

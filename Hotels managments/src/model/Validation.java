@@ -40,8 +40,26 @@ public class Validation {
 	}
 	
 	public boolean validNumber(String s, JLabel j) {
-		if(!s.matches("[0-9]+")) {
+		if(!s.matches("[0-9]+") || s.length() == 0) {
 			j.setText("Not a number");
+			return false;
+		}
+		j.setText("");
+		return true;
+	}
+	
+	public boolean validCardNumber(String s, JLabel j) {
+		if(!s.matches("[0-9]+") || s.length() < 8 || s.length() > 16) {
+			j.setText("Invalid card");
+			return false;
+		}
+		j.setText("");
+		return true;
+	}
+	
+	public boolean validCVC(String s, JLabel j) {
+		if(!s.matches("[0-9]+") || s.length() != 3) {
+			j.setText("Invalid card");
 			return false;
 		}
 		j.setText("");
@@ -55,8 +73,8 @@ public class Validation {
         } catch (NumberFormatException e) {
             numeric = false;
         }
-
-        if(numeric){
+        
+        if(numeric && s.length() != 0){
         	j.setText("");
         	return true;
         }

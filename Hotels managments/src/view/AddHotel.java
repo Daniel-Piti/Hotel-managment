@@ -2,78 +2,71 @@ package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JButton;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import controller.AddHotelController;
 import model.DarkMode;
-import model.Hotel;
 import model.HotelRepo;
 import model.UsersRepo;
-import model.Validation;
-
-import javax.swing.JComboBox;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-import javax.swing.JPasswordField;
 
 public class AddHotel {
-
 	private JFrame frame;
-	private HotelRepo hotelsDB;
-	private UsersRepo users;
 	
 	private JTextField hotelNameField;
 	private JTextField addressField;
 	private JTextField phoneField;
+	private JTextField mailField;
 	
 	private JLabel nameError;
 	private JLabel addressError;
 	private JLabel phoneError;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
-	private JTextField mailField;
 	private JLabel passwordError;
 	private JLabel mailError;
 	private JPasswordField passwordField;
 	private JComboBox<String> deleteHotelCombo;
-	//BUTTONS
-		public ArrayList<JButton> btns = new ArrayList<JButton>();
+	private JComboBox<String> comboBox;
+	private JButton btnNewButton;
+	private JButton deleteHotelbtn;
+//BUTTONS
+	private ArrayList<JButton> btns = new ArrayList<JButton>();
 		
-	//JLABLES
-		public ArrayList<JLabel> labels = new ArrayList<JLabel>();
+//JLABLES
+	private ArrayList<JLabel> labels = new ArrayList<JLabel>();
 		
-	 // Launch the application.
+// Launch the application.
+	private AddHotelController addHotelController;
 
-	public void addHotelform(HotelRepo h, UsersRepo c, int dark) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddHotel window = new AddHotel(h, c, dark);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+	public void RunAddHotel(HotelRepo hotelsDB, UsersRepo customers, int dark) {
+		EventQueue.invokeLater(() -> {
+			try {
+				AddHotel window = new AddHotel(hotelsDB, customers, dark);
+				window.frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
 
-	public AddHotel(HotelRepo h, UsersRepo c, int dark) {
-		hotelsDB = h;
-		users = c;
+//Create the application.
+	public AddHotel(HotelRepo hotelsDB, UsersRepo users, int darkFlag) {
+		addHotelController = new AddHotelController(hotelsDB, users);
 		initialize();
-		DarkMode d = new DarkMode();
-		if(dark == 0)
-			d.setLightMode(frame, labels, btns, null, null);
-		else
-			d.setDarkMode(frame, labels, btns, null, null);
+		listeners();
+		new DarkMode(darkFlag, frame, labels, btns, null, null);
 	}
 
+//Initialize the contents of the frame.
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 650, 442);
@@ -105,7 +98,7 @@ public class AddHotel {
 		frame.getContentPane().add(phoneNumberTitle);
 		labels.add(phoneNumberTitle);
 		
-		JButton btnNewButton = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05DE\u05DC\u05D5\u05DF");
+		btnNewButton = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05DE\u05DC\u05D5\u05DF");
 		btns.add(btnNewButton);
 		
 		btnNewButton.setBounds(93, 369, 184, 23);
@@ -140,20 +133,23 @@ public class AddHotel {
 		phoneError.setBounds(10, 185, 130, 14);
 		phoneError.setForeground(Color.red);
 		frame.getContentPane().add(phoneError);
-	//DISIGN ERROR
+//DISIGN ERROR
 		String s[] = new String[] {"1","2","3","4","5"};
-		JComboBox<String> comboBox = new JComboBox<String>(s);
+		comboBox = new JComboBox<String>(s);
 		comboBox.setBounds(164, 323, 50, 20);
 		frame.getContentPane().add(comboBox);
 		
 		lblNewLabel_1 = new JLabel("\u05E1\u05D9\u05E1\u05DE\u05D0 :");
 		lblNewLabel_1.setBounds(257, 229, 46, 14);
 		frame.getContentPane().add(lblNewLabel_1);
+		labels.add(lblNewLabel_1);
+
 		
 		lblNewLabel_2 = new JLabel("\u05DE\u05D9\u05D9\u05DC :");
 		lblNewLabel_2.setBounds(257, 275, 46, 14);
 		frame.getContentPane().add(lblNewLabel_2);
-		
+		labels.add(lblNewLabel_2);
+
 		mailField = new JTextField();
 		mailField.setColumns(10);
 		mailField.setBounds(150, 272, 86, 20);
@@ -173,70 +169,45 @@ public class AddHotel {
 		passwordField.setBounds(150, 226, 86, 20);
 		frame.getContentPane().add(passwordField);
 		
-		deleteHotelCombo = new JComboBox();
+		deleteHotelCombo = new JComboBox<String>();
 		deleteHotelCombo.setBounds(420,76,100,27);
 		frame.getContentPane().add(deleteHotelCombo);
-		
 		
 		JLabel deleteHotelLabel = new JLabel("\u05DE\u05D7\u05E7 \u05DE\u05DC\u05D5\u05DF :");
 		deleteHotelLabel.setBounds(444,42,96,16);
 		frame.getContentPane().add(deleteHotelLabel);
 		labels.add(deleteHotelLabel);
 		
-		for(int i=0;i<hotelsDB.hotels.size();i++)
-			deleteHotelCombo.addItem(hotelsDB.hotels.get(i).getName());
+		addHotelController.loadHotelList(deleteHotelCombo);
 		
-		JButton deleteHotelbtn = new JButton("save");
-		deleteHotelbtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(deleteHotelCombo.getItemCount() > 0) {
-					int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to delete the hotel ?","Warning",JOptionPane.YES_NO_OPTION);
-					if(dialogResult == JOptionPane.YES_OPTION){
-						hotelsDB.hotels.remove(deleteHotelCombo.getSelectedIndex());
-						deleteHotelCombo.removeItemAt(deleteHotelCombo.getSelectedIndex());
-					}
-				}
-			}
-		});
+		deleteHotelbtn = new JButton("save");
 		deleteHotelbtn.setBounds(412,133,117,29);
 		frame.getContentPane().add(deleteHotelbtn);
-		btns.add(deleteHotelbtn);
-		
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				boolean flag = true;
-				Validation v = new Validation();
-				if(!v.validNotEmpty(hotelNameField.getText(), nameError))
-					flag = false;
-				
-				if(!v.validNotEmpty(addressField.getText(), addressError))
-					flag = false;
-				
-				if(!v.validPhone(phoneField.getText(), phoneError))
-					flag = false;
-				
-				if(!v.validPassword(passwordField.getPassword(), passwordError))
-					flag = false;
-				
-				if(!v.validEmail(mailField.getText(), mailError))
-					flag = false;
-			//users db
-				if(users.emailUsed(mailField.getText()) || hotelsDB.emailUsed(mailField.getText())) {
-					mailError.setText("Email allready used");
-					flag = false;
-				}
-				
-				if(flag) {
-					hotelsDB.addHotel(new Hotel(hotelNameField.getText(), addressField.getText(), phoneField.getText(), String.valueOf(passwordField.getPassword()), mailField.getText(), comboBox.getSelectedIndex() + 1));
-					deleteHotelCombo.addItem(hotelNameField.getText());
-					JOptionPane.showMessageDialog(null, hotelNameField.getText() + " hotel added");
+		btns.add(deleteHotelbtn);	
+	}
+
+	private void listeners() {
+		btnNewButton.addActionListener((ActionEvent arg0) -> {
+				if(addHotelController.validHotel(hotelNameField.getText(), addressField.getText(), phoneField.getText(), passwordField.getPassword(), mailField.getText()
+						, nameError, addressError, phoneError, passwordError, mailError, comboBox.getSelectedIndex() + 1) == true) {
 					hotelNameField.setText("");
 					addressField.setText("");
 					phoneField.setText("");
 					passwordField.setText("");
 					mailField.setText("");
+					deleteHotelCombo.addItem(hotelNameField.getText());
+					JOptionPane.showMessageDialog(null, hotelNameField.getText() + " hotel added");
 				}
-			}
+		});
+		
+		deleteHotelbtn.addActionListener((ActionEvent e)-> {
+				if(deleteHotelCombo.getItemCount() > 0) {
+					int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to delete the hotel ?","Warning",JOptionPane.YES_NO_OPTION);
+					if(dialogResult == JOptionPane.YES_OPTION){
+						addHotelController.removeHotel(deleteHotelCombo.getSelectedIndex());
+						deleteHotelCombo.removeItemAt(deleteHotelCombo.getSelectedIndex());
+					}
+				}
 		});
 	}
 }

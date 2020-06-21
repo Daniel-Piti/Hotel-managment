@@ -27,6 +27,7 @@ public class UsersRepo {
 		return single_instance;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void loadData() {
 		try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))){
 			members = (HashMap<String, Customer>) in.readObject();

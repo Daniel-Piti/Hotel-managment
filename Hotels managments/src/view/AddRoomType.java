@@ -2,25 +2,23 @@ package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import controller.AddRoomTypeController;
 import model.DarkMode;
 import model.Hotel;
-import model.Validation;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
 
 public class AddRoomType {
-
+	
+	private AddRoomTypeController addRoomController;
 	private JFrame frame;
 	private JTextField capacityField;
 	private JTextField priceField;
@@ -32,7 +30,6 @@ public class AddRoomType {
 	private JLabel sizeError = new JLabel("");
 	private JLabel amountError = new JLabel("");
 	private JLabel typeNameError;
-	private Hotel hotel;
 	private JTextField typeNameField;
 	private JLabel hotelname = new JLabel("");
 	private JComboBox<String> roomTypes;
@@ -41,34 +38,30 @@ public class AddRoomType {
 	public ArrayList<JButton> btns = new ArrayList<JButton>();
 //JLABLES
 	public ArrayList<JLabel> labels = new ArrayList<JLabel>();
-		
-	public void addRoomTypeForm(Hotel h, JComboBox<String> r, int dark) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+
+//Launch the application.
+	public void RunAddRoom(Hotel hotel, JComboBox<String> roomTypes, int darkFlag) {
+		EventQueue.invokeLater(() ->{
 				try {
-					AddRoomType window = new AddRoomType(h, r, dark);
+					AddRoomType window = new AddRoomType(hotel, roomTypes, darkFlag);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
 		});
 	}
 
-	public AddRoomType(Hotel h, JComboBox<String> r, int dark) {
-		roomTypes = r;
-		hotelname.setText(h.getName());
-		labels.add(hotelname);
-		hotel = h;
-		setUI();
-		DarkMode d = new DarkMode();
-		if(dark == 0)
-			d.setLightMode(frame, labels, btns, null, null);
-		else
-			d.setDarkMode(frame, labels, btns, null, null);
+//Create the application.
+	public AddRoomType(Hotel hotel, JComboBox<String> roomTypes, int darkFlag) {
+		this.roomTypes = roomTypes;
+		addRoomController = new AddRoomTypeController(hotel);
+		initialize();
+		
+		new DarkMode(darkFlag, frame, labels, btns, null, null);
 	}
 
-	public void setUI() {
+//Initialize the contents of the frame.
+	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 338, 435);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -120,11 +113,7 @@ public class AddRoomType {
 		frame.getContentPane().add(amountFIeld);
 		JButton addBtn = new JButton("\u05D4\u05D5\u05E1\u05E4 \u05E1\u05D5\u05D2 \u05D7\u05D3\u05E8");
 		btns.add(addBtn);
-		addBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				testFields();
-			}
-		});
+		
 		addBtn.setBounds(92, 354, 132, 23);
 		frame.getContentPane().add(addBtn);
 
@@ -160,32 +149,18 @@ public class AddRoomType {
 		
 		hotelname.setBounds(126, 36, 75, 14);
 		frame.getContentPane().add(hotelname);
+		
+		addBtn.addActionListener((ActionEvent arg0) -> {
+			testFields();
+		});
 	}
 	
 	public void testFields() {
-		System.out.println(hotel.toString());
-		Validation v = new Validation();
-		boolean flag = true;
-	//typeName
-		if(!v.validNotEmpty(typeNameField.getText(), typeNameError))
-			flag = false;
-	//capacity
-		if(!v.validNumber(capacityField.getText(), capacityError))
-			flag = false;
-	//price
-		if(!v.validDouble(priceField.getText(), priceError))
-			flag = false;
-	//size
-		if(!v.validDouble(sizeField.getText(), sizeError))
-			flag = false;
-	//amount
-		if(!v.validNumber(amountFIeld.getText(), amountError))
-			flag = false;
-		
-		if(flag) {
-			hotel.addRoomType(typeNameField.getText() ,Integer.parseInt(capacityField.getText()), Double.parseDouble(priceField.getText()), Double.parseDouble(sizeField.getText()), Integer.parseInt(amountFIeld.getText()));
+		if(addRoomController.validInput(typeNameField.getText(), capacityField.getText(),
+				priceField.getText(), sizeField.getText(), amountFIeld.getText(),
+				typeNameError, capacityError, priceError, sizeError, amountError)) {
+			addRoomController.addRoom(typeNameField.getText() ,Integer.parseInt(capacityField.getText()), Double.parseDouble(priceField.getText()), Double.parseDouble(sizeField.getText()), Integer.parseInt(amountFIeld.getText()));
 			roomTypes.addItem(typeNameField.getText());
-			System.out.println(typeNameField.getText() + " room type added to a hotel");
 			JOptionPane.showMessageDialog(null, typeNameField.getText() + " room type added to a hotel");
 			typeNameField.setText("");
 			capacityField.setText("");

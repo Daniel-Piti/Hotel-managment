@@ -42,19 +42,18 @@ public class RoomType implements Serializable {
 		return true;
 	}
 	
-	public void placeOrderDates(Date d, int roomTypeIndex, long nights) {
-		Date dt = d;
+	public void placeOrderDates(Date d, long nights) {
 		Calendar c = Calendar.getInstance(); 
 		for(int i = 0; i < nights; i++) {
-			if(calender.containsKey(dt))
-				calender.put(dt, calender.get(dt) + 1);
+			if(calender.containsKey(d))
+				calender.put(d, calender.get(d) + 1);
 			else
-				calender.put(dt, 1);
+				calender.put(d, 1);
 
-			System.out.println("place on - " + dt);
-			c.setTime(dt); 
+			System.out.println("place on - " + d);
+			c.setTime(d); 
 			c.add(Calendar.DATE, 1);
-			dt = c.getTime();
+			d = c.getTime();
 		}
 	}
 }

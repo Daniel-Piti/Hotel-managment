@@ -2,66 +2,72 @@ package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
-import javax.swing.JFrame;
-
-import model.DarkMode;
-import model.Hotel;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import controller.EditHotelController;
+import model.DarkMode;
+import model.Hotel;
 
 public class EditHotel {
-
+	private EditHotelController editHotelController;
+	
 	private JFrame frame;
-	private Hotel hotel;
 	private JTextField nameField;
 	private JTextField addressField;
 	private JTextField phoneField;
 	private JPasswordField passwordField;
+	private JButton addRoomTypeBtn;
+	private JButton editBtn;
+	private int darkFlag;
+	private JComboBox<String> roomTypes;
 //BUTTONS
 	public ArrayList<JButton> btns = new ArrayList<JButton>();
 //JLABLES
-	public ArrayList<JLabel> labels = new ArrayList<JLabel>();		
-	
-	/**
-	 * Launch the application.
-	 */
-	public void editHotelForm(Hotel h, int dark) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					EditHotel window = new EditHotel(h, dark);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+	public ArrayList<JLabel> labels = new ArrayList<JLabel>();	
+
+//Launch the application.
+	public void runEditHotel(Hotel h, int dark) {
+		EventQueue.invokeLater(()-> {
+			try {
+				EditHotel window = new EditHotel(h, dark);
+				window.frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
+//Create the application.
 	public EditHotel(Hotel h, int dark) {
-		hotel = h;
-		initialize(dark);
-		DarkMode d = new DarkMode();
-		if(dark == 0)
-			d.setLightMode(frame, labels, btns, null, null);
-		else
-			d.setDarkMode(frame, labels, btns, null, null);
+		darkFlag = dark;
+		editHotelController = new EditHotelController(h);
+		initialize();
+		listener();
+		new DarkMode(dark, frame, labels, btns, null, null);
 	}
-	
-	// Initialize the contents of the frame.
-	
-	private void initialize(int dark) {
+
+//Initialize the contents of the frame.
+	private void listener() {
+		addRoomTypeBtn.addActionListener((ActionEvent arg0) -> {
+			editHotelController.loadAddRoomType(roomTypes ,darkFlag);
+		});
+		
+		editBtn.addActionListener((ActionEvent arg0) -> {
+			editHotelController.editHotelModel.hotel.editHotel(nameField.getText(), addressField.getText(), phoneField.getText(), String.valueOf(passwordField.getPassword()));
+			JOptionPane.showMessageDialog(null, "Hotel editted successfuly");
+		});
+	}
+
+	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 367);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -126,23 +132,14 @@ public class EditHotel {
 		passwordError.setForeground(Color.red);
 		frame.getContentPane().add(passwordError);
 		
-		JButton addRoomTypeBtn = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05E1\u05D5\u05D2\u05D9 \u05D7\u05D3\u05E8");
-		btns.add(addRoomTypeBtn);
-		
-		JComboBox<String> roomTypes = new JComboBox<String>();
-		for(int i = 0; i < hotel.roomTypes.size(); i++)
-			roomTypes.addItem(hotel.roomTypes.get(i).typeName);
-		
-		
-		addRoomTypeBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				AddRoomType a = new AddRoomType(hotel, roomTypes, dark);
-				a.addRoomTypeForm(hotel, roomTypes, dark);
-			}
-		});
+		addRoomTypeBtn = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05E1\u05D5\u05D2\u05D9 \u05D7\u05D3\u05E8");
 		addRoomTypeBtn.setBounds(49, 186, 113, 23);
+		btns.add(addRoomTypeBtn);
 		frame.getContentPane().add(addRoomTypeBtn);
 		
+		roomTypes = new JComboBox<String>();
+		for(int i = 0; i < editHotelController.editHotelModel.hotel.roomTypes.size(); i++)
+			roomTypes.addItem(editHotelController.editHotelModel.hotel.roomTypes.get(i).typeName);
 		roomTypes.setBounds(49, 129, 113, 20);
 		frame.getContentPane().add(roomTypes);
 		
@@ -151,21 +148,12 @@ public class EditHotel {
 		frame.getContentPane().add(lblNewLabel);
 		labels.add(lblNewLabel);
 		
-		JButton editBtn = new JButton("\u05E2\u05D3\u05DB\u05DF");
+		editBtn = new JButton("\u05E2\u05D3\u05DB\u05DF");
 		btns.add(editBtn);
-		editBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				hotel.editHotel(nameField.getText(), addressField.getText(), phoneField.getText(), String.valueOf(passwordField.getPassword()));
-				JOptionPane.showMessageDialog(null, "Hotel editted successfuly");
-			}
-		});
 		editBtn.setBounds(61, 245, 89, 23);
 		frame.getContentPane().add(editBtn);
 		
-		nameField.setText(hotel.getName());
-		addressField.setText(hotel.getAddress());
-		phoneField.setText(hotel.getPhone());
-		passwordField.setText(hotel.getPassword());
+		editHotelController.loadFields(nameField, addressField, phoneField, passwordField);
 		
 		JLabel title = new JLabel("\u05E2\u05E8\u05D9\u05DB\u05EA \u05DE\u05DC\u05D5\u05DF :");
 		title.setBounds(169, 23, 79, 14);

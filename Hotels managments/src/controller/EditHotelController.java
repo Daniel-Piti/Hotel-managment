@@ -23,6 +23,8 @@ public class EditHotelController {
 		editHotelModel.loadFields(nameField, addressField, phoneField, passwordField);
 	}
 	
-	
+	public void removeRoom(int index) {
+		editHotelModel.deleteRoom(index);
+	}
 	
 }

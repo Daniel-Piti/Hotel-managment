@@ -30,4 +30,9 @@ public class EditHotelModel {
 		phoneField.setText(hotel.getPhone());
 		passwordField.setText(hotel.getPassword());
 	}
+	
+	public void deleteRoom(int index) {
+		hotel.roomTypes.remove(index);
+	}
+	
 }

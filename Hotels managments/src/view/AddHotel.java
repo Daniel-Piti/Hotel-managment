@@ -180,7 +180,7 @@ public class AddHotel {
 		
 		addHotelController.loadHotelList(deleteHotelCombo);
 		
-		deleteHotelbtn = new JButton("save");
+		deleteHotelbtn = new JButton("Delete hotel");
 		deleteHotelbtn.setBounds(412,133,117,29);
 		frame.getContentPane().add(deleteHotelbtn);
 		btns.add(deleteHotelbtn);	

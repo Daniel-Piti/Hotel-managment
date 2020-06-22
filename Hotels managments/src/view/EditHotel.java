@@ -16,10 +16,10 @@ import javax.swing.JTextField;
 import controller.EditHotelController;
 import model.DarkMode;
 import model.Hotel;
+import java.awt.event.ActionListener;
 
 public class EditHotel {
 	private EditHotelController editHotelController;
-	
 	private JFrame frame;
 	private JTextField nameField;
 	private JTextField addressField;
@@ -112,28 +112,13 @@ public class EditHotel {
 		passwordField.setBounds(229, 246, 86, 20);
 		frame.getContentPane().add(passwordField);
 		
-		JLabel nameError = new JLabel("");
-		nameError.setBounds(229, 102, 46, 14);
-		nameError.setForeground(Color.red);
-		frame.getContentPane().add(nameError);
-		
-		JLabel addressError = new JLabel("");
-		addressError.setBounds(229, 160, 46, 14);
-		addressError.setForeground(Color.red);
-		frame.getContentPane().add(addressError);
-		
-		JLabel phoneError = new JLabel("");
-		phoneError.setBounds(229, 221, 46, 14);
-		phoneError.setForeground(Color.red);
-		frame.getContentPane().add(phoneError);
-		
 		JLabel passwordError = new JLabel("");
-		passwordError.setBounds(229, 283, 46, 14);
+		passwordError.setBounds(229, 283, 86, 14);
 		passwordError.setForeground(Color.red);
 		frame.getContentPane().add(passwordError);
 		
-		addRoomTypeBtn = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05E1\u05D5\u05D2\u05D9 \u05D7\u05D3\u05E8");
-		addRoomTypeBtn.setBounds(49, 186, 113, 23);
+		addRoomTypeBtn = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05E1\u05D5\u05D2 \u05D7\u05D3\u05E8");
+		addRoomTypeBtn.setBounds(51, 214, 109, 24);
 		btns.add(addRoomTypeBtn);
 		frame.getContentPane().add(addRoomTypeBtn);
 		
@@ -150,7 +135,7 @@ public class EditHotel {
 		
 		editBtn = new JButton("\u05E2\u05D3\u05DB\u05DF");
 		btns.add(editBtn);
-		editBtn.setBounds(61, 245, 89, 23);
+		editBtn.setBounds(59, 274, 89, 23);
 		frame.getContentPane().add(editBtn);
 		
 		editHotelController.loadFields(nameField, addressField, phoneField, passwordField);
@@ -159,5 +144,19 @@ public class EditHotel {
 		title.setBounds(169, 23, 79, 14);
 		frame.getContentPane().add(title);
 		labels.add(title);
+		
+		JButton deleteRoomBtn = new JButton("\u05DE\u05D7\u05E7 \u05E1\u05D5\u05D2 \u05D7\u05D3\u05E8");
+		deleteRoomBtn.addActionListener((ActionEvent arg0) -> {
+			if(roomTypes.getItemCount() > 0) {
+				int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to delete the room type ?","Warning",JOptionPane.YES_NO_OPTION);
+				if(dialogResult == JOptionPane.YES_OPTION){
+					editHotelController.removeRoom(roomTypes.getSelectedIndex());
+					roomTypes.removeItemAt(roomTypes.getSelectedIndex());
+				}
+			}
+		});
+		deleteRoomBtn.setBounds(52, 170, 107, 25);
+		frame.getContentPane().add(deleteRoomBtn);
+		btns.add(deleteRoomBtn);
 	}
 }

@@ -97,10 +97,10 @@ public class SignInView {
 			if(signInController.checkProjManaget(mailField.getText(), String.valueOf(passwordField.getPassword())) == true)
 				frame.dispose();
 //HOTEL MANAGER
-			if(signInController.checkHotels(mailField.getText(), String.valueOf(passwordField.getPassword())) == true)
+			else if(signInController.checkHotels(mailField.getText(), String.valueOf(passwordField.getPassword())) == true)
 				frame.dispose();
 //checkUsers	
-			if(signInController.checkUsers(mailField.getText(), String.valueOf(passwordField.getPassword())) == true)
+			else if(signInController.checkUsers(mailField.getText(), String.valueOf(passwordField.getPassword())) == true)
 				frame.dispose();
 			errorLabel.setText("Empty / somthing worng!");
 		});

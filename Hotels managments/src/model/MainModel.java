@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import view.Order;
@@ -72,10 +73,13 @@ public class MainModel {
 			@Override
 		    public void actionPerformed(ActionEvent e) {
 				if (e.getSource() instanceof JButton) {
-					int index = Integer.parseInt(((JButton) e.getSource()).getName());
-						Order order = new Order(hotelDB.hotels.get(index), darkFlag);
-		           		order.runOrder(hotelDB.hotels.get(index), darkFlag);
-					System.out.println(index);
+					if(user.getFirstName() == null)
+						JOptionPane.showMessageDialog(null,"Sign in to order!"); // CREATES MASSAGE
+					else {
+						int index = Integer.parseInt(((JButton) e.getSource()).getName());
+						Order order = new Order(hotelDB.hotels.get(index), darkFlag, user);
+		           		order.runOrder(hotelDB.hotels.get(index), darkFlag, user);
+					}
 		        }
 			}
 		};

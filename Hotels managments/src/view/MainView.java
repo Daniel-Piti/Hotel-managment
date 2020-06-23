@@ -54,9 +54,18 @@ public class MainView {
 		setUI();
 		listeners();
 		mainController.loadHotelList(frame, btns, labels, panels);//HOTEL PANELS MANAGMENTS
+		frame.setBounds(100, 100, 549, getLen());
 		new DarkMode(0, frame, labels, btns, radioBtns, panels);
 	}
 
+	public int getLen() {
+		int len = panels.size() * 180;
+		if(len <= 180)
+			len = 300;
+		if(len >= 900)
+			len = 900;
+		return len;
+	}
 //Initialize the contents of the frame.
 	private void setUI() {
 		frame = new JFrame();
@@ -64,29 +73,29 @@ public class MainView {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		signInBtn.setBounds(410, 19, 110, 23);
+		signInBtn.setBounds(410, 83, 110, 23);
 		frame.getContentPane().add(signInBtn);
 		btns.add(signInBtn);
 		
-		signUpBtn.setBounds(410, 72, 110, 23);
+		signUpBtn.setBounds(410, 135, 110, 23);
 		frame.getContentPane().add(signUpBtn);
 		btns.add(signUpBtn);
 		
-		wellcome.setBounds(430, 153, 89, 44);
+		wellcome.setBounds(431, 31, 89, 44);
 		frame.getContentPane().add(wellcome);
 		labels.add(wellcome);
 		
-		disconnectBtn.setBounds(410, 129, 110, 23);
+		disconnectBtn.setBounds(410, 122, 110, 23);
 		frame.getContentPane().add(disconnectBtn);
 		disconnectBtn.setVisible(false);
 		btns.add(disconnectBtn);
 		
 		lightMode.setSelected(true);
-		lightMode.setBounds(417, 209, 155, 29);
+		lightMode.setBounds(410, 187, 155, 29);
 		frame.getContentPane().add(lightMode);
 		radioBtns.add(lightMode);
 		
-		darkModeRadio.setBounds(417, 273, 155, 29);
+		darkModeRadio.setBounds(410, 235, 155, 29);
 		frame.getContentPane().add(darkModeRadio);
 		radioBtns.add(darkModeRadio);
 }

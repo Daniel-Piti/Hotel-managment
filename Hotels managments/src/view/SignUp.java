@@ -265,7 +265,7 @@ public class SignUp {
 						 idField.getText(), gen, new String(passwordField.getPassword()), dayField.getSelectedIndex(),
 						 monthField.getSelectedIndex(), 2021 - yearField.getSelectedIndex()));
 				
-				wellcome.setText("Wellcome" + firstNameField.getText());
+				wellcome.setText("<html>Wellcome<br>" + firstNameField.getText()+"!<html>");
 				
 				signUpController.SetUser(firstNameField.getText(), lastNameField.getText(), phoneField.getText(), mailField.getText(),
 						 idField.getText(), gen, new String(passwordField.getPassword()), dayField.getSelectedIndex(),

@@ -6,9 +6,11 @@ import javax.swing.JComboBox;
 
 public class OrderModel {
 	public Hotel hotel;
+	private Customer user;
 	
-	public OrderModel(Hotel hotel) {
+	public OrderModel(Hotel hotel, Customer user) {
 		this.hotel = hotel;
+		this.user = user;
 	}
 
 	public void loadRooms(JComboBox<String> roomTypeCombo) {

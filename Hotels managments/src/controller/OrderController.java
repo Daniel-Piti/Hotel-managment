@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import model.Customer;
 import model.Hotel;
 import model.OrderModel;
 import model.Validation;
@@ -14,8 +15,8 @@ import model.Validation;
 public class OrderController {
 	public OrderModel orderModel;
 	
-	public OrderController(Hotel hotel) {
-		orderModel = new OrderModel(hotel);
+	public OrderController(Hotel hotel, Customer user) {
+		orderModel = new OrderModel(hotel, user);
 	}
 	
 	public String getHotelName() {

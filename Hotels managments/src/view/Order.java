@@ -16,8 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import controller.OrderController;
+import model.Customer;
 import model.DarkMode;
 import model.Hotel;
+import javax.swing.JScrollPane;
 
 public class Order {
 	private OrderController orderController;
@@ -57,10 +59,10 @@ public class Order {
 		private JButton priceBtn;
 
 //Launch the application.
-	public void runOrder(Hotel hotel, int dark) {
+	public void runOrder(Hotel hotel, int dark, Customer user) {
 		EventQueue.invokeLater(() -> {
 			try {
-				Order window = new Order(hotel, dark);
+				Order window = new Order(hotel, dark, user);
 				window.frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -69,8 +71,8 @@ public class Order {
 	}
 
 //Create the application.
-	public Order(Hotel hotel, int dark) {
-		orderController = new OrderController(hotel);
+	public Order(Hotel hotel, int dark, Customer user) {
+		orderController = new OrderController(hotel, user);
 		initialize();
 		new DarkMode(dark, frame, labels, btns, null, null);
 	}
@@ -252,22 +254,25 @@ public class Order {
 		});
 	}
 	
-	public void checkPrice() {
+	public boolean checkPrice() {
+	//if 2 days added
 		if(startMonth.getSelectedIndex() != 0 && startDay.getSelectedIndex() != 0 && startYear.getSelectedIndex() != 0 &&
 				   endMonth.getSelectedIndex() != 0 && endMonth.getSelectedIndex() != 0 && endMonth.getSelectedIndex() != 0) {
 			try {
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 				Date startDate = sdf.parse(String.valueOf(startMonth.getSelectedIndex()) +"/"+ String.valueOf(startDay.getSelectedIndex()) +"/"+String.valueOf(2019 + startYear.getSelectedIndex()));
 				Date endDate = sdf.parse(String.valueOf(endMonth.getSelectedIndex()) +"/"+ String.valueOf(endDay.getSelectedIndex()) +"/"+String.valueOf(2019 + endYear.getSelectedIndex()));
-				if(orderController.getDiff(startDate, endDate) > 0)
+				if(orderController.getDiff(startDate, endDate) > 0) {
 					totalPrice.setText(String.valueOf(orderController.getPrice(startDate, endDate, roomTypeCombo.getSelectedIndex())));
-				else
+					return true;
+				}else
 					totalPrice.setText("0");
 			}
 			catch(Exception e){
 			   	e.printStackTrace();
 			}
 		}
+		return false;
 	}
 	
 	public boolean placeOrder() {
@@ -301,11 +306,12 @@ public class Order {
 				else
 					totalPrice.setText("0");
 				
-			    if(orderController.validDiff(roomTypeError, startDateError, endDateError, checkError, roomTypeCombo.getSelectedIndex(), cur, startDate, endDate)) {
-					JOptionPane.showMessageDialog(null, "Your order have placed!"); // CREATES MASSAGE
-					orderController.placeOrder(roomTypeCombo.getSelectedIndex(),startDate, orderController.getDiff(startDate, endDate));
-				}
-			
+				if(flag == true)
+					if(orderController.validDiff(roomTypeError, startDateError, endDateError, checkError, roomTypeCombo.getSelectedIndex(), cur, startDate, endDate)) {
+						orderController.placeOrder(roomTypeCombo.getSelectedIndex(),startDate, orderController.getDiff(startDate, endDate));
+						JOptionPane.showMessageDialog(null, "Your order have placed!"); // CREATES MASSAGE
+					}
+				
 			}
 		    catch(Exception e){
 		    	e.printStackTrace();

@@ -7,15 +7,14 @@ import view.AddHotel;
 import view.EditHotel;
 
 public class SignInModel {
-	SignInModel signInModel;
-	Customer user;
-	UsersRepo customers;
-	HotelRepo hotelDB;
-	JButton inBtn;
-	JButton upBtn;
-	JButton disBtn;
-	JLabel wellcome;
-	int darkFlag;
+	private Customer user;
+	private UsersRepo customers;
+	private HotelRepo hotelDB;
+	private JButton inBtn;
+	private JButton upBtn;
+	private JButton disBtn;
+	private JLabel wellcome;
+	private int darkFlag;
 	
 	public SignInModel(JLabel wellcome, Customer user, UsersRepo users, HotelRepo hotels,JButton in, JButton up, JButton dis, int dark) {
 		this.wellcome = wellcome;
@@ -46,7 +45,7 @@ public class SignInModel {
 			upBtn.setVisible(false);
 			disBtn.setVisible(true);
 			user.duplicate("Hotel", "manager", null, null, null, true, null, 0, 0, 0);
-			wellcome.setText("<html>Hello " + ho.getName() + "<br>hotel manager!<html>");
+			wellcome.setText("<html>Hello" + ho.getName() + "<br>hotel manager!<html>");
 			return true;
 		}
 		return false;
@@ -59,7 +58,7 @@ public class SignInModel {
 		upBtn.setVisible(false);
 		disBtn.setVisible(true);
 		user.duplicate("Hotel", "manager", null, null, null, true, null, 0, 0, 0);
-		wellcome.setText("<html>Hello " + c.getFirstName());
+		wellcome.setText("<html>Hello<br>" + c.getFirstName()+ "!<html>");
 		return true;
 	}
 }

@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 import controller.EditHotelController;
 import model.DarkMode;
 import model.Hotel;
-import java.awt.event.ActionListener;
 
 public class EditHotel {
 	private EditHotelController editHotelController;

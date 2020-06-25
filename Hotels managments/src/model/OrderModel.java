@@ -28,5 +28,6 @@ public class OrderModel {
 	
 	public void addOrder(int index, Date startDate, int diff) { 
 		hotel.roomTypes.get(index).placeOrderDates(startDate, diff);
+		System.out.println(user.getFirstName());
 	}
 }

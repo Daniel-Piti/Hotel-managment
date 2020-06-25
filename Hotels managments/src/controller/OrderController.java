@@ -1,5 +1,6 @@
 package controller;
 import java.awt.Color;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -72,7 +73,7 @@ public class OrderController {
 			flag = false;
 		}
 		
-		//SET CURRENT DATE
+//SET CURRENT DATE
 		if(flag == true) {
 //START - CUR
 		    if(getDiff(cur, startDate) < 1) {
@@ -88,7 +89,7 @@ public class OrderController {
 			roomTypeError.setText("");
 	    	checkError.setText("");
 		    if(flag == true)
-		    	if(orderModel.checkAvalible(startDate, index, getDiff(startDate, endDate)) == false){
+		    	if(orderModel.checkAvalible(startDate, index, getDiff(startDate, endDate)) == false) {
 		    		flag = false;
 			    	checkError.setText("Dates not avalivale!");
 			    	checkError.setForeground(Color.red);
@@ -101,8 +102,52 @@ public class OrderController {
 		return flag;
 	}
 
+	public String checkPrice(String day1, String month1, String year1, String day2, String month2, String year2, int roomIndex) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date startDate = sdf.parse(month1 + "/" + day1 + "/" + year1);
+			Date endDate = sdf.parse(month2 + "/" + day2 + "/" + year2);
+			
+			if(getDiff(startDate, endDate) > 0) {
+				return String.valueOf(getPrice(startDate, endDate, roomIndex));
+			}else
+				return "0";
+		}
+		catch(Exception e){
+		   	e.printStackTrace();
+		}
+		return "Error";
+	}
 	
 	public void placeOrder(int index, Date startDate, int diff) {
 		orderModel.addOrder(index, startDate, diff);
+	}
+	
+	public boolean insertedDate(int month, int day, int year) {
+		if(day != 0 && month != 0 && year != 0)
+			return true;
+		return false;
+	}
+
+	public boolean priceOrderCheck(boolean flag, String day1, String month1, String year1, String day2, String month2, String year2, JLabel totalPrice, int index, JLabel roomTypeError, JLabel startDateError, JLabel endDateError, JLabel checkError) {
+		try {
+			LocalDateTime now = LocalDateTime.now();
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date cur = sdf.parse(String.valueOf(now.getMonthValue()) +'/'+String.valueOf(now.getDayOfMonth())+'/'+String.valueOf(now.getYear()));
+			Date startDate = sdf.parse(month1 +"/"+ day1 +"/" + year1);
+			Date endDate = sdf.parse(month2 +"/"+ day2 +"/"+ year2);
+			totalPrice.setText(checkPrice(day1, month1, year1,
+					day2,month2, year2, index));
+			
+			if(flag == true)
+				if(validDiff(roomTypeError, startDateError, endDateError, checkError, index, cur, startDate, endDate)) {
+					placeOrder(index,startDate, getDiff(startDate, endDate));
+					return true;
+				}
+		}
+	    catch(Exception e){
+	    	e.printStackTrace();
+	    }
+		return false;
 	}
 }

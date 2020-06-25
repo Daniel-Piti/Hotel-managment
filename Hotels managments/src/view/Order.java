@@ -3,11 +3,7 @@ package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -19,9 +15,8 @@ import controller.OrderController;
 import model.Customer;
 import model.DarkMode;
 import model.Hotel;
-import javax.swing.JScrollPane;
 
-public class Order {
+public class Order extends DarkMode {
 	private OrderController orderController;
 	private JFrame frame;
 	private JTextField cardNameField;
@@ -74,7 +69,7 @@ public class Order {
 	public Order(Hotel hotel, int dark, Customer user) {
 		orderController = new OrderController(hotel, user);
 		initialize();
-		new DarkMode(dark, frame, labels, btns, null, null);
+		setMode(dark, frame, labels, btns, null, null);
 	}
 
 //Initialize the contents of the frame.
@@ -236,7 +231,7 @@ public class Order {
 		labels.add(lblNewLabel);
 		
 		totalPrice = new JLabel("0");
-		totalPrice.setBounds(121, 180, 42, 14);
+		totalPrice.setBounds(111, 180, 58, 14);
 		frame.getContentPane().add(totalPrice);
 		labels.add(totalPrice);
 		
@@ -254,40 +249,28 @@ public class Order {
 		});
 	}
 	
-	public boolean checkPrice() {
-	//if 2 days added
-		if(startMonth.getSelectedIndex() != 0 && startDay.getSelectedIndex() != 0 && startYear.getSelectedIndex() != 0 &&
-				   endMonth.getSelectedIndex() != 0 && endMonth.getSelectedIndex() != 0 && endMonth.getSelectedIndex() != 0) {
-			try {
-				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-				Date startDate = sdf.parse(String.valueOf(startMonth.getSelectedIndex()) +"/"+ String.valueOf(startDay.getSelectedIndex()) +"/"+String.valueOf(2019 + startYear.getSelectedIndex()));
-				Date endDate = sdf.parse(String.valueOf(endMonth.getSelectedIndex()) +"/"+ String.valueOf(endDay.getSelectedIndex()) +"/"+String.valueOf(2019 + endYear.getSelectedIndex()));
-				if(orderController.getDiff(startDate, endDate) > 0) {
-					totalPrice.setText(String.valueOf(orderController.getPrice(startDate, endDate, roomTypeCombo.getSelectedIndex())));
-					return true;
-				}else
-					totalPrice.setText("0");
-			}
-			catch(Exception e){
-			   	e.printStackTrace();
-			}
+	public void checkPrice() {
+//if 2 days added
+		if(orderController.insertedDate(startMonth.getSelectedIndex(), startDay.getSelectedIndex(), startYear.getSelectedIndex()) &&
+				orderController.insertedDate(endMonth.getSelectedIndex(), endMonth.getSelectedIndex(), endMonth.getSelectedIndex())) {
+			totalPrice.setText(orderController.checkPrice(String.valueOf(startDay.getSelectedIndex()), String.valueOf(startMonth.getSelectedIndex()), String.valueOf(2019 + startYear.getSelectedIndex()),
+					String.valueOf(endDay.getSelectedIndex()), String.valueOf(endMonth.getSelectedIndex()), String.valueOf(2019 + endYear.getSelectedIndex()), roomTypeCombo.getSelectedIndex()));
 		}
-		return false;
 	}
 	
 	public boolean placeOrder() {
 		boolean flag = true;
 		cardError.setForeground(Color.red);
-		
+//VALID CARD
 		if(orderController.validCardNum(cardNameField.getText(), cvcField.getText(), cardMonth.getSelectedIndex(), 19 + cardYear.getSelectedIndex(), cardError) == false) {
 			flag = false;
 			cardError.setText("Invalid Card!");
 		}
 		else
 			cardError.setText("");
-		
-		if(startMonth.getSelectedIndex() == 0 || startDay.getSelectedIndex() == 0 || startYear.getSelectedIndex() == 0 ||
-				   endMonth.getSelectedIndex() == 0 || endMonth.getSelectedIndex() == 0 || endMonth.getSelectedIndex() == 0)
+//INSERT DATE
+		if(orderController.insertedDate(startMonth.getSelectedIndex(), startDay.getSelectedIndex(), startYear.getSelectedIndex()) == false ||
+				orderController.insertedDate(endMonth.getSelectedIndex(), endMonth.getSelectedIndex(), endMonth.getSelectedIndex()) == false)
 			endDateError.setText("Enter dates");
 		else {
 			if(orderController.checkDate(startDay.getSelectedIndex(), startMonth.getSelectedIndex(), startYear.getSelectedIndex(), startDateError) == false)
@@ -295,27 +278,9 @@ public class Order {
 			if(orderController.checkDate(endDay.getSelectedIndex(), endMonth.getSelectedIndex(), endYear.getSelectedIndex(), endDateError) == false)
 				flag = false;
 			
-			try {
-				LocalDateTime now = LocalDateTime.now();
-				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-				Date cur = sdf.parse(String.valueOf(now.getMonthValue()) +'/'+String.valueOf(now.getDayOfMonth())+'/'+String.valueOf(now.getYear()));
-				Date startDate = sdf.parse(String.valueOf(startMonth.getSelectedIndex()) +"/"+ String.valueOf(startDay.getSelectedIndex()) +"/"+String.valueOf(2019 + startYear.getSelectedIndex()));
-				Date endDate = sdf.parse(String.valueOf(endMonth.getSelectedIndex()) +"/"+ String.valueOf(endDay.getSelectedIndex()) +"/"+String.valueOf(2019 + endYear.getSelectedIndex()));
-				if(orderController.getDiff(startDate, endDate) > 0)
-					totalPrice.setText(String.valueOf(orderController.getPrice(startDate, endDate, roomTypeCombo.getSelectedIndex())));
-				else
-					totalPrice.setText("0");
-				
-				if(flag == true)
-					if(orderController.validDiff(roomTypeError, startDateError, endDateError, checkError, roomTypeCombo.getSelectedIndex(), cur, startDate, endDate)) {
-						orderController.placeOrder(roomTypeCombo.getSelectedIndex(),startDate, orderController.getDiff(startDate, endDate));
-						JOptionPane.showMessageDialog(null, "Your order have placed!"); // CREATES MASSAGE
-					}
-				
-			}
-		    catch(Exception e){
-		    	e.printStackTrace();
-		    }
+			if(orderController.priceOrderCheck(flag,String.valueOf(startDay.getSelectedIndex()), String.valueOf(startMonth.getSelectedIndex()), String.valueOf(2019 + startYear.getSelectedIndex()),
+					String.valueOf(endDay.getSelectedIndex()), String.valueOf(endMonth.getSelectedIndex()), String.valueOf(2019 + endYear.getSelectedIndex()), totalPrice, roomTypeCombo.getSelectedIndex(), roomTypeError, startDateError, endDateError, checkError))
+				JOptionPane.showMessageDialog(null, "Your order have placed!"); // CREATES MASSAGE
 		}
 		return flag;
 	}

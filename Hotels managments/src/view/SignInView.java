@@ -17,7 +17,7 @@ import model.HotelRepo;
 import model.UsersRepo;
 import java.awt.event.ActionEvent;
 
-public class SignInView {
+public class SignInView extends DarkMode {
 
 	protected static final UsersRepo UsersRepo = null;
 	private SignInController signInController;
@@ -49,7 +49,7 @@ public class SignInView {
 		signInController = new SignInController(wellcome, user, users, hotels, in, up, dis, darkFlag);
 		initialize();
 		dark = darkFlag;
-		new DarkMode(dark, frame, labels, btns, null, null);
+		setMode(dark, frame, labels, btns, null, null);
 		frame.getContentPane().setLayout(null);
 		listeners();
 	}

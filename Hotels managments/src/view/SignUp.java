@@ -20,7 +20,7 @@ import model.DarkMode;
 import model.HotelRepo;
 import model.UsersRepo;
 
-public class SignUp {
+public class SignUp extends DarkMode {
 	private SignUpController signUpController;
 //BUTTONS
 	public ArrayList<JButton> btns = new ArrayList<JButton>();
@@ -80,7 +80,7 @@ public class SignUp {
 		this.startDis = disconnectBtn;
 		initialize();
 		btnsEvents();
-		new DarkMode(darkFlag, frame, labels, btns, radioBtns, null);
+		setMode(darkFlag, frame, labels, btns, radioBtns, null);
 	}
 
 //Initialize the contents of the frame.
@@ -238,7 +238,6 @@ public class SignUp {
 		frame.getContentPane().add(monthField);
 	}
 
-	
 	private void btnsEvents() {
 //RADIO MALE
 		maleRadio.addActionListener((ActionEvent arg0) -> {
@@ -268,8 +267,8 @@ public class SignUp {
 				wellcome.setText("<html>Wellcome<br>" + firstNameField.getText()+"!<html>");
 				
 				signUpController.SetUser(firstNameField.getText(), lastNameField.getText(), phoneField.getText(), mailField.getText(),
-						 idField.getText(), gen, new String(passwordField.getPassword()), dayField.getSelectedIndex(),
-						 monthField.getSelectedIndex(), 2021 - yearField.getSelectedIndex());
+						idField.getText(), gen, new String(passwordField.getPassword()), dayField.getSelectedIndex(),
+						monthField.getSelectedIndex(), 2021 - yearField.getSelectedIndex());
 
 				JOptionPane.showMessageDialog(null, firstNameField.getText() + " thank you for register!"); // CREATES MASSAGE
 				startDis.setVisible(true);

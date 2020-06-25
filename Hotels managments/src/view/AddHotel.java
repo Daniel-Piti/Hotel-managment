@@ -18,7 +18,7 @@ import model.DarkMode;
 import model.HotelRepo;
 import model.UsersRepo;
 
-public class AddHotel {
+public class AddHotel extends DarkMode {
 	private JFrame frame;
 	
 	private JTextField hotelNameField;
@@ -63,7 +63,7 @@ public class AddHotel {
 		addHotelController = new AddHotelController(hotelsDB, users);
 		initialize();
 		listeners();
-		new DarkMode(darkFlag, frame, labels, btns, null, null);
+		setMode(darkFlag, frame, labels, btns, null, null);
 	}
 
 //Initialize the contents of the frame.

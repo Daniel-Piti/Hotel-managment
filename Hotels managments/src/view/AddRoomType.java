@@ -16,10 +16,10 @@ import controller.AddRoomTypeController;
 import model.DarkMode;
 import model.Hotel;
 
-public class AddRoomType {
+public class AddRoomType extends DarkMode {
 	
 	private AddRoomTypeController addRoomController;
-	private JFrame frame;
+	private JFrame frame; 
 	private JTextField capacityField;
 	private JTextField priceField;
 	private JTextField sizeField;
@@ -56,8 +56,7 @@ public class AddRoomType {
 		this.roomTypes = roomTypes;
 		addRoomController = new AddRoomTypeController(hotel);
 		initialize();
-		
-		new DarkMode(darkFlag, frame, labels, btns, null, null);
+		setMode(darkFlag, frame, labels, btns, null, null);
 	}
 
 //Initialize the contents of the frame.

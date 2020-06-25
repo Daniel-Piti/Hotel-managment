@@ -17,7 +17,7 @@ import controller.EditHotelController;
 import model.DarkMode;
 import model.Hotel;
 
-public class EditHotel {
+public class EditHotel extends DarkMode {
 	private EditHotelController editHotelController;
 	private JFrame frame;
 	private JTextField nameField;
@@ -51,7 +51,7 @@ public class EditHotel {
 		editHotelController = new EditHotelController(h);
 		initialize();
 		listener();
-		new DarkMode(dark, frame, labels, btns, null, null);
+		setMode(dark, frame, labels, btns, null, null);
 	}
 
 //Initialize the contents of the frame.

@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
-public class MainView {
+public class MainView extends DarkMode {
 	private MainController mainController;
 	
 	private JFrame frame;
@@ -55,7 +55,7 @@ public class MainView {
 		listeners();
 		mainController.loadHotelList(frame, btns, labels, panels);//HOTEL PANELS MANAGMENTS
 		frame.setBounds(100, 100, 549, getLen());
-		new DarkMode(0, frame, labels, btns, radioBtns, panels);
+		setMode(0, frame, labels, btns, radioBtns, panels);
 	}
 
 	public int getLen() {
@@ -123,7 +123,7 @@ public class MainView {
 	//Dark radio
 		darkModeRadio.addActionListener((ActionEvent e) -> {
 			if(darkFlag == 0) {
-				new DarkMode(1, frame, labels, btns, radioBtns, panels);
+				setMode(1, frame, labels, btns, radioBtns, panels);
 				darkModeRadio.setSelected(true);
 				lightMode.setSelected(false);
 				mainController.setDarkFlag(1);
@@ -134,7 +134,7 @@ public class MainView {
 	//Light radio
 		lightMode.addActionListener((ActionEvent e) -> {
 			if(darkFlag == 1) {
-				new DarkMode(0, frame, labels, btns, radioBtns, panels);
+				setMode(0, frame, labels, btns, radioBtns, panels);
 				darkModeRadio.setSelected(false);
 				lightMode.setSelected(true);
 				mainController.setDarkFlag(0);

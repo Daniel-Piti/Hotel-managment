@@ -34,7 +34,7 @@ public class HotelRepo {
 //		try{
 //			hotels.get(0).roomTypes.get(0).calender.put(new SimpleDateFormat("yyyy-MM-dd").parse("2020-09-08"), 1);
 //		}catch (Exception e) {
-//			System.out.println("shit");
+//			System.out.println("NOP");
 //		}
 //		System.out.println(hotels.get(0).roomTypes.get(0).calender.size());
 
@@ -43,11 +43,8 @@ public class HotelRepo {
 			{
 				for(Iterator<Entry<Date, Integer>> it = hotels.get(i).roomTypes.get(j).calender.entrySet().iterator(); it.hasNext(); ) {
 				    Entry<Date, Integer> entry = it.next();
-				    System.out.println(entry.getKey() + " - " + entry.getValue());
-				    if(entry.getKey().before(prev)) {
+				    if(entry.getKey().before(prev))
 				        it.remove();
-
-				    }
 			}
 		}
 		System.out.println("unnseesery data deleted");

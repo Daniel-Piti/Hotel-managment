@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import view.MyOrders;
 import view.Order;
 import view.SignInView;
 import view.SignUp;
@@ -63,9 +64,9 @@ public class MainModel {
 		hotelDB.fixHotelsDates(prev);
 	}
 	
-	public void runSignIn(JLabel wellcome, JButton in, JButton up, JButton dis) {
-		SignInView signIn = new SignInView(darkFlag, wellcome, user, customers, hotelDB, in, up, dis);
-		signIn.runSignIn(darkFlag, wellcome, user, customers, hotelDB, in, up, dis);
+	public void runSignIn(JLabel wellcome, JButton in, JButton up, JButton dis, JButton myOrders) {
+		SignInView signIn = new SignInView(darkFlag, wellcome, user, customers, hotelDB, in, up, dis, myOrders);
+		signIn.runSignIn(darkFlag, wellcome, user, customers, hotelDB, in, up, dis, myOrders, myOrders);
 	}
 
 	public void setHotelList(JFrame frame, ArrayList<JButton> btns, ArrayList<JLabel> labels, ArrayList<JPanel> panels) {
@@ -73,12 +74,12 @@ public class MainModel {
 			@Override
 		    public void actionPerformed(ActionEvent e) {
 				if (e.getSource() instanceof JButton) {
-					if(user.getFirstName() == null)
-						JOptionPane.showMessageDialog(null,"Sign in to order!"); // CREATES MASSAGE
+					if(user.getEmail() == null)
+						JOptionPane.showMessageDialog(null,"Sign in as a customer to order!"); // CREATES MASSAGE
 					else {
 						int index = Integer.parseInt(((JButton) e.getSource()).getName());
-						Order order = new Order(hotelDB.hotels.get(index), darkFlag, user);
-		           		order.runOrder(hotelDB.hotels.get(index), darkFlag, user);
+						Order order = new Order(hotelDB.hotels.get(index), darkFlag, user, customers);
+		           		order.runOrder(hotelDB.hotels.get(index), darkFlag, user, customers);
 					}
 		        }
 			}
@@ -121,8 +122,13 @@ public class MainModel {
 		user.duplicate(null, null, null, null, null, false, null, 0, 0, 0);
 	}
 
-	public void runSignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn) {
-		SignUp signUp = new SignUp(darkFlag,wellcome, customers, hotelDB, signInBtn, signUpBtn, disconnectBtn, user);
-		signUp.runSignUp(darkFlag,wellcome, customers, hotelDB, signInBtn, signUpBtn, disconnectBtn, user);
+	public void runSignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, JButton myOrders) {
+		SignUp signUp = new SignUp(darkFlag,wellcome, customers, hotelDB, signInBtn, signUpBtn, disconnectBtn, user, myOrders);
+		signUp.runSignUp(darkFlag,wellcome, customers, hotelDB, signInBtn, signUpBtn, disconnectBtn, user, myOrders);
+	}
+
+	public void runMyOrders() {
+		MyOrders myOrders = new MyOrders(darkFlag, user);
+		myOrders.runMyOrders(darkFlag, customers.find(user.email));
 	}
 }

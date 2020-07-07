@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Customer extends Person implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -12,9 +13,12 @@ public class Customer extends Person implements Serializable {
 	}
 	
 	
-	
 	public Customer(Customer temp) {
 		super(temp.getFirstName(), temp.getLastName(), temp.getPhone(), temp.getEmail(), temp.getID(), temp.getGender(), temp.getPass(), temp.getDay(), temp.getMonth(), temp.getYear());
+	}
+	
+	public void addReservasion(String hotelName, String roomTypeName, int nights, double totalPrice, Date startDate) {
+		reservations.add(new Reservation(hotelName, roomTypeName, nights, totalPrice, startDate));
 	}
 
 	@Override

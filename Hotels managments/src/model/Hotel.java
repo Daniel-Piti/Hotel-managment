@@ -29,6 +29,7 @@ public class Hotel implements Serializable {
 		roomTypes.add(new RoomType(typeName ,capacity, price, size, amount));
 	}
 	
+	
 	public String getMail() {
 		return this.mail;
 	}

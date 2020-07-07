@@ -13,10 +13,11 @@ public class SignInModel {
 	private JButton inBtn;
 	private JButton upBtn;
 	private JButton disBtn;
+	private JButton myOrders;
 	private JLabel wellcome;
 	private int darkFlag;
 	
-	public SignInModel(JLabel wellcome, Customer user, UsersRepo users, HotelRepo hotels,JButton in, JButton up, JButton dis, int dark) {
+	public SignInModel(JLabel wellcome, Customer user, UsersRepo users, HotelRepo hotels,JButton in, JButton up, JButton dis, int dark, JButton myOrders) {
 		this.wellcome = wellcome;
 		this.user = user;
 		customers = users;
@@ -25,6 +26,7 @@ public class SignInModel {
 		upBtn = up;
 		disBtn = dis;
 		darkFlag = dark;
+		this.myOrders = myOrders;
 	}
 	public void runAddHotel() {
 		AddHotel addHotel = new AddHotel(hotelDB, customers, darkFlag);
@@ -57,7 +59,8 @@ public class SignInModel {
 		inBtn.setVisible(false);
 		upBtn.setVisible(false);
 		disBtn.setVisible(true);
-		user.duplicate("Hotel", "manager", null, null, null, true, null, 0, 0, 0);
+		myOrders.setVisible(true);
+		user.duplicate(c.getFirstName(), c.getLastName(), c.getPhone(), c.getEmail(), c.getID(), true, c.getPass(), 0, 0, 0);
 		wellcome.setText("<html>Hello<br>" + c.getFirstName()+ "!<html>");
 		return true;
 	}

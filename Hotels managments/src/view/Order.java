@@ -15,6 +15,7 @@ import controller.OrderController;
 import model.Customer;
 import model.DarkMode;
 import model.Hotel;
+import model.UsersRepo;
 
 public class Order extends DarkMode {
 	private OrderController orderController;
@@ -54,10 +55,10 @@ public class Order extends DarkMode {
 		private JButton priceBtn;
 
 //Launch the application.
-	public void runOrder(Hotel hotel, int dark, Customer user) {
+	public void runOrder(Hotel hotel, int dark, Customer user, UsersRepo customers) {
 		EventQueue.invokeLater(() -> {
 			try {
-				Order window = new Order(hotel, dark, user);
+				Order window = new Order(hotel, dark, user, customers);
 				window.frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -66,8 +67,8 @@ public class Order extends DarkMode {
 	}
 
 //Create the application.
-	public Order(Hotel hotel, int dark, Customer user) {
-		orderController = new OrderController(hotel, user);
+	public Order(Hotel hotel, int dark, Customer user, UsersRepo customers) {
+		orderController = new OrderController(hotel, user, customers);
 		initialize();
 		setMode(dark, frame, labels, btns, null, null);
 	}
@@ -230,7 +231,7 @@ public class Order extends DarkMode {
 		frame.getContentPane().add(lblNewLabel);
 		labels.add(lblNewLabel);
 		
-		totalPrice = new JLabel("0");
+		totalPrice = new JLabel("0 $");
 		totalPrice.setBounds(111, 180, 58, 14);
 		frame.getContentPane().add(totalPrice);
 		labels.add(totalPrice);
@@ -272,16 +273,14 @@ public class Order extends DarkMode {
 		if(orderController.insertedDate(startMonth.getSelectedIndex(), startDay.getSelectedIndex(), startYear.getSelectedIndex()) == false ||
 				orderController.insertedDate(endMonth.getSelectedIndex(), endMonth.getSelectedIndex(), endMonth.getSelectedIndex()) == false)
 			endDateError.setText("Enter dates");
-		else {
-			if(orderController.checkDate(startDay.getSelectedIndex(), startMonth.getSelectedIndex(), startYear.getSelectedIndex(), startDateError) == false)
-				flag = false;
-			if(orderController.checkDate(endDay.getSelectedIndex(), endMonth.getSelectedIndex(), endYear.getSelectedIndex(), endDateError) == false)
-				flag = false;
-			
+		if(orderController.checkDate(startDay.getSelectedIndex(), startMonth.getSelectedIndex(), startYear.getSelectedIndex(), startDateError) == false)
+			flag = false;
+		if(orderController.checkDate(endDay.getSelectedIndex(), endMonth.getSelectedIndex(), endYear.getSelectedIndex(), endDateError) == false)
+			flag = false;
+		if(flag)
 			if(orderController.priceOrderCheck(flag,String.valueOf(startDay.getSelectedIndex()), String.valueOf(startMonth.getSelectedIndex()), String.valueOf(2019 + startYear.getSelectedIndex()),
 					String.valueOf(endDay.getSelectedIndex()), String.valueOf(endMonth.getSelectedIndex()), String.valueOf(2019 + endYear.getSelectedIndex()), totalPrice, roomTypeCombo.getSelectedIndex(), roomTypeError, startDateError, endDateError, checkError))
 				JOptionPane.showMessageDialog(null, "Your order have placed!"); // CREATES MASSAGE
-		}
 		return flag;
 	}
 }

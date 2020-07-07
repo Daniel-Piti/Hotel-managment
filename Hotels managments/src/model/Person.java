@@ -1,11 +1,12 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public abstract class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected  String firstName;
+	protected String firstName;
 	protected String lastName;
 	protected String phoneNumber;
 	protected String email;
@@ -13,6 +14,7 @@ public abstract class Person implements Serializable {
 	protected String password;
 	protected MyDate bday;
 	protected boolean gender;
+	protected ArrayList<Reservation> reservations;
 
 	public Person(String firstName, String lastName, String phoneNumber,
 			  String email, String ID, boolean gender,
@@ -24,7 +26,8 @@ public abstract class Person implements Serializable {
 		this.publicID = ID;
 		this.gender = gender;
 		this.password = password;
-		bday = new MyDate(d, m, y);
+		this.bday = new MyDate(d, m, y);
+		this.reservations = new ArrayList<Reservation>();
 	}
 	public void duplicate(String firstName, String lastName, String phoneNumber,
 			  String email, String ID, boolean gender,
@@ -73,6 +76,9 @@ public abstract class Person implements Serializable {
 	}
 	public int getYear() {
 		return bday.year;
+	}
+	public ArrayList<Reservation> getReservation() {
+		return reservations;
 	}
 	
 	public void updateProfile(String phoneNumber, String email, String password) {

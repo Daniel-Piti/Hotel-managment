@@ -58,12 +58,13 @@ public class SignUp extends DarkMode {
 	private JButton startIn;
 	private JButton startUp;
 	private JButton startDis;
+	private JButton myOrders;
 	
 //Launch the application.
-	public void runSignUp(int darkFlag, JLabel wellcome, UsersRepo customers, HotelRepo hotelDB, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user) {
+	public void runSignUp(int darkFlag, JLabel wellcome, UsersRepo customers, HotelRepo hotelDB, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user, JButton myOrders) {
 		EventQueue.invokeLater(() -> {
 			try {
-				SignUp window = new SignUp(darkFlag, wellcome, customers, hotelDB, signInBtn, signUpBtn, disconnectBtn, user);
+				SignUp window = new SignUp(darkFlag, wellcome, customers, hotelDB, signInBtn, signUpBtn, disconnectBtn, user, myOrders);
 				window.frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -72,12 +73,13 @@ public class SignUp extends DarkMode {
 	}
 
 //Create the application.
-	public SignUp(int darkFlag, JLabel wellcome, UsersRepo customers, HotelRepo hotelDB, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user) {
+	public SignUp(int darkFlag, JLabel wellcome, UsersRepo customers, HotelRepo hotelDB, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user, JButton myOrders) {
 		signUpController = new SignUpController(customers, hotelDB, user);
 		this.wellcome = wellcome;
 		this.startIn = signInBtn;
 		this.startUp= signUpBtn;
 		this.startDis = disconnectBtn;
+		this.myOrders = myOrders;
 		initialize();
 		btnsEvents();
 		setMode(darkFlag, frame, labels, btns, radioBtns, null);
@@ -274,6 +276,7 @@ public class SignUp extends DarkMode {
 				startDis.setVisible(true);
 				startUp.setVisible(false);
 				startIn.setVisible(false);
+				myOrders.setVisible(true);
 				frame.dispose();
 					}
 				});

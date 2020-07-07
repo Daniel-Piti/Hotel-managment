@@ -19,10 +19,11 @@ public class MainView extends DarkMode {
 	private MainController mainController;
 	
 	private JFrame frame;
-	private JButton signInBtn = new JButton("\u05D4\u05EA\u05D7\u05D1\u05E8\u05D5\u05EA");		
-	private JButton signUpBtn = new JButton("\u05D4\u05E8\u05E9\u05DE\u05D4");
+	private JButton signInBtn = new JButton("Sign in");		
+	private JButton signUpBtn = new JButton("Sign up");
 	private JLabel wellcome = new JLabel("Hello guest !");
-	private JButton disconnectBtn = new JButton("\u05D4\u05EA\u05E0\u05EA\u05E7");
+	private JButton disconnectBtn = new JButton("Disconnect");
+	private JButton myOrders = new JButton();
 	private JRadioButton darkModeRadio = new JRadioButton("Dark mode");		
 	private JRadioButton lightMode = new JRadioButton("Light mode");
 //DarkFlag
@@ -61,7 +62,7 @@ public class MainView extends DarkMode {
 	public int getLen() {
 		int len = panels.size() * 180;
 		if(len <= 180)
-			len = 300;
+			len = 400;
 		if(len >= 900)
 			len = 900;
 		return len;
@@ -69,7 +70,7 @@ public class MainView extends DarkMode {
 //Initialize the contents of the frame.
 	private void setUI() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 549, 382);
+		frame.setBounds(100, 100, 555, 319);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -81,6 +82,12 @@ public class MainView extends DarkMode {
 		frame.getContentPane().add(signUpBtn);
 		btns.add(signUpBtn);
 		
+		myOrders.setBounds(410, 190, 110, 23);
+		myOrders.setText("My orders");
+		myOrders.setVisible(false);
+		frame.getContentPane().add(myOrders);
+		btns.add(myOrders);
+		
 		wellcome.setBounds(431, 31, 89, 44);
 		frame.getContentPane().add(wellcome);
 		labels.add(wellcome);
@@ -91,11 +98,11 @@ public class MainView extends DarkMode {
 		btns.add(disconnectBtn);
 		
 		lightMode.setSelected(true);
-		lightMode.setBounds(410, 187, 155, 29);
+		lightMode.setBounds(410, 235, 155, 29);
 		frame.getContentPane().add(lightMode);
 		radioBtns.add(lightMode);
 		
-		darkModeRadio.setBounds(410, 235, 155, 29);
+		darkModeRadio.setBounds(410, 285, 155, 29);
 		frame.getContentPane().add(darkModeRadio);
 		radioBtns.add(darkModeRadio);
 }
@@ -104,12 +111,16 @@ public class MainView extends DarkMode {
 	public void listeners() {
 	//Sign in
 		signInBtn.addActionListener((ActionEvent e) -> {
-			mainController.loadSignIn(wellcome, signInBtn, signUpBtn, disconnectBtn);
+			mainController.loadSignIn(wellcome, signInBtn, signUpBtn, disconnectBtn, myOrders);
 		});
 	//Sign up
 		signUpBtn.addActionListener((ActionEvent e) -> {
-			mainController.loadSignUp(wellcome, signInBtn, signUpBtn, disconnectBtn);
+			mainController.loadSignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, myOrders);
 		});
+	//My orders
+	myOrders.addActionListener((ActionEvent e) -> {
+		mainController.loadMyOrders();
+	});
 	//Disconnect
 		disconnectBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -118,6 +129,7 @@ public class MainView extends DarkMode {
 				signInBtn.setVisible(true);
 				signUpBtn.setVisible(true);
 				disconnectBtn.setVisible(false);
+				myOrders.setVisible(false);
 			}
 		});
 	//Dark radio

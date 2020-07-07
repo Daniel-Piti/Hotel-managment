@@ -11,13 +11,14 @@ import javax.swing.JLabel;
 import model.Customer;
 import model.Hotel;
 import model.OrderModel;
+import model.UsersRepo;
 import model.Validation;
 
 public class OrderController {
 	public OrderModel orderModel;
 	
-	public OrderController(Hotel hotel, Customer user) {
-		orderModel = new OrderModel(hotel, user);
+	public OrderController(Hotel hotel, Customer user, UsersRepo customers) {
+		orderModel = new OrderModel(hotel, user, customers);
 	}
 	
 	public String getHotelName() {
@@ -109,9 +110,9 @@ public class OrderController {
 			Date endDate = sdf.parse(month2 + "/" + day2 + "/" + year2);
 			
 			if(getDiff(startDate, endDate) > 0) {
-				return String.valueOf(getPrice(startDate, endDate, roomIndex));
+				return String.valueOf(getPrice(startDate, endDate, roomIndex) + "$");
 			}else
-				return "0";
+				return "0 $";
 		}
 		catch(Exception e){
 		   	e.printStackTrace();
@@ -121,6 +122,7 @@ public class OrderController {
 	
 	public void placeOrder(int index, Date startDate, int diff) {
 		orderModel.addOrder(index, startDate, diff);
+		orderModel.addReservation(index, diff, startDate);
 	}
 	
 	public boolean insertedDate(int month, int day, int year) {
@@ -136,8 +138,7 @@ public class OrderController {
 			Date cur = sdf.parse(String.valueOf(now.getMonthValue()) +'/'+String.valueOf(now.getDayOfMonth())+'/'+String.valueOf(now.getYear()));
 			Date startDate = sdf.parse(month1 +"/"+ day1 +"/" + year1);
 			Date endDate = sdf.parse(month2 +"/"+ day2 +"/"+ year2);
-			totalPrice.setText(checkPrice(day1, month1, year1,
-					day2,month2, year2, index));
+			totalPrice.setText(checkPrice(day1, month1, year1, day2,month2, year2, index));
 			
 			if(flag == true)
 				if(validDiff(roomTypeError, startDateError, endDateError, checkError, index, cur, startDate, endDate)) {

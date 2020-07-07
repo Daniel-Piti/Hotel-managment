@@ -33,10 +33,10 @@ public class SignInView extends DarkMode {
 	public ArrayList<JLabel> labels = new ArrayList<JLabel>();
 
 //Launch the application.
-	public void runSignIn(int darkFlag,JLabel wellcome, Customer user, UsersRepo customers, HotelRepo hotelDB, JButton in, JButton up, JButton dis){
+	public void runSignIn(int darkFlag,JLabel wellcome, Customer user, UsersRepo customers, HotelRepo hotelDB, JButton in, JButton up, JButton dis, JButton myOrders, JButton myOrders2){
 		EventQueue.invokeLater(()->{
 				try {
-					SignInView window = new SignInView(darkFlag, wellcome, user, customers, hotelDB, in, up, dis);
+					SignInView window = new SignInView(darkFlag, wellcome, user, customers, hotelDB, in, up, dis, myOrders);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,8 +45,8 @@ public class SignInView extends DarkMode {
 	}
 
 //Create the application.
-	public SignInView(int darkFlag, JLabel wellcome, Customer user, UsersRepo users, HotelRepo hotels,JButton in, JButton up, JButton dis) {
-		signInController = new SignInController(wellcome, user, users, hotels, in, up, dis, darkFlag);
+	public SignInView(int darkFlag, JLabel wellcome, Customer user, UsersRepo users, HotelRepo hotels,JButton in, JButton up, JButton dis, JButton myOrders) {
+		signInController = new SignInController(wellcome, user, users, hotels, in, up, dis, darkFlag, myOrders);
 		initialize();
 		dark = darkFlag;
 		setMode(dark, frame, labels, btns, null, null);

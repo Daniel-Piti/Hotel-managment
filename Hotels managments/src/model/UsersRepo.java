@@ -11,7 +11,6 @@ public class UsersRepo {
 	
 	private static UsersRepo single_instance=null;
 	
-	
 	private String filename;
 	private HashMap<String, Customer> members;
 	

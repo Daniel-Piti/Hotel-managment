@@ -18,7 +18,7 @@ public class MyOrdersController {
 		myOrdersModel = new MyOrdersModel(user);
 	}
 	
-	public void setPanels(JFrame frame, ArrayList<JLabel> labels, ArrayList<JPanel> panels) {
-		myOrdersModel.setHotelList(frame, labels, panels);
+	public void setPanels(JFrame frame, ArrayList<JLabel> labels, ArrayList<JPanel> panels, ArrayList<JButton> btns) {
+		myOrdersModel.setHotelList(frame, labels, panels, btns);
 	}
 }

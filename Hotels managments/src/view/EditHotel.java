@@ -10,10 +10,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.EditHotelController;
+import model.DarkFlag;
 import model.DarkMode;
 import model.Hotel;
 
@@ -23,10 +23,8 @@ public class EditHotel extends DarkMode {
 	private JTextField nameField;
 	private JTextField addressField;
 	private JTextField phoneField;
-	private JPasswordField passwordField;
 	private JButton addRoomTypeBtn;
 	private JButton editBtn;
-	private int darkFlag;
 	private JComboBox<String> roomTypes;
 //BUTTONS
 	public ArrayList<JButton> btns = new ArrayList<JButton>();
@@ -34,10 +32,10 @@ public class EditHotel extends DarkMode {
 	public ArrayList<JLabel> labels = new ArrayList<JLabel>();	
 
 //Launch the application.
-	public void runEditHotel(Hotel h, int dark) {
+	public void runEditHotel(Hotel h) {
 		EventQueue.invokeLater(()-> {
 			try {
-				EditHotel window = new EditHotel(h, dark);
+				EditHotel window = new EditHotel(h);
 				window.frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -46,22 +44,21 @@ public class EditHotel extends DarkMode {
 	}
 
 //Create the application.
-	public EditHotel(Hotel h, int dark) {
-		darkFlag = dark;
+	public EditHotel(Hotel h) {
 		editHotelController = new EditHotelController(h);
 		initialize();
 		listener();
-		setMode(dark, frame, labels, btns, null, null);
+		setMode(DarkFlag.getInstance(), frame, labels, btns, null, null);
 	}
 
 //Initialize the contents of the frame.
 	private void listener() {
 		addRoomTypeBtn.addActionListener((ActionEvent arg0) -> {
-			editHotelController.loadAddRoomType(roomTypes ,darkFlag);
+			editHotelController.loadAddRoomType(roomTypes);
 		});
 		
 		editBtn.addActionListener((ActionEvent arg0) -> {
-			editHotelController.editHotelModel.hotel.editHotel(nameField.getText(), addressField.getText(), phoneField.getText(), String.valueOf(passwordField.getPassword()));
+			editHotelController.editHotelModel.hotel.editHotel(nameField.getText(), addressField.getText(), phoneField.getText());
 			JOptionPane.showMessageDialog(null, "Hotel editted successfuly");
 		});
 	}
@@ -87,11 +84,6 @@ public class EditHotel extends DarkMode {
 		frame.getContentPane().add(phoneTitle);
 		labels.add(phoneTitle);
 		
-		JLabel passwordTitle = new JLabel("\u05E1\u05D9\u05E1\u05DE\u05D0 :");
-		passwordTitle.setBounds(325, 249, 74, 14);
-		frame.getContentPane().add(passwordTitle);
-		labels.add(passwordTitle);
-		
 		nameField = new JTextField();
 		nameField.setBounds(229, 71, 86, 20);
 		frame.getContentPane().add(nameField);
@@ -106,10 +98,6 @@ public class EditHotel extends DarkMode {
 		phoneField.setColumns(10);
 		phoneField.setBounds(229, 187, 86, 20);
 		frame.getContentPane().add(phoneField);
-		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(229, 246, 86, 20);
-		frame.getContentPane().add(passwordField);
 		
 		JLabel passwordError = new JLabel("");
 		passwordError.setBounds(229, 283, 86, 14);
@@ -134,10 +122,8 @@ public class EditHotel extends DarkMode {
 		
 		editBtn = new JButton("\u05E2\u05D3\u05DB\u05DF");
 		btns.add(editBtn);
-		editBtn.setBounds(59, 274, 89, 23);
+		editBtn.setBounds(59, 274, 298, 23);
 		frame.getContentPane().add(editBtn);
-		
-		editHotelController.loadFields(nameField, addressField, phoneField, passwordField);
 		
 		JLabel title = new JLabel("\u05E2\u05E8\u05D9\u05DB\u05EA \u05DE\u05DC\u05D5\u05DF :");
 		title.setBounds(169, 23, 79, 14);

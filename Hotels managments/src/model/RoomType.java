@@ -42,6 +42,20 @@ public class RoomType implements Serializable {
 		return true;
 	}
 	
+	public void cancleOrder(Date d, int nights) {
+		Calendar c = Calendar.getInstance(); 
+		for(int i = 0; i < nights; i++) {
+			if(calender.get(d) == 1)
+				calender.remove(d);
+			else
+				calender.put(d, calender.get(d) - 1);
+			System.out.println("deleted on - " + d);
+			c.setTime(d); 
+			c.add(Calendar.DATE, 1);
+			d = c.getTime();
+		}
+	}
+	
 	public void placeOrderDates(Date d, long nights) {
 		Calendar c = Calendar.getInstance(); 
 		for(int i = 0; i < nights; i++) {

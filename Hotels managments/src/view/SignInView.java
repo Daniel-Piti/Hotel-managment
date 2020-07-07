@@ -12,8 +12,8 @@ import javax.swing.JTextField;
 
 import controller.SignInController;
 import model.Customer;
+import model.DarkFlag;
 import model.DarkMode;
-import model.HotelRepo;
 import model.UsersRepo;
 import java.awt.event.ActionEvent;
 
@@ -26,17 +26,16 @@ public class SignInView extends DarkMode {
 	private JPasswordField passwordField;
 	private JButton signInBtn;
 	private JLabel errorLabel;
-	private int dark;
 //BUTTONS
 	public ArrayList<JButton> btns = new ArrayList<JButton>();
 //JLABLES
 	public ArrayList<JLabel> labels = new ArrayList<JLabel>();
 
 //Launch the application.
-	public void runSignIn(int darkFlag,JLabel wellcome, Customer user, UsersRepo customers, HotelRepo hotelDB, JButton in, JButton up, JButton dis, JButton myOrders, JButton myOrders2){
+	public void runSignIn(JLabel wellcome, Customer user, JButton in, JButton up, JButton dis, JButton myOrders, JButton myOrders2){
 		EventQueue.invokeLater(()->{
 				try {
-					SignInView window = new SignInView(darkFlag, wellcome, user, customers, hotelDB, in, up, dis, myOrders);
+					SignInView window = new SignInView(wellcome, user, in, up, dis, myOrders);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,11 +44,10 @@ public class SignInView extends DarkMode {
 	}
 
 //Create the application.
-	public SignInView(int darkFlag, JLabel wellcome, Customer user, UsersRepo users, HotelRepo hotels,JButton in, JButton up, JButton dis, JButton myOrders) {
-		signInController = new SignInController(wellcome, user, users, hotels, in, up, dis, darkFlag, myOrders);
+	public SignInView(JLabel wellcome, Customer user, JButton in, JButton up, JButton dis, JButton myOrders) {
+		signInController = new SignInController(wellcome, user, in, up, dis, myOrders);
 		initialize();
-		dark = darkFlag;
-		setMode(dark, frame, labels, btns, null, null);
+		setMode(DarkFlag.getInstance(), frame, labels, btns, null, null);
 		frame.getContentPane().setLayout(null);
 		listeners();
 	}

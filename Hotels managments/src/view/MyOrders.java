@@ -3,12 +3,14 @@ package view;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controller.MyOrdersController;
 import model.Customer;
+import model.DarkFlag;
 import model.DarkMode;
 
 public class MyOrders extends DarkMode {
@@ -19,11 +21,13 @@ public class MyOrders extends DarkMode {
 	public ArrayList<JLabel> labels = new ArrayList<JLabel>();
 //PANELS
 	public ArrayList<JPanel> panels = new ArrayList<JPanel>();
+//BTNS
+	public ArrayList<JButton> btns = new ArrayList<JButton>();
 	
-	public void runMyOrders(int dark, Customer user) {
+	public void runMyOrders(Customer user) {
 		EventQueue.invokeLater(() -> {
 			try {
-				MyOrders window = new MyOrders(dark, user);
+				MyOrders window = new MyOrders(user);
 				window.frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -31,11 +35,11 @@ public class MyOrders extends DarkMode {
 		});
 	}
 
-	public MyOrders(int dark, Customer user) {
+	public MyOrders(Customer user) {
 		myOrdersController = new MyOrdersController(user);
 		initialize();
-		myOrdersController.setPanels(frame, labels, panels);
-		setMode(dark, frame, labels, null, null, panels);
+		myOrdersController.setPanels(frame, labels, panels, btns);
+		setMode(DarkFlag.getInstance(), frame, labels, null, null, panels);
 		frame.getContentPane().setLayout(null);
 	}
 

@@ -13,9 +13,9 @@ import javax.swing.JTextField;
 
 import controller.OrderController;
 import model.Customer;
+import model.DarkFlag;
 import model.DarkMode;
 import model.Hotel;
-import model.UsersRepo;
 
 public class Order extends DarkMode {
 	private OrderController orderController;
@@ -55,10 +55,10 @@ public class Order extends DarkMode {
 		private JButton priceBtn;
 
 //Launch the application.
-	public void runOrder(Hotel hotel, int dark, Customer user, UsersRepo customers) {
+	public void runOrder(Hotel hotel, Customer user) {
 		EventQueue.invokeLater(() -> {
 			try {
-				Order window = new Order(hotel, dark, user, customers);
+				Order window = new Order(hotel, user);
 				window.frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -67,10 +67,10 @@ public class Order extends DarkMode {
 	}
 
 //Create the application.
-	public Order(Hotel hotel, int dark, Customer user, UsersRepo customers) {
-		orderController = new OrderController(hotel, user, customers);
+	public Order(Hotel hotel, Customer user) {
+		orderController = new OrderController(hotel, user);
 		initialize();
-		setMode(dark, frame, labels, btns, null, null);
+		setMode(DarkFlag.getInstance(), frame, labels, btns, null, null);
 	}
 
 //Initialize the contents of the frame.
@@ -279,8 +279,9 @@ public class Order extends DarkMode {
 			flag = false;
 		if(flag)
 			if(orderController.priceOrderCheck(flag,String.valueOf(startDay.getSelectedIndex()), String.valueOf(startMonth.getSelectedIndex()), String.valueOf(2019 + startYear.getSelectedIndex()),
-					String.valueOf(endDay.getSelectedIndex()), String.valueOf(endMonth.getSelectedIndex()), String.valueOf(2019 + endYear.getSelectedIndex()), totalPrice, roomTypeCombo.getSelectedIndex(), roomTypeError, startDateError, endDateError, checkError))
+					String.valueOf(endDay.getSelectedIndex()), String.valueOf(endMonth.getSelectedIndex()), String.valueOf(2019 + endYear.getSelectedIndex()), totalPrice, roomTypeCombo.getSelectedIndex(), roomTypeError, startDateError, endDateError, checkError)) {
 				JOptionPane.showMessageDialog(null, "Your order have placed!"); // CREATES MASSAGE
+			}
 		return flag;
 	}
 }

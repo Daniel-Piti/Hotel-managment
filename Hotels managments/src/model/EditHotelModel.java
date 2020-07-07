@@ -18,9 +18,9 @@ public class EditHotelModel {
 		
 	}
 	
-	public void runAddRoomType(JComboBox<String> roomTypes, int darkFlag) {
-		AddRoomType a = new AddRoomType(hotel, roomTypes, darkFlag);
-		a.RunAddRoom(hotel, roomTypes, darkFlag);
+	public void runAddRoomType(JComboBox<String> roomTypes) {
+		AddRoomType a = new AddRoomType(hotel, roomTypes);
+		a.RunAddRoom(hotel, roomTypes);
 	}
 
 	public void loadFields(JTextField nameField, JTextField addressField, JTextField phoneField,
@@ -28,7 +28,6 @@ public class EditHotelModel {
 		nameField.setText(hotel.getName());
 		addressField.setText(hotel.getAddress());
 		phoneField.setText(hotel.getPhone());
-		passwordField.setText(hotel.getPassword());
 	}
 	
 	public void deleteRoom(int index) {

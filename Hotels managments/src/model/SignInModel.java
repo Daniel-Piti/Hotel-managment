@@ -15,22 +15,21 @@ public class SignInModel {
 	private JButton disBtn;
 	private JButton myOrders;
 	private JLabel wellcome;
-	private int darkFlag;
 	
-	public SignInModel(JLabel wellcome, Customer user, UsersRepo users, HotelRepo hotels,JButton in, JButton up, JButton dis, int dark, JButton myOrders) {
+	public SignInModel(JLabel wellcome, Customer user, JButton in, JButton up, JButton dis, JButton myOrders) {
 		this.wellcome = wellcome;
 		this.user = user;
-		customers = users;
-		hotelDB = hotels;
-		inBtn = in;
-		upBtn = up;
-		disBtn = dis;
-		darkFlag = dark;
+		this.customers = UsersRepo.getInstance();
+		this.hotelDB = HotelRepo.getInstance();
+		this.inBtn = in;
+		this.upBtn = up;
+		this.disBtn = dis;
 		this.myOrders = myOrders;
 	}
+	
 	public void runAddHotel() {
-		AddHotel addHotel = new AddHotel(hotelDB, customers, darkFlag);
-		addHotel.RunAddHotel(hotelDB, customers, darkFlag);
+		AddHotel addHotel = new AddHotel();
+		addHotel.RunAddHotel();
 		user.duplicate("Project", "manager", null, null, null, true, null, 0, 0, 0);
 		inBtn.setVisible(false);
 		upBtn.setVisible(false);
@@ -40,9 +39,9 @@ public class SignInModel {
 	
 	public boolean checkEditHotel(String mail, String pass) {
 		Hotel ho = hotelDB.find(mail);
-		if(ho != null && ho.getPassword().equals(pass)) {
-			EditHotel editHotel = new EditHotel(ho, darkFlag);
-			editHotel.runEditHotel(ho, darkFlag);
+		if(ho != null && ho.hotelManager.password.equals(pass)) {
+			EditHotel editHotel = new EditHotel(ho);
+			editHotel.runEditHotel(ho);
 			inBtn.setVisible(false);
 			upBtn.setVisible(false);
 			disBtn.setVisible(true);

@@ -8,9 +8,9 @@ public class SignUpModel {
 	HotelRepo hotelDB;
 	Customer user;
 	
-	public SignUpModel(UsersRepo customers, HotelRepo hotelDB, Customer user) {
-		this.customers = customers;
-		this.hotelDB = hotelDB;
+	public SignUpModel(Customer user) {
+		this.customers = UsersRepo.getInstance();
+		this.hotelDB = HotelRepo.getInstance();
 		this.user = user;
 	}
 

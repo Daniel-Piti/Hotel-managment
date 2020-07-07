@@ -36,10 +36,6 @@ public class MainController {
 		mainModel.runSignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, myOrders);
 	}
 	
-	public void setDarkFlag(int flag) {
-		this.mainModel.darkFlag = flag;
-	}
-	
 	public void loadMyOrders() {
 		mainModel.runMyOrders();
 	}

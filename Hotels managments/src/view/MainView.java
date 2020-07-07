@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import controller.MainController;
+import model.DarkFlag;
 import model.DarkMode;
 
 import java.awt.event.ActionListener;
@@ -26,8 +27,6 @@ public class MainView extends DarkMode {
 	private JButton myOrders = new JButton();
 	private JRadioButton darkModeRadio = new JRadioButton("Dark mode");		
 	private JRadioButton lightMode = new JRadioButton("Light mode");
-//DarkFlag
-	private int darkFlag = 0;
 //BUTTONS
 	public ArrayList<JButton> btns = new ArrayList<JButton>();
 //JLABLES
@@ -40,13 +39,13 @@ public class MainView extends DarkMode {
 //Launch the application.
 	public void runMain() {
 		EventQueue.invokeLater(()->{
-				try {
-					MainView window = new MainView();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
+			try {
+				MainView window = new MainView();
+				window.frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 
 //Load the application.
@@ -109,19 +108,19 @@ public class MainView extends DarkMode {
 
 //Event listeners
 	public void listeners() {
-	//Sign in
+//Sign in
 		signInBtn.addActionListener((ActionEvent e) -> {
 			mainController.loadSignIn(wellcome, signInBtn, signUpBtn, disconnectBtn, myOrders);
 		});
-	//Sign up
+//Sign up
 		signUpBtn.addActionListener((ActionEvent e) -> {
 			mainController.loadSignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, myOrders);
 		});
-	//My orders
-	myOrders.addActionListener((ActionEvent e) -> {
-		mainController.loadMyOrders();
-	});
-	//Disconnect
+//My orders
+		myOrders.addActionListener((ActionEvent e) -> {
+			mainController.loadMyOrders();
+		});
+//Disconnect
 		disconnectBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				mainController.resetUser();
@@ -132,25 +131,23 @@ public class MainView extends DarkMode {
 				myOrders.setVisible(false);
 			}
 		});
-	//Dark radio
+//Dark radio
 		darkModeRadio.addActionListener((ActionEvent e) -> {
-			if(darkFlag == 0) {
+			if(DarkFlag.getInstance() == 0) {
 				setMode(1, frame, labels, btns, radioBtns, panels);
 				darkModeRadio.setSelected(true);
 				lightMode.setSelected(false);
-				mainController.setDarkFlag(1);
-				darkFlag = 1;
+				DarkFlag.setValue(1);
 			}
 			darkModeRadio.setSelected(true);
 		});
 	//Light radio
 		lightMode.addActionListener((ActionEvent e) -> {
-			if(darkFlag == 1) {
+			if(DarkFlag.getInstance() == 1) {
 				setMode(0, frame, labels, btns, radioBtns, panels);
 				darkModeRadio.setSelected(false);
 				lightMode.setSelected(true);
-				mainController.setDarkFlag(0);
-				darkFlag = 0;
+				DarkFlag.setValue(0);
 			}
 			lightMode.setSelected(true);
 		});

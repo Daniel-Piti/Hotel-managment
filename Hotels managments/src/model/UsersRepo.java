@@ -20,9 +20,9 @@ public class UsersRepo {
 		//setData();
 	}
 	
-	public static UsersRepo getInstance(String filename) {
+	public static UsersRepo getInstance() {
 		if(single_instance==null)
-			single_instance=new UsersRepo(filename);
+			single_instance=new UsersRepo("Members/Customers.txt");
 		return single_instance;
 	}
 	

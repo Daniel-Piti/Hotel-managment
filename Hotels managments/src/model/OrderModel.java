@@ -9,10 +9,10 @@ public class OrderModel {
 	private Customer user;
 	private UsersRepo customers;
 	
-	public OrderModel(Hotel hotel, Customer user, UsersRepo customers) {
+	public OrderModel(Hotel hotel, Customer user) {
 		this.hotel = hotel;
 		this.user = user;
-		this.customers = customers;
+		this.customers = UsersRepo.getInstance();
 	}
 
 	public void loadRooms(JComboBox<String> roomTypeCombo) {

@@ -16,9 +16,8 @@ import javax.swing.JTextField;
 
 import controller.SignUpController;
 import model.Customer;
+import model.DarkFlag;
 import model.DarkMode;
-import model.HotelRepo;
-import model.UsersRepo;
 
 public class SignUp extends DarkMode {
 	private SignUpController signUpController;
@@ -61,10 +60,10 @@ public class SignUp extends DarkMode {
 	private JButton myOrders;
 	
 //Launch the application.
-	public void runSignUp(int darkFlag, JLabel wellcome, UsersRepo customers, HotelRepo hotelDB, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user, JButton myOrders) {
+	public void runSignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user, JButton myOrders) {
 		EventQueue.invokeLater(() -> {
 			try {
-				SignUp window = new SignUp(darkFlag, wellcome, customers, hotelDB, signInBtn, signUpBtn, disconnectBtn, user, myOrders);
+				SignUp window = new SignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, user, myOrders);
 				window.frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -73,8 +72,8 @@ public class SignUp extends DarkMode {
 	}
 
 //Create the application.
-	public SignUp(int darkFlag, JLabel wellcome, UsersRepo customers, HotelRepo hotelDB, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user, JButton myOrders) {
-		signUpController = new SignUpController(customers, hotelDB, user);
+	public SignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user, JButton myOrders) {
+		signUpController = new SignUpController(user);
 		this.wellcome = wellcome;
 		this.startIn = signInBtn;
 		this.startUp= signUpBtn;
@@ -82,7 +81,7 @@ public class SignUp extends DarkMode {
 		this.myOrders = myOrders;
 		initialize();
 		btnsEvents();
-		setMode(darkFlag, frame, labels, btns, radioBtns, null);
+		setMode(DarkFlag.getInstance(), frame, labels, btns, radioBtns, null);
 	}
 
 //Initialize the contents of the frame.

@@ -10,19 +10,19 @@ public class Hotel implements Serializable {
 	private String hotelName;
 	private String address;
 	private String phoneNumber;
-	private String password;
 	private String mail;
 	private int stars;
+	public HotelManager hotelManager;
 	public List<RoomType> roomTypes;
 	
-	public Hotel(String hotelName, String address, String phoneNumber, String password, String mail, int stars) {
+	public Hotel(String hotelName, String address, String phoneNumber, String password, String mail, int stars, String managerMail) {
 		this.hotelName = hotelName;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
-		this.password = password;
 		this.mail = mail;
 		this.stars = stars;
 		this.roomTypes = new ArrayList<RoomType>();
+		this.hotelManager = new HotelManager(null, null, null, managerMail, null, false, password, 10, 10, 10);
 	}
 	
 	public void addRoomType(String typeName, int capacity, double price, double size, int amount) {
@@ -46,19 +46,14 @@ public class Hotel implements Serializable {
 		return phoneNumber;
 	}
 	
-	public String getPassword() {
-		return password;
-	}
-	
-	public void editHotel(String hotelName, String address, String phone, String pass) {
+	public void editHotel(String hotelName, String address, String phone) {
 		this.hotelName = hotelName;
 		this.address = address;
 		this.phoneNumber = phone;
-		this.password = pass;
 	}
 	
 	@Override
 	public String toString() {
-		return "<html>The " + hotelName + " hotel got " + String.valueOf(stars) + " stars.<br>The address is " + address + ".<br>And the phone is " + phoneNumber + ".<html>";
+		return "<html>The "+ hotelName + " hotel got " + String.valueOf(stars) + " stars.<br>The address is " + address + ".<br>And the phone is " + phoneNumber + ".<html>";
 	}
 }

@@ -2,8 +2,9 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
-public abstract class Person implements Serializable {
+public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected String firstName;
@@ -80,7 +81,9 @@ public abstract class Person implements Serializable {
 	public ArrayList<Reservation> getReservation() {
 		return reservations;
 	}
-	
+	public void addReservasion(String hotelName, String roomTypeName, int nights, double totalPrice, Date startDate) {
+		reservations.add(new Reservation(hotelName, roomTypeName, nights, totalPrice, startDate));
+	}
 	public void updateProfile(String phoneNumber, String email, String password) {
 		this.phoneNumber = phoneNumber;
 		this.email = email;

@@ -3,16 +3,14 @@ package controller;
 import javax.swing.JLabel;
 
 import model.Customer;
-import model.HotelRepo;
 import model.SignUpModel;
-import model.UsersRepo;
 import model.Validation;
 
 public class SignUpController {
 	SignUpModel signUpModel;
 	
-	public SignUpController(UsersRepo customers, HotelRepo hotelDB, Customer user) {
-		signUpModel = new SignUpModel(customers, hotelDB, user);
+	public SignUpController(Customer user) {
+		signUpModel = new SignUpModel(user);
 	}
 	public void addUser(Customer customer) {
 		signUpModel.addUser(customer);

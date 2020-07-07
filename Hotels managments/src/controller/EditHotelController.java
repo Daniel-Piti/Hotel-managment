@@ -14,8 +14,8 @@ public class EditHotelController {
 		editHotelModel = new EditHotelModel(h);
 	}
 
-	public void loadAddRoomType(JComboBox<String> roomTypes, int darkFlag) {
-		editHotelModel.runAddRoomType(roomTypes, darkFlag);
+	public void loadAddRoomType(JComboBox<String> roomTypes) {
+		editHotelModel.runAddRoomType(roomTypes);
 	}
 
 	public void loadFields(JTextField nameField, JTextField addressField, JTextField phoneField,

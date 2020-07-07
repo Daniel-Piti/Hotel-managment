@@ -4,15 +4,13 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import model.AddHotelModel;
-import model.HotelRepo;
-import model.UsersRepo;
 import model.Validation;
 
 public class AddHotelController {
 	AddHotelModel addHotelModel;
 	
-	public AddHotelController(HotelRepo hotelsDB, UsersRepo users) {
-		addHotelModel = new AddHotelModel(hotelsDB, users);
+	public AddHotelController() {
+		addHotelModel = new AddHotelModel();
 	}
 	
 	public void loadHotelList(JComboBox<String> temp) {
@@ -20,7 +18,7 @@ public class AddHotelController {
 	}
 	
 	public boolean validHotel(String name, String address, String phone, char[] password, String mail, JLabel nameError,
-			JLabel addressError, JLabel phoneError, JLabel passwordError, JLabel mailError, int stars) {
+			JLabel addressError, JLabel phoneError, JLabel passwordError, JLabel mailError, int stars, String managerHotel) {
 		boolean flag = true;
 		Validation v = new Validation();
 		if(!v.validNotEmpty(name, nameError))
@@ -39,7 +37,7 @@ public class AddHotelController {
 			flag = false;
 		
 		if(flag == true)
-			flag = addHotelModel.checkDB(name, address, phone, password, mail, mailError, stars);
+			flag = addHotelModel.checkDB(name, address, phone, password, mail, mailError, stars, managerHotel);
 		return flag;
 	}
 

@@ -22,9 +22,9 @@ public class HotelRepo {
 		loadData();
 		//saveData();
 	}
-	public static HotelRepo getInstance(String filename) {
+	public static HotelRepo getInstance() {
 		if(single_instance==null)
-			single_instance=new HotelRepo(filename);
+			single_instance=new HotelRepo("Hotels/hotels.txt");
 		return single_instance;
 	}
 	
@@ -73,7 +73,7 @@ public class HotelRepo {
 	
 	public Hotel find(String email) {
 		for(int i = 0; i < hotels.size(); i++)
-			if(email.equals(hotels.get(i).getMail()))
+			if(email.equals(hotels.get(i).hotelManager.email))
 				return hotels.get(i);
 		return null;
 	}
@@ -95,7 +95,7 @@ public class HotelRepo {
 			//FOR RESETS
 //			hotels = new ArrayList<Hotel>();
 //			
-//			hotels.add(new Hotel("#hotelName", "#address", "#phoneNumber", "#pass", "#mail", 5));
+//			hotels.add(new Hotel("#hotelName", "#address", "#phoneNumber", "#pass", "#mail", 5, "ya@ya.ya"));
 //
 //			hotels.get(0).addRoomType("21", 2, 32, 2, 3);
 			

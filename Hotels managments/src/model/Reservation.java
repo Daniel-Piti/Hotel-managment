@@ -23,6 +23,6 @@ public class Reservation implements Serializable {
 	
 	@Override
 	public String toString() {
-		return hotelName + "  " + startDate.toString();
+		return "<html>Hotel name: " + hotelName + "<br>Room Type: " + roomTypeName + "<br>Total price: " + totalPrice +"<br>" + nights + " nights.</html>";
 	}
 }

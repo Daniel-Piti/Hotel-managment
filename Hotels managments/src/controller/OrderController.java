@@ -7,18 +7,18 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import model.Customer;
 import model.Hotel;
 import model.OrderModel;
-import model.UsersRepo;
 import model.Validation;
 
 public class OrderController {
 	public OrderModel orderModel;
 	
-	public OrderController(Hotel hotel, Customer user, UsersRepo customers) {
-		orderModel = new OrderModel(hotel, user, customers);
+	public OrderController(Hotel hotel, Customer user) {
+		orderModel = new OrderModel(hotel, user);
 	}
 	
 	public String getHotelName() {
@@ -142,8 +142,11 @@ public class OrderController {
 			
 			if(flag == true)
 				if(validDiff(roomTypeError, startDateError, endDateError, checkError, index, cur, startDate, endDate)) {
-					placeOrder(index,startDate, getDiff(startDate, endDate));
-					return true;
+					int dialogResult = JOptionPane.showConfirmDialog (null, "<html>Do you accept the order ?<br>Total price : " + checkPrice(day1, month1, year1, day2,month2, year2, index) +"</html>","Warning",JOptionPane.YES_NO_OPTION);
+					if(dialogResult == JOptionPane.YES_OPTION){
+						placeOrder(index,startDate, getDiff(startDate, endDate));
+						return true;
+					}
 				}
 		}
 	    catch(Exception e){

@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import controller.AddRoomTypeController;
+import model.DarkFlag;
 import model.DarkMode;
 import model.Hotel;
 
@@ -40,10 +41,10 @@ public class AddRoomType extends DarkMode {
 	public ArrayList<JLabel> labels = new ArrayList<JLabel>();
 
 //Launch the application.
-	public void RunAddRoom(Hotel hotel, JComboBox<String> roomTypes, int darkFlag) {
+	public void RunAddRoom(Hotel hotel, JComboBox<String> roomTypes) {
 		EventQueue.invokeLater(() ->{
 				try {
-					AddRoomType window = new AddRoomType(hotel, roomTypes, darkFlag);
+					AddRoomType window = new AddRoomType(hotel, roomTypes);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,11 +53,11 @@ public class AddRoomType extends DarkMode {
 	}
 
 //Create the application.
-	public AddRoomType(Hotel hotel, JComboBox<String> roomTypes, int darkFlag) {
+	public AddRoomType(Hotel hotel, JComboBox<String> roomTypes) {
 		this.roomTypes = roomTypes;
 		addRoomController = new AddRoomTypeController(hotel);
 		initialize();
-		setMode(darkFlag, frame, labels, btns, null, null);
+		setMode(DarkFlag.getInstance(), frame, labels, btns, null, null);
 	}
 
 //Initialize the contents of the frame.

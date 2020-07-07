@@ -29,13 +29,10 @@ public class MainModel {
 //HOTELS REPO
 	public HotelRepo hotelDB;
 	
-	public int darkFlag;
-	
 	public MainModel() {
 		user = new Customer(null, null, null, null, null, false, null, 0, 0, 0);
-		customers=UsersRepo.getInstance("Members/Customers.txt");
-		hotelDB =HotelRepo.getInstance("Hotels/hotels.txt");
-		darkFlag = 0;
+		customers=UsersRepo.getInstance();
+		hotelDB =HotelRepo.getInstance();
 		fixDays();
 		System.out.println("all data is set");
 	}
@@ -65,8 +62,8 @@ public class MainModel {
 	}
 	
 	public void runSignIn(JLabel wellcome, JButton in, JButton up, JButton dis, JButton myOrders) {
-		SignInView signIn = new SignInView(darkFlag, wellcome, user, customers, hotelDB, in, up, dis, myOrders);
-		signIn.runSignIn(darkFlag, wellcome, user, customers, hotelDB, in, up, dis, myOrders, myOrders);
+		SignInView signIn = new SignInView(wellcome, user, in, up, dis, myOrders);
+		signIn.runSignIn(wellcome, user, in, up, dis, myOrders, myOrders);
 	}
 
 	public void setHotelList(JFrame frame, ArrayList<JButton> btns, ArrayList<JLabel> labels, ArrayList<JPanel> panels) {
@@ -78,8 +75,8 @@ public class MainModel {
 						JOptionPane.showMessageDialog(null,"Sign in as a customer to order!"); // CREATES MASSAGE
 					else {
 						int index = Integer.parseInt(((JButton) e.getSource()).getName());
-						Order order = new Order(hotelDB.hotels.get(index), darkFlag, user, customers);
-		           		order.runOrder(hotelDB.hotels.get(index), darkFlag, user, customers);
+						Order order = new Order(hotelDB.hotels.get(index), user);
+		           		order.runOrder(hotelDB.hotels.get(index), user);
 					}
 		        }
 			}
@@ -123,12 +120,12 @@ public class MainModel {
 	}
 
 	public void runSignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, JButton myOrders) {
-		SignUp signUp = new SignUp(darkFlag,wellcome, customers, hotelDB, signInBtn, signUpBtn, disconnectBtn, user, myOrders);
-		signUp.runSignUp(darkFlag,wellcome, customers, hotelDB, signInBtn, signUpBtn, disconnectBtn, user, myOrders);
+		SignUp signUp = new SignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, user, myOrders);
+		signUp.runSignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, user, myOrders);
 	}
 
 	public void runMyOrders() {
-		MyOrders myOrders = new MyOrders(darkFlag, user);
-		myOrders.runMyOrders(darkFlag, customers.find(user.email));
+		MyOrders myOrders = new MyOrders(user);
+		myOrders.runMyOrders(customers.find(user.email));
 	}
 }

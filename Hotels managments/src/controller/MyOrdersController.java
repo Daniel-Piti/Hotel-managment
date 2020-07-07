@@ -21,4 +21,8 @@ public class MyOrdersController {
 	public void setPanels(JFrame frame, ArrayList<JLabel> labels, ArrayList<JPanel> panels, ArrayList<JButton> btns) {
 		myOrdersModel.setHotelList(frame, labels, panels, btns);
 	}
+
+	public void fun() {
+		myOrdersModel.fixResrv();
+	}
 }

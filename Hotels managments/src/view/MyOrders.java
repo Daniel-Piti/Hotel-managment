@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -14,7 +16,6 @@ import model.DarkFlag;
 import model.DarkMode;
 
 public class MyOrders extends DarkMode {
-
 	private JFrame frame;
 	private MyOrdersController myOrdersController;
 //JLABLES
@@ -47,6 +48,14 @@ public class MyOrders extends DarkMode {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	
+		frame.addWindowListener(new WindowAdapter() {
+			  public void windowClosing(WindowEvent we) {
+			 myOrdersController.fun();
+			  }
+			});
 	}
+
+
 
 }

@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -44,15 +45,15 @@ public class Order extends DarkMode {
 	private JButton orderNow;
 	private JLabel roomTypeError;
 	private JLabel cardError;
-	
-	//BUTTONS
-		public ArrayList<JButton> btns = new ArrayList<JButton>();
-	//JLABLES
-		public ArrayList<JLabel> labels = new ArrayList<JLabel>();
-		private JLabel checkError;
-		private JLabel lblNewLabel;
-		private JLabel totalPrice;
-		private JButton priceBtn;
+	private JLabel roomDesc;
+//BUTTONS
+	public ArrayList<JButton> btns = new ArrayList<JButton>();
+//JLABLES	
+	public ArrayList<JLabel> labels = new ArrayList<JLabel>();
+	private JLabel checkError;
+	private JLabel lblNewLabel;
+	private JLabel totalPrice;
+	private JButton priceBtn;
 
 //Launch the application.
 	public void runOrder(Hotel hotel, Customer user) {
@@ -76,7 +77,7 @@ public class Order extends DarkMode {
 //Initialize the contents of the frame.
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 398, 460);
+		frame.setBounds(100, 100, 398, 480);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -130,40 +131,40 @@ public class Order extends DarkMode {
 		labels.add(hotelName);
 		
 		creditCardTitle = new JLabel("\u05DB\u05E8\u05D8\u05D9\u05E1 \u05D0\u05E9\u05E8\u05D0\u05D9");
-		creditCardTitle.setBounds(143, 231, 107, 14);
+		creditCardTitle.setBounds(161, 273, 107, 14);
 		frame.getContentPane().add(creditCardTitle);
 		labels.add(creditCardTitle);
 		
 		cardNumberTitle = new JLabel("\u05DE\u05E1\u05E4\u05E8 \u05DB\u05E8\u05D8\u05D9\u05E1 :");
-		cardNumberTitle.setBounds(259, 271, 113, 14);
+		cardNumberTitle.setBounds(261, 298, 113, 14);
 		frame.getContentPane().add(cardNumberTitle);
 		labels.add(cardNumberTitle);
 		
 		cvcTitle = new JLabel(": CVC");
-		cvcTitle.setBounds(261, 349, 46, 14);
+		cvcTitle.setBounds(261, 379, 46, 14);
 		frame.getContentPane().add(cvcTitle);
 		labels.add(cvcTitle);
 		
 		dateTitle = new JLabel("\u05EA\u05D0\u05E8\u05D9\u05DA \u05EA\u05E4\u05D5\u05D2\u05D4 :");
-		dateTitle.setBounds(261, 311, 107, 14);
+		dateTitle.setBounds(259, 340, 107, 14);
 		frame.getContentPane().add(dateTitle);
 		labels.add(dateTitle);
 		
 		cardYear = new JComboBox<String>();
-		cardYear.setBounds(163, 308, 68, 20);
+		cardYear.setBounds(163, 337, 68, 20);
 		frame.getContentPane().add(cardYear);
 		
 		cardMonth = new JComboBox<String>();
-		cardMonth.setBounds(76, 308, 71, 20);
+		cardMonth.setBounds(77, 337, 71, 20);
 		frame.getContentPane().add(cardMonth);
 		
 		cardNameField = new JTextField();
-		cardNameField.setBounds(77, 268, 157, 20);
+		cardNameField.setBounds(77, 295, 157, 20);
 		frame.getContentPane().add(cardNameField);
 		cardNameField.setColumns(10);
 		
 		cvcField = new JTextField();
-		cvcField.setBounds(173, 346, 58, 20);
+		cvcField.setBounds(163, 376, 58, 20);
 		frame.getContentPane().add(cvcField);
 		cvcField.setColumns(10);
 		
@@ -178,7 +179,7 @@ public class Order extends DarkMode {
 		endDateError.setForeground(Color.red);
 
 		roomTypeError = new JLabel("");
-		roomTypeError.setBounds(160, 210, 146, 14);
+		roomTypeError.setBounds(25, 246, 146, 14);
 		frame.getContentPane().add(roomTypeError);
 		roomTypeError.setForeground(Color.red);
 		
@@ -218,12 +219,12 @@ public class Order extends DarkMode {
 		
 		
 		orderNow = new JButton("Order now!");
-		orderNow.setBounds(10, 387, 362, 23);
+		orderNow.setBounds(10, 407, 362, 23);
 		frame.getContentPane().add(orderNow);
 		btns.add(orderNow);
 		
 		cardError = new JLabel("");
-		cardError.setBounds(10, 349, 95, 14);
+		cardError.setBounds(10, 382, 95, 14);
 		frame.getContentPane().add(cardError);
 		
 		lblNewLabel = new JLabel("\u05E1\u05D4\"\u05DB :");
@@ -241,6 +242,12 @@ public class Order extends DarkMode {
 		frame.getContentPane().add(priceBtn);
 		btns.add(priceBtn);
 		
+		roomDesc = new JLabel("");
+		roomDesc.setBounds(225, 208, 117, 64);
+		frame.getContentPane().add(roomDesc);
+		labels.add(roomDesc);
+		orderController.setDesc(roomDesc, 0);
+
 		priceBtn.addActionListener((ActionEvent arg0) -> {
 			checkPrice();
 		});
@@ -248,9 +255,15 @@ public class Order extends DarkMode {
 		orderNow.addActionListener((ActionEvent arg0) -> {
 			placeOrder();
 		});
+		
+		roomTypeCombo.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		    	orderController.setDesc(roomDesc, roomTypeCombo.getSelectedIndex());
+		    }
+		});
 	}
 	
-	public void checkPrice() {
+	private void checkPrice() {
 //if 2 days added
 		if(orderController.insertedDate(startMonth.getSelectedIndex(), startDay.getSelectedIndex(), startYear.getSelectedIndex()) &&
 				orderController.insertedDate(endMonth.getSelectedIndex(), endMonth.getSelectedIndex(), endMonth.getSelectedIndex())) {
@@ -259,7 +272,7 @@ public class Order extends DarkMode {
 		}
 	}
 	
-	public boolean placeOrder() {
+	private boolean placeOrder() {
 		boolean flag = true;
 		cardError.setForeground(Color.red);
 //VALID CARD

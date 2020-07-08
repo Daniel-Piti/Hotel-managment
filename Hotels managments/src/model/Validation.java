@@ -93,8 +93,8 @@ public class Validation {
 	}
 
 	public boolean validPassword(char[] s, JLabel j) {
-		if(s.length < 6) {
-			j.setText("Minimum 6 chars");
+		if(s.length < 6 || s.length > 12) {
+			j.setText("length 6-12");
 			return false;
 		}
 		j.setText("");

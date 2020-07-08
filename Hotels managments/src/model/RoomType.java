@@ -25,6 +25,11 @@ public class RoomType implements Serializable {
 		calender = new HashMap<Date, Integer>();
 	}
 	
+	@Override
+	public String toString() {
+		return "<html>Name: "+ typeName + "<br>Capacity: " + capacity + "<br>price for night: " + price + "<br>Size m^2: " + size + "</html>";
+	}
+	
 	public boolean checkAvailable(Date d, int roomTypeIndex, long nights) {
 		Date dt = d;
 

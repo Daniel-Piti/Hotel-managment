@@ -1,35 +1,107 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
 
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	String firstName;
+	String lastName;
+	String phoneNumber;
+	String email;
+	String publicID;
+	boolean gender;
+	String password;
+	MyDate bday;
 
-	protected String firstName;
-	protected String lastName;
-	protected String phoneNumber;
-	protected String email;
-	protected String publicID;
-	protected String password;
-	protected MyDate bday;
-	protected boolean gender;
-	protected ArrayList<Reservation> reservations;
+	public Person(Builder builder) 
+    { 
+		this.firstName = builder.firstName;
+		this.lastName = builder.lastName;
+		this.phoneNumber = builder.phoneNumber;
+		this.email = builder.email;
+		this.publicID = builder.publicID;
+		this.gender = builder.gender;
+		this.password = builder.password;
+		this.bday = builder.bday;
+    } 
+	public static class Builder{
+		String firstName;
+		String lastName;
+		String phoneNumber;
+		String email;
+		String publicID;
+		boolean gender;
+		String password;
+		MyDate bday;
+		
+		public static Builder newInstance() {
+			return new Builder();
+		}
+		
+		private Builder() {} 
+		
 
-	public Person(String firstName, String lastName, String phoneNumber,
-			  String email, String ID, boolean gender,
-			  String password, int d, int m, int y) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.publicID = ID;
-		this.gender = gender;
-		this.password = password;
-		this.bday = new MyDate(d, m, y);
-		this.reservations = new ArrayList<Reservation>();
+        public Builder withFirstname(String firstname) 
+        { 
+            this.firstName = firstname; 
+            return this; 
+        }
+        
+
+        public Builder withLastName(String lastName) 
+        { 
+            this.lastName = lastName; 
+            return this; 
+        }
+        
+
+        public Builder withPhone(String phoneNumber) 
+        { 
+            this.phoneNumber = phoneNumber; 
+            return this; 
+        }
+        
+
+        public Builder withMail(String email) 
+        { 
+            this.email = email; 
+            return this; 
+        }
+        
+
+        public Builder withPublicID(String publicID) 
+        { 
+            this.publicID = publicID; 
+            return this; 
+        }
+        
+
+        public Builder withGender(boolean gender) 
+        { 
+            this.gender = gender;
+            return this; 
+        }
+        
+
+        public Builder withPassword(String password) 
+        { 
+            this.password = password; 
+            return this; 
+        }
+        
+
+        public Builder withBday(MyDate bday) 
+        { 
+            this.bday = bday; 
+            return this; 
+        }
+
+    	public Person build() {
+    		return new Person(this);
+    	}
 	}
+	
 	public void duplicate(String firstName, String lastName, String phoneNumber,
 			  String email, String ID, boolean gender,
 			  String password, int d, int m, int y) {
@@ -78,12 +150,7 @@ public class Person implements Serializable {
 	public int getYear() {
 		return bday.year;
 	}
-	public ArrayList<Reservation> getReservation() {
-		return reservations;
-	}
-	public void addReservasion(String hotelName, String roomTypeName, int nights, double totalPrice, Date startDate) {
-		reservations.add(new Reservation(hotelName, roomTypeName, nights, totalPrice, startDate));
-	}
+	
 	public void updateProfile(String phoneNumber, String email, String password) {
 		this.phoneNumber = phoneNumber;
 		this.email = email;

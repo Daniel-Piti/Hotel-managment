@@ -154,4 +154,8 @@ public class OrderController {
 	    }
 		return false;
 	}
+
+	public void setDesc(JLabel roomDesc, int selectedIndex) {
+		orderModel.setDesc(roomDesc,selectedIndex);
+	}
 }

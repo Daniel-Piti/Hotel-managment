@@ -29,6 +29,9 @@ public class MainModel {
 //HOTELS REPO
 	public HotelRepo hotelDB;
 	
+
+	
+	
 	public MainModel() {
 		user = new Customer(null, null, null, null, null, false, null, 0, 0, 0);
 		customers=UsersRepo.getInstance();
@@ -112,7 +115,7 @@ public class MainModel {
 
 	public void saveData() {
 		hotelDB.saveData();
-		customers.setData();
+		customers.saveData();
 	}
 
 	public void resetUser() {

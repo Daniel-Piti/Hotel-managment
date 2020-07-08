@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry; 
 
-public class HotelRepo {
+public class HotelRepo implements Repos {
 
 	private static HotelRepo single_instance=null;
 	private String filename;
@@ -98,7 +98,7 @@ public class HotelRepo {
 //			hotels.add(new Hotel("#hotelName", "#address", "#phoneNumber", "#pass", "#mail", 5, "ya@ya.ya"));
 //
 //			hotels.get(0).addRoomType("21", 2, 32, 2, 3);
-			
+
 			out.writeObject(hotels);
 			System.out.println("HOTELS DATA SAVED!");
 		}catch(IOException e) {

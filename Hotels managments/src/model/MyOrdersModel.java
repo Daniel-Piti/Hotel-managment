@@ -61,7 +61,7 @@ public class MyOrdersModel {
 			for(i = 0; i < counter; i++) {//change to hotelDB
 			//Create data on panel
 				p[i] = new JPanel();
-				b[i] = new JButton("Delete");
+				b[i] = new JButton("Cancel");
 				lbs[i] =new JLabel(user.getReservation().get(i).toString());
 			//Set size
 			    lbs[i].setPreferredSize(new Dimension(130, 100));
@@ -72,7 +72,7 @@ public class MyOrdersModel {
 			    if(f)
 			    	p[i].setBounds(10, i*90 + 10, 170, 160);
 			    else
-			    	p[i].setBounds(200, (i - 1)*90 +10, 170, 160);
+			    	p[i].setBounds(200, (i - 1)*90 + 10, 170, 160);
 			    f = !f;
 			    b[i].setPreferredSize(new Dimension(150, 30));
 

@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
-public class UsersRepo {
+public class UsersRepo implements Repos {
 	
 	private static UsersRepo single_instance=null;
 	
@@ -17,7 +17,7 @@ public class UsersRepo {
 	private UsersRepo(String filename) {
 		this.filename = filename;
 		loadData();
-		//setData();
+		//saveData();
 	}
 	
 	public static UsersRepo getInstance() {
@@ -56,7 +56,7 @@ public class UsersRepo {
 		return false;
 	}
 	
-	public void setData() {
+	public void saveData() {
 		try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))){
 			//FOR RESETS
 //			members = new HashMap<String, Customer>();

@@ -134,6 +134,7 @@ public class MainView extends DarkMode {
 //Dark radio
 		darkModeRadio.addActionListener((ActionEvent e) -> {
 			if(DarkFlag.getInstance() == 0) {
+				
 				setMode(1, frame, labels, btns, radioBtns, panels);
 				darkModeRadio.setSelected(true);
 				lightMode.setSelected(false);

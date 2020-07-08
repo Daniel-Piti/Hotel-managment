@@ -2,6 +2,8 @@ package model;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.LineBorder;
 
-public abstract class DarkMode {
+public class DarkMode extends Observable {
 	
 	public void setMode(int flag, JFrame frame, ArrayList<JLabel> texts, ArrayList<JButton> buttons, ArrayList<JRadioButton> radios, ArrayList<JPanel> panels) {
 		if(flag == 0)

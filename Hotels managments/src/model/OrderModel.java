@@ -31,6 +31,7 @@ public class OrderModel {
 	
 	public void addOrder(int index, Date startDate, int diff) { 
 		hotel.roomTypes.get(index).placeOrderDates(startDate, diff);
+		hotel.total += diff * hotel.roomTypes.get(index).price;
 	}
 
 	public void addReservation(int index, int diff, Date startDate) {
@@ -38,6 +39,7 @@ public class OrderModel {
 	}
 
 	public void setDesc(JLabel roomDesc, int selectedIndex) {
-		roomDesc.setText(hotel.roomTypes.get(selectedIndex).toString());
+		if(hotel.roomTypes.size() > 0)
+			roomDesc.setText(hotel.roomTypes.get(selectedIndex).toString());
 	}
 }

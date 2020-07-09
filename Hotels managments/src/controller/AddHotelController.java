@@ -36,6 +36,9 @@ public class AddHotelController {
 		if(!v.validEmail(mail, mailError))
 			flag = false;
 		
+		if(!v.validEmail(managerHotel, mailError))
+			flag = false;
+		
 		if(flag == true)
 			flag = addHotelModel.checkDB(name, address, phone, password, mail, mailError, stars, managerHotel);
 		return flag;

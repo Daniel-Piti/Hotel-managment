@@ -1,6 +1,9 @@
 package view;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,10 +15,6 @@ import controller.MainController;
 import model.DarkFlag;
 import model.DarkMode;
 
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-
 public class MainView extends DarkMode {
 	private MainController mainController;
 	
@@ -25,7 +24,8 @@ public class MainView extends DarkMode {
 	private JLabel wellcome = new JLabel("Hello guest !");
 	private JButton disconnectBtn = new JButton("Disconnect");
 	private JButton myOrders = new JButton();
-	private JRadioButton darkModeRadio = new JRadioButton("Dark mode");		
+	private JButton editDetails = new JButton("Edit Details");
+	private JRadioButton darkModeRadio = new JRadioButton("Dark mode");		 
 	private JRadioButton lightMode = new JRadioButton("Light mode");
 //BUTTONS
 	public ArrayList<JButton> btns = new ArrayList<JButton>();
@@ -81,7 +81,7 @@ public class MainView extends DarkMode {
 		frame.getContentPane().add(signUpBtn);
 		btns.add(signUpBtn);
 		
-		myOrders.setBounds(410, 190, 110, 23);
+		myOrders.setBounds(410, 165, 110, 23);
 		myOrders.setText("My orders");
 		myOrders.setVisible(false);
 		frame.getContentPane().add(myOrders);
@@ -104,17 +104,27 @@ public class MainView extends DarkMode {
 		darkModeRadio.setBounds(410, 285, 155, 29);
 		frame.getContentPane().add(darkModeRadio);
 		radioBtns.add(darkModeRadio);
-}
+		
+		editDetails.setBounds(410, 210, 110, 23);
+		frame.getContentPane().add(editDetails);
+		btns.add(editDetails);
+		editDetails.setVisible(false);
+	}
 
 //Event listeners
 	public void listeners() {
+		
+		editDetails.addActionListener((ActionEvent e) -> {
+			mainController.loadEditDetails();
+		});
+		
 //Sign in
 		signInBtn.addActionListener((ActionEvent e) -> {
-			mainController.loadSignIn(wellcome, signInBtn, signUpBtn, disconnectBtn, myOrders);
+			mainController.loadSignIn(wellcome, signInBtn, signUpBtn, disconnectBtn, myOrders, editDetails);
 		});
 //Sign up
 		signUpBtn.addActionListener((ActionEvent e) -> {
-			mainController.loadSignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, myOrders);
+			mainController.loadSignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, myOrders, editDetails);
 		});
 //My orders
 		myOrders.addActionListener((ActionEvent e) -> {
@@ -129,6 +139,7 @@ public class MainView extends DarkMode {
 				signUpBtn.setVisible(true);
 				disconnectBtn.setVisible(false);
 				myOrders.setVisible(false);
+				editDetails.setVisible(false);
 			}
 		});
 //Dark radio
@@ -142,7 +153,7 @@ public class MainView extends DarkMode {
 			}
 			darkModeRadio.setSelected(true);
 		});
-	//Light radio
+//Light radio
 		lightMode.addActionListener((ActionEvent e) -> {
 			if(DarkFlag.getInstance() == 1) {
 				setMode(0, frame, labels, btns, radioBtns, panels);
@@ -152,7 +163,7 @@ public class MainView extends DarkMode {
 			}
 			lightMode.setSelected(true);
 		});
-	//Close
+//Close
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {

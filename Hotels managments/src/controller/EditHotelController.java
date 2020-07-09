@@ -1,6 +1,7 @@
 package controller;
 
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -18,13 +19,16 @@ public class EditHotelController {
 		editHotelModel.runAddRoomType(roomTypes);
 	}
 
-	public void loadFields(JTextField nameField, JTextField addressField, JTextField phoneField,
-			JPasswordField passwordField) {
-		editHotelModel.loadFields(nameField, addressField, phoneField, passwordField);
+	public void loadFields(JTextField nameField, JTextField addressField, JTextField phoneField) {
+		editHotelModel.loadFields(nameField, addressField, phoneField);
 	}
 	
 	public void removeRoom(int index) {
 		editHotelModel.deleteRoom(index);
+	}
+
+	public void setTotalIncome(JLabel totalIncome) {
+		editHotelModel.setTotalIncome(totalIncome);
 	}
 	
 }

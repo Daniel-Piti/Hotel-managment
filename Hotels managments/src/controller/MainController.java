@@ -16,8 +16,8 @@ public class MainController {
 		mainModel = new MainModel();
 	}
 	
-	public void loadSignIn(JLabel wellcome, JButton in, JButton up, JButton dis, JButton myOrders) {
-		mainModel.runSignIn(wellcome, in, up, dis, myOrders);
+	public void loadSignIn(JLabel wellcome, JButton in, JButton up, JButton dis, JButton myOrders, JButton editDetails) {
+		mainModel.runSignIn(wellcome, in, up, dis, myOrders, editDetails);
 	}
 
 	public void loadHotelList(JFrame frame, ArrayList<JButton> btns, ArrayList<JLabel> labels, ArrayList<JPanel> panels) {
@@ -32,11 +32,15 @@ public class MainController {
 		mainModel.resetUser();
 	}
 
-	public void loadSignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, JButton myOrders) {
-		mainModel.runSignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, myOrders);
+	public void loadSignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, JButton myOrders, JButton editDetails) {
+		mainModel.runSignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, myOrders, editDetails);
 	}
 	
 	public void loadMyOrders() {
 		mainModel.runMyOrders();
+	}
+
+	public void loadEditDetails() {
+		mainModel.runEditDetails();
 	}
 }

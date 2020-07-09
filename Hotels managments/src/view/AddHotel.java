@@ -120,17 +120,17 @@ public class AddHotel extends DarkMode {
 		phoneField.setColumns(10);
 		
 		nameError = new JLabel("");
-		nameError.setBounds(224, 117, 140, 14);
+		nameError.setBounds(224, 117, 173, 14);
 		nameError.setForeground(Color.red);
 		frame.getContentPane().add(nameError);
 		
 		addressError = new JLabel("");
-		addressError.setBounds(221, 160, 140, 14);
+		addressError.setBounds(221, 160, 176, 14);
 		addressError.setForeground(Color.red);
 		frame.getContentPane().add(addressError);
 		
 		phoneError = new JLabel("");
-		phoneError.setBounds(221, 207, 130, 14);
+		phoneError.setBounds(221, 207, 176, 14);
 		phoneError.setForeground(Color.red);
 		frame.getContentPane().add(phoneError);
 //DISIGN ERROR
@@ -157,12 +157,12 @@ public class AddHotel extends DarkMode {
 		
 		passwordError = new JLabel("");
 		passwordError.setForeground(Color.RED);
-		passwordError.setBounds(24, 160, 130, 14);
+		passwordError.setBounds(24, 160, 170, 14);
 		frame.getContentPane().add(passwordError);
 		
 		mailError = new JLabel("");
 		mailError.setForeground(Color.RED);
-		mailError.setBounds(221, 257, 130, 14);
+		mailError.setBounds(221, 257, 176, 14);
 		frame.getContentPane().add(mailError);
 		
 		passwordField = new JPasswordField();
@@ -185,9 +185,10 @@ public class AddHotel extends DarkMode {
 		frame.getContentPane().add(deleteHotelbtn);
 		btns.add(deleteHotelbtn);	
 		
-		JLabel userName = new JLabel("\u05DE\u05D9\u05D9\u05DC \u05DE\u05E9\u05EA\u05DE\u05E9 :");
-		userName.setBounds(120, 92, 91, 14);
-		frame.getContentPane().add(userName);
+		JLabel userMail = new JLabel("\u05DE\u05D9\u05D9\u05DC \u05DE\u05E9\u05EA\u05DE\u05E9 :");
+		userMail.setBounds(120, 92, 91, 14);
+		frame.getContentPane().add(userMail);
+		labels.add(userMail);
 		
 		userMailField = new JTextField();
 		userMailField.setBounds(24, 89, 86, 20);
@@ -201,17 +202,17 @@ public class AddHotel extends DarkMode {
 
 	private void listeners() {
 		addHotelBTN.addActionListener((ActionEvent arg0) -> {
-				if(addHotelController.validHotel(hotelNameField.getText(), addressField.getText(), phoneField.getText(), passwordField.getPassword(), mailField.getText(), 
-						nameError, addressError, phoneError, passwordError, mailError, comboBox.getSelectedIndex() + 1, userMailField.getText()) == true) {
-					hotelNameField.setText("");
-					addressField.setText("");
-					phoneField.setText("");
-					passwordField.setText("");
-					mailField.setText("");
-					userMailField.setText("");
-					deleteHotelCombo.addItem(hotelNameField.getText());
-					JOptionPane.showMessageDialog(null, hotelNameField.getText() + " hotel added");
-				}
+			if(addHotelController.validHotel(hotelNameField.getText(), addressField.getText(), phoneField.getText(), passwordField.getPassword(), mailField.getText(), 
+					nameError, addressError, phoneError, passwordError, mailError, comboBox.getSelectedIndex() + 1, userMailField.getText()) == true) {
+				deleteHotelCombo.addItem(hotelNameField.getText());
+				hotelNameField.setText("");
+				addressField.setText("");
+				phoneField.setText("");
+				passwordField.setText("");
+				mailField.setText("");
+				userMailField.setText("");
+				JOptionPane.showMessageDialog(null, hotelNameField.getText() + " hotel added");
+			}
 		});
 		
 		deleteHotelbtn.addActionListener((ActionEvent e)-> {

@@ -13,6 +13,7 @@ public class Hotel implements Serializable {
 	private String mail;
 	private int stars;
 	public HotelManager hotelManager;
+	public double total;
 	public List<RoomType> roomTypes;
 	
 	public Hotel(String hotelName, String address, String phoneNumber, String password, String mail, int stars, String managerMail) {
@@ -21,6 +22,7 @@ public class Hotel implements Serializable {
 		this.phoneNumber = phoneNumber;
 		this.mail = mail;
 		this.stars = stars;
+		this.total = 0;
 		this.roomTypes = new ArrayList<RoomType>();
 		this.hotelManager = new HotelManager(null, null, null, managerMail, null, false, password, 10, 10, 10);
 	}
@@ -44,6 +46,14 @@ public class Hotel implements Serializable {
 	
 	public String getPhone() {
 		return phoneNumber;
+	}
+	
+	public double getTotal() {
+		return total;
+	}
+	
+	public void addToTotal(int num) {
+		total += num;
 	}
 	
 	public void editHotel(String hotelName, String address, String phone) {

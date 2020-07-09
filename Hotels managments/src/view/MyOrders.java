@@ -41,7 +41,7 @@ public class MyOrders extends DarkMode {
 		initialize();
 		myOrdersController.setPanels(frame, labels, panels, btns);
 		setMode(DarkFlag.getInstance(), frame, labels, null, null, panels);
-		frame.getContentPane().setLayout(null);
+		frame.getContentPane().setLayout(null); 
 	}
 
 	private void initialize() {
@@ -51,9 +51,9 @@ public class MyOrders extends DarkMode {
 	
 		frame.addWindowListener(new WindowAdapter() {
 			  public void windowClosing(WindowEvent we) {
-			 myOrdersController.fun();
+				  myOrdersController.fun();
 			  }
-			});
+		});
 	}
 
 

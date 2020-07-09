@@ -18,7 +18,6 @@ public class AddHotelModel {
 	}
 	
 	public boolean checkDB(String name, String address, String phone, char[] password, String mail, JLabel mailError, int stars, String managerMail) {
-//users db
 		if(users.emailUsed(mail) || hotelsDB.emailUsed(mail)) {
 			mailError.setText("Email allready used");
 			return false;

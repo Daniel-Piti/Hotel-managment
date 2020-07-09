@@ -53,6 +53,7 @@ public class ValidationTest {
 	public void testValidDate() {
 		assertTrue("VALID DATE SHOULD B RETURN FALSE", v.validDate(2,2,2222, j));
 		assertFalse("VALID DATE SHOULD B RETURN True", v.validDate(31,2,2222 , j));
+		assertFalse("VALID DATE SHOULD B RETURN True", v.validDate(0,0,2222 , j));
 	}
 	
 	@Test

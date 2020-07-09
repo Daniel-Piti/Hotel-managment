@@ -5,14 +5,14 @@ import java.io.Serializable;
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	String firstName;
-	String lastName;
-	String phoneNumber;
-	String email;
-	String publicID;
-	boolean gender;
-	String password;
-	MyDate bday;
+	protected String firstName;
+	protected String lastName;
+	protected String phoneNumber;
+	protected String email;
+	protected String publicID;
+	protected boolean gender;
+	protected String password;
+	protected MyDate bday;
 
 	public Person(Builder builder) 
     { 
@@ -41,56 +41,48 @@ public class Person implements Serializable {
 		
 		private Builder() {} 
 		
-
         public Builder withFirstname(String firstname) 
         { 
             this.firstName = firstname; 
             return this; 
         }
         
-
         public Builder withLastName(String lastName) 
         { 
             this.lastName = lastName; 
             return this; 
         }
         
-
         public Builder withPhone(String phoneNumber) 
         { 
             this.phoneNumber = phoneNumber; 
             return this; 
         }
         
-
         public Builder withMail(String email) 
         { 
             this.email = email; 
             return this; 
         }
         
-
         public Builder withPublicID(String publicID) 
         { 
             this.publicID = publicID; 
             return this; 
         }
         
-
         public Builder withGender(boolean gender) 
         { 
             this.gender = gender;
             return this; 
         }
         
-
         public Builder withPassword(String password) 
         { 
             this.password = password; 
             return this; 
         }
         
-
         public Builder withBday(MyDate bday) 
         { 
             this.bday = bday; 
@@ -116,7 +108,6 @@ public class Person implements Serializable {
 		this.bday.month = m;
 		this.bday.year = y;
 	}
-	
 	public void setFirstname(String s) {
 		this.firstName = s;
 	}

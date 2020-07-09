@@ -58,12 +58,13 @@ public class SignUp extends DarkMode {
 	private JButton startUp;
 	private JButton startDis;
 	private JButton myOrders;
+	private JButton editDetails;
 	
 //Launch the application.
-	public void runSignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user, JButton myOrders) {
+	public void runSignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user, JButton myOrders, JButton editDetails) {
 		EventQueue.invokeLater(() -> {
 			try {
-				SignUp window = new SignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, user, myOrders);
+				SignUp window = new SignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, user, myOrders, editDetails);
 				window.frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -72,13 +73,14 @@ public class SignUp extends DarkMode {
 	}
 
 //Create the application.
-	public SignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user, JButton myOrders) {
+	public SignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, Customer user, JButton myOrders, JButton editDetails) {
 		signUpController = new SignUpController(user);
 		this.wellcome = wellcome;
 		this.startIn = signInBtn;
 		this.startUp= signUpBtn;
 		this.startDis = disconnectBtn;
 		this.myOrders = myOrders;
+		this.editDetails = editDetails;
 		initialize();
 		btnsEvents();
 		setMode(DarkFlag.getInstance(), frame, labels, btns, radioBtns, null);
@@ -276,6 +278,7 @@ public class SignUp extends DarkMode {
 				startUp.setVisible(false);
 				startIn.setVisible(false);
 				myOrders.setVisible(true);
+				editDetails.setVisible(true);
 				frame.dispose();
 					}
 				});

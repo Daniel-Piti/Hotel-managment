@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import view.EditDetails;
 import view.MyOrders;
 import view.Order;
 import view.SignInView;
@@ -23,18 +24,15 @@ import view.SignUp;
 
 public class MainModel {
 //CUSTOMER DB
-	public UsersRepo customers;
+	private UsersRepo customers;
 // LOGED USER
-	public Customer user;
+	private Customer user;
 //HOTELS REPO
-	public HotelRepo hotelDB;
-	
-
-	
+	private HotelRepo hotelDB;
 	
 	public MainModel() {
 		user = new Customer(null, null, null, null, null, false, null, 0, 0, 0);
-		customers=UsersRepo.getInstance();
+		customers = UsersRepo.getInstance();
 		hotelDB =HotelRepo.getInstance();
 		fixDays();
 		System.out.println("all data is set");
@@ -64,9 +62,9 @@ public class MainModel {
 		hotelDB.fixHotelsDates(prev);
 	}
 	
-	public void runSignIn(JLabel wellcome, JButton in, JButton up, JButton dis, JButton myOrders) {
-		SignInView signIn = new SignInView(wellcome, user, in, up, dis, myOrders);
-		signIn.runSignIn(wellcome, user, in, up, dis, myOrders, myOrders);
+	public void runSignIn(JLabel wellcome, JButton in, JButton up, JButton dis, JButton myOrders, JButton editDetails) {
+		SignInView signIn = new SignInView(wellcome, user, in, up, dis, myOrders, editDetails);
+		signIn.runSignIn(wellcome, user, in, up, dis, myOrders, myOrders, editDetails);
 	}
 
 	public void setHotelList(JFrame frame, ArrayList<JButton> btns, ArrayList<JLabel> labels, ArrayList<JPanel> panels) {
@@ -122,13 +120,18 @@ public class MainModel {
 		user.duplicate(null, null, null, null, null, false, null, 0, 0, 0);
 	}
 
-	public void runSignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, JButton myOrders) {
-		SignUp signUp = new SignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, user, myOrders);
-		signUp.runSignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, user, myOrders);
+	public void runSignUp(JLabel wellcome, JButton signInBtn, JButton signUpBtn, JButton disconnectBtn, JButton myOrders, JButton editDetails) {
+		SignUp signUp = new SignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, user, myOrders, editDetails);
+		signUp.runSignUp(wellcome, signInBtn, signUpBtn, disconnectBtn, user, myOrders, editDetails);
 	}
 
 	public void runMyOrders() {
 		MyOrders myOrders = new MyOrders(user);
 		myOrders.runMyOrders(customers.find(user.email));
+	}
+
+	public void runEditDetails() {
+		EditDetails editHotels = new EditDetails(user);
+		editHotels.runEditDetails(user);
 	}
 }

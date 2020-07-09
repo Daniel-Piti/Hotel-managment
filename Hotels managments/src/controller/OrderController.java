@@ -21,6 +21,10 @@ public class OrderController {
 		orderModel = new OrderModel(hotel, user);
 	}
 	
+	public void setDesc(JLabel roomDesc, int selectedIndex) {
+		orderModel.setDesc(roomDesc,selectedIndex);
+	}
+
 	public String getHotelName() {
 		return orderModel.hotel.getName();
 	}
@@ -49,24 +53,12 @@ public class OrderController {
 		return false;
 	}
 	
-	public boolean checkDate(int day, int month, int year, JLabel DateError) {
-		Validation v = new Validation();
-		if(!v.validDate(day, month, year, DateError))
-			return false;
-		return true;
-	}
-	
-	public double getPrice(Date startDate, Date endDate, int index) {
-		return getDiff(startDate, endDate) * orderModel.hotel.roomTypes.get(index).price;
-	}
-	
 	public int getDiff(Date startDate, Date endDate) {
 		long diffInMillies = endDate.getTime() - startDate.getTime();
 		return (int)TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) + 1;
-
 	}
 	
-	public boolean validDiff(JLabel roomTypeError, JLabel startDateError, JLabel endDateError, JLabel checkError, int index, Date cur, Date startDate, Date endDate) {
+	public boolean validDiff(JLabel roomTypeError, JLabel dateError, int index, Date cur, Date startDate, Date endDate) {
 		boolean flag = true;
 		
 		if(orderModel.checkRoomTypesSize() == 0) {
@@ -76,75 +68,57 @@ public class OrderController {
 		
 //SET CURRENT DATE
 		if(flag == true) {
-//START - CUR
-		    if(getDiff(cur, startDate) < 1) {
+//START - CUR || END - START
+		    if(getDiff(cur, startDate) < 1 || getDiff(startDate, endDate) < 1) {
 		    	flag = false;
-		    	startDateError.setText("Old date!");
+		    	dateError.setText("Invalid dates!");
 		    }
-//END - START
-		    if(getDiff(startDate, endDate) < 1) {
-		    	flag = false;
-		    	endDateError.setText("You picked 0 nights");
-		    }
+		    else
+		    	dateError.setText("");
+
 //CHECK IF AVAILABLE
 			roomTypeError.setText("");
-	    	checkError.setText("");
 		    if(flag == true)
 		    	if(orderModel.checkAvalible(startDate, index, getDiff(startDate, endDate)) == false) {
 		    		flag = false;
-			    	checkError.setText("Dates not avalivale!");
-			    	checkError.setForeground(Color.red);
+		    		dateError.setText("Dates not avalivale!");
+		    		dateError.setForeground(Color.red);
 		    	}
 		   	else {
-		    	checkError.setText("Dates avalivale!");
-		    	checkError.setForeground(Color.GREEN);
+		   		dateError.setText("Dates avalivale!");
+		   		dateError.setForeground(Color.GREEN);
 		   	}
 		}
 		return flag;
 	}
 
-	public String checkPrice(String day1, String month1, String year1, String day2, String month2, String year2, int roomIndex) {
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-			Date startDate = sdf.parse(month1 + "/" + day1 + "/" + year1);
-			Date endDate = sdf.parse(month2 + "/" + day2 + "/" + year2);
-			
-			if(getDiff(startDate, endDate) > 0) {
-				return String.valueOf(getPrice(startDate, endDate, roomIndex) + "$");
-			}else
-				return "0 $";
-		}
-		catch(Exception e){
-		   	e.printStackTrace();
-		}
-		return "Error";
-	}
-	
-	public void placeOrder(int index, Date startDate, int diff) {
-		orderModel.addOrder(index, startDate, diff);
-		orderModel.addReservation(index, diff, startDate);
-	}
-	
-	public boolean insertedDate(int month, int day, int year) {
-		if(day != 0 && month != 0 && year != 0)
-			return true;
-		return false;
-	}
-
-	public boolean priceOrderCheck(boolean flag, String day1, String month1, String year1, String day2, String month2, String year2, JLabel totalPrice, int index, JLabel roomTypeError, JLabel startDateError, JLabel endDateError, JLabel checkError) {
+	public boolean placeOrder(boolean flag, String day1, String month1, String year1, String day2, String month2, String year2, JLabel totalPrice, int index, JLabel roomTypeError, JLabel endDateError) {
 		try {
 			LocalDateTime now = LocalDateTime.now();
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			Date cur = sdf.parse(String.valueOf(now.getMonthValue()) +'/'+String.valueOf(now.getDayOfMonth())+'/'+String.valueOf(now.getYear()));
 			Date startDate = sdf.parse(month1 +"/"+ day1 +"/" + year1);
 			Date endDate = sdf.parse(month2 +"/"+ day2 +"/"+ year2);
-			totalPrice.setText(checkPrice(day1, month1, year1, day2,month2, year2, index));
+			double price = 0;
+			try {
+				if(getDiff(startDate, endDate) > 0) {
+					price =  getDiff(startDate, endDate) * orderModel.hotel.roomTypes.get(index).price;
+				}else
+					price = 0;
+				totalPrice.setText(String.valueOf(price) + " $");
+			}
+			catch(Exception e){
+			   	e.printStackTrace();
+			}
 			
 			if(flag == true)
-				if(validDiff(roomTypeError, startDateError, endDateError, checkError, index, cur, startDate, endDate)) {
-					int dialogResult = JOptionPane.showConfirmDialog (null, "<html>Do you accept the order ?<br>Total price : " + checkPrice(day1, month1, year1, day2,month2, year2, index) +"</html>","Warning",JOptionPane.YES_NO_OPTION);
+				if(validDiff(roomTypeError, endDateError, index, cur, startDate, endDate)) {
+					int dialogResult = JOptionPane.showConfirmDialog (null, "<html>Do you accept the order ?<br>Total price : " + String.valueOf(price) +" $</html>","Warning",JOptionPane.YES_NO_OPTION);
 					if(dialogResult == JOptionPane.YES_OPTION){
-						placeOrder(index,startDate, getDiff(startDate, endDate));
+						int dif = getDiff(startDate, endDate);
+						orderModel.addOrder(index, startDate, dif);
+						orderModel.addReservation(index, dif, startDate);
+						JOptionPane.showMessageDialog(null, "Your order have placed!"); // CREATES MASSAGE
 						return true;
 					}
 				}
@@ -155,7 +129,31 @@ public class OrderController {
 		return false;
 	}
 
-	public void setDesc(JLabel roomDesc, int selectedIndex) {
-		orderModel.setDesc(roomDesc,selectedIndex);
+	public boolean checkDateAndPrice(int day1, int month1, int year1, int day2, int month2, int year2, JLabel dateError, JLabel totalPrice, int index) {
+		Validation v = new Validation();
+		if(orderModel.hotel.roomTypes.size() == 0) {
+			dateError.setText("no avalible rooms");
+			return false;
+		}
+		if(v.validDate(day1, month1, year1, dateError))
+			if(v.validDate(day2, month2, year2, dateError)) {
+				try {
+					SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+					Date startDate = sdf.parse(month1 + "/" + day1 + "/" + year1);
+					Date endDate = sdf.parse(month2 + "/" + day2 + "/" + year2);
+					
+					if(getDiff(startDate, endDate) > 0) {
+						totalPrice.setText(String.valueOf(getDiff(startDate, endDate) * orderModel.hotel.roomTypes.get(index).price + "$"));
+					}else
+						totalPrice.setText("0 $");
+				}
+				catch(Exception e){
+				   	e.printStackTrace();
+				}
+				return true;
+			}
+		dateError.setText("Enter Dates.");
+		return false;
 	}
+
 }

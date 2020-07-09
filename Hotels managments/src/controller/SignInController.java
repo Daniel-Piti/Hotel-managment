@@ -9,8 +9,8 @@ import model.SignInModel;
 public class SignInController {
 	SignInModel signInModel;
 	
-	public SignInController(JLabel wellcome, Customer user, JButton in, JButton up, JButton dis, JButton myOrders) {
-		signInModel = new SignInModel(wellcome, user, in, up, dis, myOrders);
+	public SignInController(JLabel wellcome, Customer user, JButton in, JButton up, JButton dis, JButton myOrders, JButton editDetails) {
+		signInModel = new SignInModel(wellcome, user, in, up, dis, myOrders, editDetails);
 	}
 
 	public boolean checkProjManaget(String mail, String pass) {

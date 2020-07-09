@@ -143,5 +143,17 @@ public class EditHotel extends DarkMode {
 		deleteRoomBtn.setBounds(52, 170, 107, 25);
 		frame.getContentPane().add(deleteRoomBtn);
 		btns.add(deleteRoomBtn);
+		
+		JLabel totalTitle = new JLabel("\u05E1\u05D4\"\u05DB \u05D4\u05DB\u05E0\u05E1\u05D5\u05EA :");
+		totalTitle.setBounds(325, 233, 99, 14);
+		frame.getContentPane().add(totalTitle);
+		labels.add(totalTitle);
+		
+		JLabel totalIncome = new JLabel("");
+		totalIncome.setBounds(245, 233, 46, 14);
+		frame.getContentPane().add(totalIncome);
+		labels.add(totalIncome);
+		editHotelController.setTotalIncome(totalIncome);
+		editHotelController.loadFields(nameField, addressField, phoneField);
 	}
 }

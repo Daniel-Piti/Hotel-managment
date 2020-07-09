@@ -12,11 +12,12 @@ public class SignInModel {
 	private HotelRepo hotelDB;
 	private JButton inBtn;
 	private JButton upBtn;
+	private JButton editDetails;
 	private JButton disBtn;
 	private JButton myOrders;
 	private JLabel wellcome;
 	
-	public SignInModel(JLabel wellcome, Customer user, JButton in, JButton up, JButton dis, JButton myOrders) {
+	public SignInModel(JLabel wellcome, Customer user, JButton in, JButton up, JButton dis, JButton myOrders, JButton editDetails) {
 		this.wellcome = wellcome;
 		this.user = user;
 		this.customers = UsersRepo.getInstance();
@@ -25,15 +26,14 @@ public class SignInModel {
 		this.upBtn = up;
 		this.disBtn = dis;
 		this.myOrders = myOrders;
+		this.editDetails = editDetails;
 	}
 	
 	public void runAddHotel() {
 		AddHotel addHotel = new AddHotel();
 		addHotel.RunAddHotel();
-		user.duplicate("Project", "manager", null, null, null, true, null, 0, 0, 0);
 		inBtn.setVisible(false);
 		upBtn.setVisible(false);
-		disBtn.setVisible(true);
 		wellcome.setText("<html>Hello Project<br>manager!<html>");
 	}
 	
@@ -45,8 +45,7 @@ public class SignInModel {
 			inBtn.setVisible(false);
 			upBtn.setVisible(false);
 			disBtn.setVisible(true);
-			user.duplicate("Hotel", "manager", null, null, null, true, null, 0, 0, 0);
-			wellcome.setText("<html>Hello" + ho.getName() + "<br>hotel manager!<html>");
+			wellcome.setText("<html>Hello " + ho.getName() + "<br>hotel manager!<html>");
 			return true;
 		}
 		return false;
@@ -59,6 +58,7 @@ public class SignInModel {
 		upBtn.setVisible(false);
 		disBtn.setVisible(true);
 		myOrders.setVisible(true);
+		editDetails.setVisible(true);
 		user.duplicate(c.getFirstName(), c.getLastName(), c.getPhone(), c.getEmail(), c.getID(), true, c.getPass(), 0, 0, 0);
 		wellcome.setText("<html>Hello<br>" + c.getFirstName()+ "!<html>");
 		return true;

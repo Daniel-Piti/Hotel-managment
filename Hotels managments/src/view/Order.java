@@ -3,13 +3,11 @@ package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import controller.OrderController;
@@ -40,8 +38,7 @@ public class Order extends DarkMode {
 	private JLabel dateTitle;
 	private JComboBox<String> cardYear;
 	private JComboBox<String> cardMonth;
-	private JLabel startDateError;
-	private JLabel endDateError;
+	private JLabel dateError;
 	private JButton orderNow;
 	private JLabel roomTypeError;
 	private JLabel cardError;
@@ -50,7 +47,6 @@ public class Order extends DarkMode {
 	public ArrayList<JButton> btns = new ArrayList<JButton>();
 //JLABLES	
 	public ArrayList<JLabel> labels = new ArrayList<JLabel>();
-	private JLabel checkError;
 	private JLabel lblNewLabel;
 	private JLabel totalPrice;
 	private JButton priceBtn;
@@ -167,26 +163,16 @@ public class Order extends DarkMode {
 		cvcField.setBounds(163, 376, 58, 20);
 		frame.getContentPane().add(cvcField);
 		cvcField.setColumns(10);
-		
-		startDateError = new JLabel("");
-		startDateError.setBounds(107, 93, 107, 14);
-		frame.getContentPane().add(startDateError);
-		startDateError.setForeground(Color.red);
 
-		endDateError = new JLabel("");
-		endDateError.setBounds(111, 149, 157, 14);
-		frame.getContentPane().add(endDateError);
-		endDateError.setForeground(Color.red);
+		dateError = new JLabel("");
+		dateError.setBounds(111, 149, 157, 14);
+		frame.getContentPane().add(dateError);
+		dateError.setForeground(Color.red);
 
 		roomTypeError = new JLabel("");
 		roomTypeError.setBounds(25, 246, 146, 14);
 		frame.getContentPane().add(roomTypeError);
 		roomTypeError.setForeground(Color.red);
-		
-		checkError = new JLabel("");
-		checkError.setBounds(160, 150, 146, 14);
-		frame.getContentPane().add(checkError);
-		checkError.setForeground(Color.green);
 		
 		int i;
 		orderController.loadRoomTypes(roomTypeCombo);
@@ -247,6 +233,7 @@ public class Order extends DarkMode {
 		frame.getContentPane().add(roomDesc);
 		labels.add(roomDesc);
 		orderController.setDesc(roomDesc, 0);
+		cardError.setForeground(Color.red);
 
 		priceBtn.addActionListener((ActionEvent arg0) -> {
 			checkPrice();
@@ -256,25 +243,23 @@ public class Order extends DarkMode {
 			placeOrder();
 		});
 		
-		roomTypeCombo.addActionListener (new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
+		roomTypeCombo.addActionListener ((ActionEvent e) -> {
 		    	orderController.setDesc(roomDesc, roomTypeCombo.getSelectedIndex());
-		    }
 		});
 	}
-	
-	private void checkPrice() {
 //if 2 days added
-		if(orderController.insertedDate(startMonth.getSelectedIndex(), startDay.getSelectedIndex(), startYear.getSelectedIndex()) &&
-				orderController.insertedDate(endMonth.getSelectedIndex(), endMonth.getSelectedIndex(), endMonth.getSelectedIndex())) {
-			totalPrice.setText(orderController.checkPrice(String.valueOf(startDay.getSelectedIndex()), String.valueOf(startMonth.getSelectedIndex()), String.valueOf(2019 + startYear.getSelectedIndex()),
-					String.valueOf(endDay.getSelectedIndex()), String.valueOf(endMonth.getSelectedIndex()), String.valueOf(2019 + endYear.getSelectedIndex()), roomTypeCombo.getSelectedIndex()));
-		}
+	private boolean checkPrice() {
+		if(orderController.checkDateAndPrice(startDay.getSelectedIndex(), startMonth.getSelectedIndex(), startYear.getSelectedIndex(),
+									  endDay.getSelectedIndex(), endMonth.getSelectedIndex(), endYear.getSelectedIndex(), dateError, totalPrice, roomTypeCombo.getSelectedIndex()))
+			return true;
+		return false;
 	}
 	
-	private boolean placeOrder() {
+	private void placeOrder() {
 		boolean flag = true;
-		cardError.setForeground(Color.red);
+//VALID DATES
+		if(!checkPrice())
+			flag = false;
 //VALID CARD
 		if(orderController.validCardNum(cardNameField.getText(), cvcField.getText(), cardMonth.getSelectedIndex(), 19 + cardYear.getSelectedIndex(), cardError) == false) {
 			flag = false;
@@ -282,19 +267,9 @@ public class Order extends DarkMode {
 		}
 		else
 			cardError.setText("");
-//INSERT DATE
-		if(orderController.insertedDate(startMonth.getSelectedIndex(), startDay.getSelectedIndex(), startYear.getSelectedIndex()) == false ||
-				orderController.insertedDate(endMonth.getSelectedIndex(), endMonth.getSelectedIndex(), endMonth.getSelectedIndex()) == false)
-			endDateError.setText("Enter dates");
-		if(orderController.checkDate(startDay.getSelectedIndex(), startMonth.getSelectedIndex(), startYear.getSelectedIndex(), startDateError) == false)
-			flag = false;
-		if(orderController.checkDate(endDay.getSelectedIndex(), endMonth.getSelectedIndex(), endYear.getSelectedIndex(), endDateError) == false)
-			flag = false;
+		
 		if(flag)
-			if(orderController.priceOrderCheck(flag,String.valueOf(startDay.getSelectedIndex()), String.valueOf(startMonth.getSelectedIndex()), String.valueOf(2019 + startYear.getSelectedIndex()),
-					String.valueOf(endDay.getSelectedIndex()), String.valueOf(endMonth.getSelectedIndex()), String.valueOf(2019 + endYear.getSelectedIndex()), totalPrice, roomTypeCombo.getSelectedIndex(), roomTypeError, startDateError, endDateError, checkError)) {
-				JOptionPane.showMessageDialog(null, "Your order have placed!"); // CREATES MASSAGE
-			}
-		return flag;
+			orderController.placeOrder(flag,String.valueOf(startDay.getSelectedIndex()), String.valueOf(startMonth.getSelectedIndex()), String.valueOf(2019 + startYear.getSelectedIndex()),
+					String.valueOf(endDay.getSelectedIndex()), String.valueOf(endMonth.getSelectedIndex()), String.valueOf(2019 + endYear.getSelectedIndex()), totalPrice, roomTypeCombo.getSelectedIndex(), roomTypeError, dateError);
 	}
 }
